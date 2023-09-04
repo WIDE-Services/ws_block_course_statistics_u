@@ -1,0 +1,130 @@
+{{!
+This file is part of Moodle - https://moodle.org/
+
+Moodle is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Moodle is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Moodle. If not, see
+<http: //www.gnu.org/licenses />.
+}}
+
+{{!
+@template block_event_management/measurespertool/usersmain
+}}
+{{#access}}
+    <div class="page-wrapper">
+
+        <!-- PAGE CONTENT-->
+        <div class="page-content--bgf7">
+
+            <!-- STATISTIC MENU-->
+            {{> block_course_statistics/admin/common/navsection }}
+            <!-- END STATISTIC MENU -->
+
+            <!-- Filter Table Form -->
+            {{> block_course_statistics/admin/common/formsection }}
+            <!-- END Filter Table Form -->
+
+            <!-- DATA TABLE-->
+            <section class="p-t-20">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="title-5 m-b-35">Measures per tool</h3>
+
+                            <div class="table-responsive table-responsive-data2">
+                                <br>
+                                <table class="statistics display table table-data2" cellspacing="0" width="100%">
+                                    <thead>
+
+                                    <tr>
+                                        <th></th>
+                                        <th>{{#str}}lastname{{/str}}</th>
+                                        <th>{{#str}}firstname{{/str}}</th>
+                                        <th>{{#str}}course{{/str}}</th>
+                                        <th>{{#str}}activity{{/str}}</th>
+                                        <th>{{#str}}totaltimededicated, block_course_statistics{{/str}}</th>
+                                        <th>{{#str}}numberofsessions, block_course_statistics{{/str}}</th>
+                                        <th>{{#str}}avgactivitytime, block_course_statistics{{/str}}</th>
+                                        <th>{{#str}}averageusedinsessions, block_course_statistics{{/str}}</th>
+                                    </tr>
+
+                                    </thead>
+
+                                    <div style="display: none;" class="loader"><img class="loader-gif" src="/blocks/course_statistics/pix/loader_2.gif" alt="loader"></div>
+
+                                    <tbody>
+
+                                    {{#usersdata}}
+
+                                        <tr class="tr-shadow">
+                                            <td></td>
+
+                                            <td>{{lastname}}</a></td>
+                                            <td>{{firstname}}</a></td>
+                                            <td>{{coursetitle}}</td>
+                                            <td>{{activity}}</td>
+                                            <td>{{activitytime}} </td>
+                                            <td>{{activitysessions}}</td>
+                                            <td>{{avgtimesession}}</td>
+                                            <td>{{avgusesession}}</td>
+
+                                        </tr>
+
+                                    {{/usersdata}}
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END DATA TABLE-->
+
+            <!-- COPYRIGHT-->
+            <section class="p-t-60 p-b-20">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="copyright">
+                                <p>Copyright © 2023 WIDE Services. All rights reserved</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END COPYRIGHT-->
+        </div>
+
+    </div>
+{{/access}}
+{{^access}}
+    <div class="container">
+        <div class="jumbotron bg-danger">
+            <h1>{{#str}}accessdenied, block_course_statistics{{/str}}</h1>
+        </div>
+
+    </div>
+{{/access}}
+<!-- end document-->
+
+{{#js}}
+    require(
+    ['block_course_statistics/datatables_init-lazy',
+    'block_course_statistics/jszip-lazy'
+    ] , function(Main,Jszip) {
+    window.JSZip = Jszip;
+    Main.init();
+    });
+
+{{/js}}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XMLDB PATH="blocks/course_statistics/db" VERSION="2020041024" COMMENT="XML DB file for Moodle blocks/course_statistics" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
+    <TABLES>
+
+        <TABLE NAME="cs_user_course_sessions" COMMENT="All sessions of a user in a course">
+            <FIELDS>
+                <FIELD NAME="id" SEQUENCE="true" TYPE="int" LENGTH="10" NOTNULL="true" />
+                <FIELD NAME="courseid" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="true" />
+                <FIELD NAME="userid" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="true" />
+                <FIELD NAME="startsession" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="false" />
+                <FIELD NAME="endsession" SEQUENCE="false" TYPE="int" LENGTH="10" DEFAULT="0" NOTNULL="false" />
+                <FIELD NAME="sessiontime" SEQUENCE="false" TYPE="int" LENGTH="10" DEFAULT="0" NOTNULL="false" />
+                <FIELD NAME="actions" SEQUENCE="false" TYPE="int" LENGTH="5" DEFAULT="0" NOTNULL="false" />
+
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id" />
+                <KEY NAME="fk_courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id" />
+                <KEY NAME="fk_userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" />
+            </KEYS>
+        </TABLE>
+
+        <TABLE NAME="cs_user_activity_sessions" COMMENT="Statistics of activity sessions of user in a course">
+            <FIELDS>
+                <FIELD NAME="id" SEQUENCE="true" TYPE="int" LENGTH="10" NOTNULL="true" />
+                <FIELD NAME="courseid" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="true" />
+                <FIELD NAME="userid" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="true" />
+                <FIELD NAME="activity" SEQUENCE="false" TYPE="char" LENGTH="50" NOTNULL="false" />
+                <FIELD NAME="cminstance" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="false" />
+                <FIELD NAME="activitytitle" SEQUENCE="false" TYPE="char" LENGTH="300" DEFAULT="0" NOTNULL="false" />
+                <FIELD NAME="activitytime" SEQUENCE="false" TYPE="int" LENGTH="10" DEFAULT="0" NOTNULL="false" />
+                <FIELD NAME="activitysessions" SEQUENCE="false" TYPE="int" LENGTH="5" DEFAULT="0" NOTNULL="false" />
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id" />
+                <KEY NAME="fk_courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id" />
+                <KEY NAME="fk_userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" />
+            </KEYS>
+        </TABLE>
+
+        <TABLE NAME="cs_activities_session_dates" COMMENT="Statistics for each activity individually. When an activity started and when ended.">
+            <FIELDS>
+                <FIELD NAME="id" SEQUENCE="true" TYPE="int" LENGTH="10" NOTNULL="true" />
+                <FIELD NAME="asid" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="true" />
+                <FIELD NAME="session" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="false" />
+                <FIELD NAME="startsession" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="false" />
+                <FIELD NAME="endsession" SEQUENCE="false" TYPE="int" LENGTH="10" DEFAULT="0" NOTNULL="false" />
+                <FIELD NAME="sessiontime" SEQUENCE="false" TYPE="int" LENGTH="10" DEFAULT="0" NOTNULL="false" />
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id" />
+                <KEY NAME="fk_asid" TYPE="foreign" FIELDS="asid" REFTABLE="cs_user_activity_sessions" REFFIELDS="id" />
+            </KEYS>
+        </TABLE>
+
+    </TABLES>
+</XMLDB>

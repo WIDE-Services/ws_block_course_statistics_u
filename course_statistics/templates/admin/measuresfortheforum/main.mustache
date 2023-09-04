@@ -1,0 +1,115 @@
+{{!
+This file is part of Moodle - https://moodle.org/
+
+Moodle is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Moodle is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Moodle. If not, see
+<http: //www.gnu.org/licenses />.
+}}
+
+{{!
+@template block_event_management/main
+}}
+{{#access}}
+    <div class="page-wrapper">
+
+        <!-- PAGE CONTENT-->
+        <div class="page-content--bgf7">
+
+            <!-- STATISTIC MENU-->
+            {{> block_course_statistics/admin/common/navsection }}
+            <!-- END STATISTIC MENU -->
+
+            <!-- Filter Table Form -->
+            {{> block_course_statistics/admin/common/formsection }}
+            <!-- END Filter Table Form -->
+
+            <!-- DATA TABLE-->
+            <section class="p-t-20">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="title-5 m-b-35">Measures for the forum</h3>
+
+                            <div class="table-responsive table-responsive-data2">
+                                <br>
+                                <table class="statistics display table table-data2" cellspacing="0" width="100%">
+                                    <thead>
+
+                                    <tr>
+                                        <th></th>
+                                        <th>{{#str}}course{{/str}}</th>
+                                        <th>{{#str}}forum, block_course_statistics{{/str}}</th>
+                                        <th>{{#str}}topic{{/str}}</th>
+                                        <th>{{#str}}posts{{/str}}</th>
+                                        <th>{{#str}}postanswers, block_course_statistics{{/str}}</th>
+                                        <th>{{#str}}topicinitialized, block_course_statistics{{/str}}</th>
+                                        <th>{{#str}}postreads, block_course_statistics{{/str}}</th>
+                                    </tr>
+
+                                    </thead>
+
+                                    <div style="display: none;" class="loader"><img class="loader-gif" src="/blocks/course_statistics/pix/loader_2.gif" alt="loader"></div>
+
+                                    <tbody>
+
+                                    {{#generaldata}}
+
+                                        <tr class="tr-shadow">
+                                            <td></td>
+
+                                            <td><a href="{{{viewforum}}}&courseid={{courseid}}&from={{from}}&to={{to}}&searchperiod={{searchperiod}}">{{course}}</a></td>
+                                            <td>{{forums}}</td>
+                                            <td>{{topics}}</td>
+                                            <td>{{posts}}</td>
+                                            <td>{{postanswers}}</td>
+                                            <td>{{initialized}}</td>
+                                            <td>{{postreads}}</td>
+
+                                        </tr>
+
+                                    {{/generaldata}}
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END DATA TABLE-->
+
+        </div>
+
+    </div>
+{{/access}}
+{{^access}}
+    <div class="container">
+        <div class="jumbotron bg-danger">
+            <h1>{{#str}}accessdenied, block_course_statistics{{/str}}</h1>
+        </div>
+
+    </div>
+{{/access}}
+<!-- end document-->
+
+{{#js}}
+    require(
+    ['block_course_statistics/datatables_init-lazy',
+    'block_course_statistics/jszip-lazy'
+    ] , function(Main,Jszip) {
+    window.JSZip = Jszip;
+    Main.init();
+    });
+
+{{/js}}

@@ -1,0 +1,92 @@
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Translate file
+ * @package    block_course_statistics
+ * @copyright  2023 onwards WIDE Services  {@link https://www.wideservices.gr}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+// Basic plugin strings.
+$string['pluginname'] = 'Course statistics';
+
+// Capabilites.
+$string['course_statistics:addinstance'] = 'Allow to add Course statistics plugin';
+$string['course_statistics:myaddinstance'] = 'Allow to add Course statistics plugin to Dashboard';
+$string['course_statistics:admin'] = 'Allow admin use Course statistics plugin';
+$string['course_statistics:teacher'] = 'Allow teacher to use Course statistics plugin';
+$string['course_statistics:student'] = 'Allow student to use Course statistics plugin';
+
+// Privacy.
+$string['privacy:metadata'] = 'The Course Statistics block only shows information about courses and does not store data itself.';
+
+// Block content.
+$string['access_button'] = 'Statistics';
+$string['access_info'] = 'Admin / Teacher:';
+$string['user_access_info'] = 'Student Course Statistics:';
+
+// Main Dashboard.
+$string['capability_admin'] = 'Course Statistics , Admin Dashboard.';
+
+// Filters period form.
+$string['select_course'] = 'Select course : ';
+$string['start_period'] = 'Start period : ';
+$string['end_period'] = 'End period : ';
+$string['search'] = 'Search';
+
+// Data tables labels.
+$string['sessions'] = 'Sessions';
+$string['totaltimeinsubject'] = 'Total Time In The Subject';
+$string['numberofactions'] = 'Number Of Actions';
+$string['avgtimesession'] = 'Average Time Per Session';
+$string['avgnumberactionsessions'] = 'Average Number Of Actions Per Session';
+$string['numberofactions'] = 'Number Of Actions';
+$string['avgtimesession'] = 'Average Time Per Session';
+$string['totaltimededicated'] = 'Total Time Dedicated';
+$string['numberofsessions'] = 'Number of Sessions';
+$string['averageusedinsessions'] = 'Average Use in Sessions';
+$string['coursetotalsessions'] = 'Course Total Sessions';
+$string['activitysessions'] = 'Activity Sessions';
+$string['avgactivitytime'] = 'Average Time in Sessions';
+$string['forum'] = 'Forum';
+$string['postreads'] = 'Post Reads';
+$string['topicinitialized'] = 'Topics Initialized';
+$string['postanswers'] = 'Post Answers';
+$string['courseactivity'] = 'Course Activity';
+$string['totaltime'] = 'Total time';
+$string['averagetime'] = 'Average time';
+$string['quiz'] = 'Quiz';
+$string['attempts'] = 'Attempts';
+$string['avgscore'] = 'Average score';
+$string['skip'] = 'Skipped Questions';
+$string['answers'] = 'Answers';
+
+$string['attempt'] = 'Attempt';
+$string['question'] = 'Question';
+$string['questiontime'] = 'Question time';
+$string['action'] = 'Action';
+$string['viewattempt'] = 'View';
+
+// Settings.
+$string['coursestatistics_settings'] = ' Course Statistics Settings';
+$string['check_schedule_task'] = 'Retrieve data from plugin tables and not directly from Moodle logs';
+$string['scheduletask_title'] = 'Enable Schedule task';
+$string['scheduletask_description'] = 'Enabling Schedule task will pre calculate the statistics from Moodle logs.';
+
+// Access.
+$string['accessdenied'] = ' Access Denied';
+
