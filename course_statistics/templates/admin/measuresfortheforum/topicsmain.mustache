@@ -38,7 +38,7 @@ along with Moodle. If not, see
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <h3 class="title-5 m-b-35">Measures for the forum</h3>
+                            <h3 class="title-5 m-b-35">{{#str}}measuresfortheforum, block_course_statistics{{/str}}</h3>
 
                             <div class="table-responsive table-responsive-data2">
                                 <br>
@@ -69,7 +69,9 @@ along with Moodle. If not, see
 
                                             <td>{{course}}</td>
                                             <td>{{forums}}</td>
-                                            <td>{{topics}}</td>
+                                            <td><a href="
+{{{viewusers}}}&courseid={{courseid}}&forumid={{forumid}}&topicid={{topicid}}&from={{from}}&to={{to}}&searchperiod={{searchperiod}}">
+                                                {{topics}}</a></td>
                                             <td>{{posts}}</td>
                                             <td>{{postanswers}}</td>
                                             <td>{{initialized}}</td>

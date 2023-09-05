@@ -153,6 +153,29 @@ class dbquery {
     }
 
     /**
+     * Check if the first element of the capture package
+     * in quiz is viewed course_module (the lobby before enter the quiz)
+     * @param int $logid
+     * @return bool
+     * @throws dml_exception
+     */
+    public function db_is_quiz_lobby($logid) {
+        global $DB;
+
+        $lobby = $DB->get_record('logstore_standard_log' , ['id' => $logid]);
+
+        if ($lobby && !empty($lobby)) {
+
+            if ($lobby->action == 'viewed' && $lobby->target == 'course_module') {
+                return true;
+            }
+
+        }
+
+        return false;
+
+    }
+    /**
      * Insert multiple record in DB.
      * @param string $table
      * @param array $inserts
@@ -870,6 +893,19 @@ class dbquery {
     }
 
     /**
+     * Return Discussion title
+     * @param int $topicid
+     * @return false|mixed|\stdClass
+     * @throws dml_exception
+     */
+    public function  db_topic_title($topicid) {
+
+        global $DB;
+
+        return $DB->get_record('forum_discussions' , ['id' => $topicid] , 'name');
+    }
+
+    /**
      * How many posts the course has in its Forums.
      * @param int $courseid
      * @param int $forumid
@@ -951,6 +987,147 @@ class dbquery {
 
         return $countinitialized;
 
+    }
+
+    /**
+     * Return post reads in a topic
+     * @param int $forumid
+     * @param int $topicid
+     * @param bool $searchperiod
+     * @param int $from
+     * @param int $to
+     * @return array
+     * @throws dml_exception
+     */
+    public function db_topic_post_reads($forumid , $topicid , $searchperiod = false , $from = null , $to = null) {
+
+        global $DB;
+
+        $sql = "SELECT fr.* FROM {forum_read} fr
+                    JOIN {forum} f ON f.id = fr.forumid
+                    JOIN {forum_discussions} fd ON fd.id = fr.discussionid
+                    JOIN {forum_posts} fp ON fp.id = fr.postid
+                    WHERE fr.discussionid = {$topicid}
+                        AND fr.forumid = {$forumid}";
+
+        if ($searchperiod) {
+            $sql .= " AND fp.modified >= {$from} AND fp.modified <= {$to}";
+        }
+
+        return $DB->get_records_sql($sql);
+    }
+
+    /**
+     * Return subscribed users in a forum.
+     * @param int $forumid
+     * @return array
+     * @throws dml_exception
+     */
+    public function db_forum_subscriptions($forumid) {
+
+        global $DB;
+
+        $sql = " SELECT fs.* , u.lastname , u.firstname
+        FROM {forum_subscriptions} fs
+        JOIN {forum} f ON f.id = fs.forum
+        JOIN {user} u ON u.id = fs.userid
+        WHERE fs.forum ={$forumid}";
+
+        return $DB->get_records_sql($sql);
+
+    }
+
+    /**
+     * Return users posts in a topic
+     * @param int $userid
+     * @param int $courseid
+     * @param int $forumid
+     * @param int $topicid
+     * @param bool $searchperiod
+     * @param int $from
+     * @param int $to
+     * @return array
+     * @throws dml_exception
+     */
+    public function db_topic_user_posts($userid , $courseid , $forumid , $topicid ,
+            $searchperiod = false , $from = null , $to = null) {
+
+        global $DB;
+
+        $sql = "SELECT fp.* FROM {forum_posts} fp
+            JOIN {forum_discussions} fd ON fd.id = fp.discussion
+            JOIN {forum} f ON f.id = fd.forum
+            WHERE f.course = {$courseid} AND fp.userid = {$userid}
+                AND fd.forum = {$forumid} AND fp.discussion = {$topicid} ";
+
+        if ($searchperiod) {
+            $sql .= " AND fp.modified >= {$from} AND fp.modified <= {$to}";
+        }
+
+        return $DB->get_records_sql($sql);
+    }
+
+    /**
+     * Return posts of user that have a parent discussions
+     * @param int $userid
+     * @param int $courseid
+     * @param int $forumid
+     * @param int $topicid
+     * @param bool $searchperiod
+     * @param int $from
+     * @param int $to
+     * @return array
+     * @throws dml_exception
+     */
+    public function db_topic_user_answers($userid , $courseid , $forumid , $topicid ,
+            $searchperiod = false , $from = null , $to = null) {
+
+        global $DB;
+
+        $sql = "SELECT fp.* FROM {forum_posts} fp
+                    JOIN {forum_discussions} fd ON fd.id = fp.discussion
+                    JOIN {forum} f ON f.id = fd.forum
+                     WHERE f.course = {$courseid} AND fp.userid = {$userid}
+                        AND fd.forum = {$forumid} AND fp.discussion = {$topicid}
+                        AND fp.parent <> 0";
+
+        if ($searchperiod) {
+            $sql .= " AND fp.modified >= {$from} AND fp.modified <= {$to}";
+        }
+
+        return $DB->get_records_sql($sql);
+
+    }
+
+    /**
+     * return user reads in a topic
+     * @param int $userid
+     * @param int $forumid
+     * @param int $topicid
+     * @param bool $searchperiod
+     * @param int $from
+     * @param int $to
+     * @return array
+     * @throws dml_exception
+     */
+    public function db_user_post_reads($userid , $forumid , $topicid ,
+            $searchperiod = false , $from = null , $to = null) {
+
+        global $DB;
+
+        $sql = "SELECT fr.* FROM {forum_read} fr
+                    JOIN {forum} f ON f.id = fr.forumid
+                    JOIN {forum_discussions} fd ON fd.id = fr.discussionid
+                    JOIN {forum_posts} fp ON fp.id = fr.postid
+                    WHERE fr.userid = {$userid}
+                        AND fr.discussionid = {$topicid}
+                        AND fr.forumid = {$forumid}";
+
+        if ($searchperiod) {
+            $sql .= " AND fp.modified >= {$from} AND fp.modified <= {$to}";
+        }
+
+        return $DB->get_records_sql($sql);
     }
 
     /**
@@ -1254,6 +1431,7 @@ class dbquery {
         return $averagescore;
 
     }
+
 
 }
 

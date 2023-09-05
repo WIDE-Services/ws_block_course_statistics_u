@@ -402,6 +402,7 @@ class toollogic implements logic_interface {
                     $activitytitle = utils::get_module_activity_title(
                             $module->name , $package , $userid , $courseid
                     );
+
                     $rows[$instance] = utils::get_module_activity_time(
                             $module->name , $activitytitle , $package , $userid , $courseid , $chartcolour
                     );
@@ -413,6 +414,7 @@ class toollogic implements logic_interface {
                     $activitytitle = utils::get_module_activity_title(
                             $module->name , $package , $userid , $courseid
                     );
+
                     $rows[$instance] = utils::get_module_activity_time(
                             $module->name , $activitytitle , $package , $userid , $courseid , $chartcolour
                     );

@@ -152,7 +152,7 @@ class logic implements logic_interface {
 
                 if ($coursesessions[$previous]->action != 'viewed' && $coursesessions[$previous]->target != 'course') {
                     // In that case the consecutive ids where interrupted from a system entrance (-1).
-                    // Most possible graded action.
+                    // Most possible graded action or admin loggedin as.
                     $consecutives[$i][$value] = $value;
 
                 } else {
@@ -161,6 +161,7 @@ class logic implements logic_interface {
                     $consecutives[$i][$value] = $value;
 
                 }
+
             } else {
 
                 $i++;
@@ -175,6 +176,7 @@ class logic implements logic_interface {
         // After the MAX value of the group session!
         $totalsessiontime = array();
         $previous = null;
+
         foreach ($consecutives as $key => $consecutive) {
 
             $sessionpart['min'][$key] = min($consecutive);
@@ -194,7 +196,7 @@ class logic implements logic_interface {
                         ($coursesessions[$sessionpart['max'][$key]]->target == $coursesessions[$previous]->target) == 'course' &&
                         $sessionpart['max'][$key] == $previous - 1) {
 
-                    // Check if the diff between them is more than 2 hours (7200 secs) if yes then dont calculate.
+                    // Check if the diff between them is more than 8 hours (28800 secs) if yes then dont calculate.
                     // If it is then something went wrong and dont calculate.
                     // In this case the user might have forgotten the course opened or pc went in sleep mode.
                     // And the user enters again the other day this null/forgotten time will ot be calculated.
@@ -202,28 +204,30 @@ class logic implements logic_interface {
                     // Thats why i made a check for the next action out of course to be in 2 hours period.
 
                     $checktime = (int)$coursesessions[$previous]->timecreated -
-                            (int)$coursesessions[$sessionpart['min'][$key]]->timecreated;
+                            (int)$coursesessions[$sessionpart['max'][$key]]->timecreated;
 
-                    if ($checktime < 7200) {
+                    if ($checktime < 28800) {
                         $totalsessiontime[$key] = $checktime;
 
                             $insert->endsession = (int)$coursesessions[$previous]->timecreated;
                     }
 
                 } else {
-                    // Check if the diff between them is more than 2 hours (7200 secs) if yes then dont calculate.
+                    // Check if the diff between them is more than 8 hours (28800 secs) if yes then dont calculate.
                     // If it is then something went wrong and dont calculate.
                     // In this case the user might have forgotten the course opened or pc went in sleep mode.
                     // And the user enters again the other day this null/forgotten time will ot be calculated.
                     // OR the logstore failed to save the next action and the system fouls me and i get the next - next action!
                     // Thats why i made a check for the next action out of course to be in 2 hours period.
 
-                    $checktime = (int)$nextaction->timecreated - (int)$coursesessions[$sessionpart['min'][$key]]->timecreated;
+                    $checktime = (int)$nextaction->timecreated - (int)$coursesessions[$sessionpart['max'][$key]]->timecreated;
 
-                    if ($checktime < 7200) {
+                    if ($checktime < 28800) {
+
                         $totalsessiontime[$key] = $checktime;
 
-                            $insert->endsession = (int)$nextaction->timecreated;
+                        $insert->endsession = (int)$nextaction->timecreated;
+
                     }
 
                 }
@@ -240,7 +244,7 @@ class logic implements logic_interface {
                 $totalsessiontime[$key] = (int) $coursesessions[$sessionpart['max'][$key]]->timecreated -
                         (int) $coursesessions[$sessionpart['min'][$key]]->timecreated;
 
-                    $insert->endsession = (int) $coursesessions[$sessionpart['max'][$key]]->timecreated;
+                $insert->endsession = (int) $coursesessions[$sessionpart['max'][$key]]->timecreated;
             }
 
             $previous = $sessionpart['max'][$key];

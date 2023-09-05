@@ -65,6 +65,8 @@ $string['avgactivitytime'] = 'Average Time in Sessions';
 $string['forum'] = 'Forum';
 $string['postreads'] = 'Post Reads';
 $string['topicinitialized'] = 'Topics Initialized';
+$string['topic'] = 'Topic';
+$string['posts'] = 'Posts';
 $string['postanswers'] = 'Post Answers';
 $string['courseactivity'] = 'Course Activity';
 $string['totaltime'] = 'Total time';
@@ -74,6 +76,12 @@ $string['attempts'] = 'Attempts';
 $string['avgscore'] = 'Average score';
 $string['skip'] = 'Skipped Questions';
 $string['answers'] = 'Answers';
+
+// Navigation.
+$string['generalmeasures'] = 'General measures';
+$string['measurespertool'] = 'Measures per tool';
+$string['measuresfortheforum'] = 'Measures for the forum';
+$string['measuresinquizzes'] = 'Measures in Quizzes';
 
 $string['attempt'] = 'Attempt';
 $string['question'] = 'Question';

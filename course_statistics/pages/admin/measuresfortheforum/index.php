@@ -26,6 +26,7 @@ use block_course_statistics\coursestatistics;
 use block_course_statistics\output\measuresfortheforum;
 use block_course_statistics\output\measurescourseforums;
 use block_course_statistics\output\measuresforumtopics;
+use block_course_statistics\output\measuresforumusers;
 use block_course_statistics\formfilter\filterform;
 use block_course_statistics\measuresfortheforum\forumlogic;
 
@@ -38,7 +39,9 @@ global $CFG , $USER , $PAGE , $OUTPUT;
 $courseid = optional_param('courseid', 0, PARAM_INT);
 $viewforum = optional_param('viewforum', 0, PARAM_INT);
 $viewtopic = optional_param('viewtopic', 0, PARAM_INT);
+$viewusers = optional_param('viewusers', 0, PARAM_INT);
 $forumid = optional_param('forumid', 0, PARAM_INT);
+$topicid = optional_param('topicid', 0, PARAM_INT);
 $from = optional_param('from', null, PARAM_INT);
 $to = optional_param('to', null, PARAM_INT);
 // The searchperiod optional param is a balander for the from, to params so i dont do many checks.
@@ -48,7 +51,9 @@ $params = array(
         'courseid' => $courseid ,
         'viewforum' => $viewforum ,
         'viewtopic' => $viewtopic ,
-        'forumid' => $forumid
+        'viewusers' => $viewusers ,
+        'forumid' => $forumid ,
+        'topicid' => $topicid
 );
 
 $userid = $USER->id;  // Owner of the page.
@@ -166,6 +171,32 @@ if ($viewforum != 0) {
         $measures = $logic->group_viewtopics_data($courseid , $forumid , $searchperiod , $from , $to);
 
         $maindashboard = new measuresforumtopics($params , $data->form , $measures["topicsdata"] ,
+                $searchperiod , $from , $to , $access = true);
+
+    } else {
+
+        $maindashboard = new measuresforumtopics(null , null , null ,
+                null , null , null , $access = false);
+    }
+
+
+} else if ($viewusers != 0) {
+
+    // General Total Results for each module in course.
+
+    // Retrieve the scheduled precalculated data.
+    if ($isteacher) {
+
+        $measures = $logic->group_viewusers_data($courseid , $forumid , $topicid , $searchperiod , $from , $to);
+
+        $maindashboard = new measuresforumusers($params , $data->form , $measures["usersdata"] ,
+                $searchperiod , $from , $to , $access = true);
+
+    } else if (has_capability('block/course_statistics:admin', $coursecontext)) {
+
+        $measures = $logic->group_viewusers_data($courseid , $forumid ,  $topicid , $searchperiod , $from , $to);
+
+        $maindashboard = new measuresforumusers($params , $data->form , $measures["usersdata"] ,
                 $searchperiod , $from , $to , $access = true);
 
     } else {

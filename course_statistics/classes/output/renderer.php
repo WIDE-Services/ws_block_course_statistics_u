@@ -134,6 +134,20 @@ class renderer extends plugin_renderer_base {
     }
 
     /**
+     * Measures for the users in a topic (discussions) main page.
+     * @param measuresforumusers $dashboard
+     * @return bool|string|void
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
+     */
+    public function render_measuresforumusers(measuresforumusers $dashboard) {
+
+        return $this->render_from_template('block_course_statistics/admin/measuresfortheforum/usersmain' ,
+                $dashboard->export_for_template($this));
+    }
+
+    /**
      * Measures for the course forums main page.
      * @param measurescourseforums $dashboard
      * @return bool|string

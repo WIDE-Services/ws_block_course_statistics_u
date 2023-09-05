@@ -31,7 +31,7 @@ use templatable;
 /**
  * Class main
  */
-class measuresforumtopics implements renderable, templatable {
+class measuresforumusers implements renderable, templatable {
 
     /**
      * @var mixed|null
@@ -48,7 +48,7 @@ class measuresforumtopics implements renderable, templatable {
     /**
      * @var array|null
      */
-    protected $topicsdata;
+    protected $usersdata;
     /**
      * @var bool
      */
@@ -70,18 +70,18 @@ class measuresforumtopics implements renderable, templatable {
      * Construct
      * @param array $params
      * @param array $form
-     * @param array $topicsdata
+     * @param array $usersdata
      * @param bool $searchperiod
      * @param int $from
      * @param int $to
      * @param bool $access
      */
-    public function __construct($params = null ,  $form = null , $topicsdata = null ,
+    public function __construct($params = null ,  $form = null , $usersdata = null ,
             $searchperiod = false , $from = null , $to = null , $access = false) {
 
         $this->courseid = (isset($params['courseid'])) ? $params['courseid'] : null;
         $this->form = $form;
-        $this->topicsdata = $topicsdata;
+        $this->usersdata = $usersdata;
         $this->searchperiod = $searchperiod;
         $this->from = $from;
         $this->to = $to;
@@ -114,16 +114,13 @@ class measuresforumtopics implements renderable, templatable {
                         'courseid' => $this->courseid,
                 )),
                 'iconquiz' => new moodle_url('/blocks/course_statistics/assets/dashboard/quiz.png'),
-                'urlrquiz' => new moodle_url('/blocks/course_statistics/pages/admin/measuresfortheforum/index.php', array(
+                'urlrquiz' => new moodle_url('/blocks/course_statistics/pages/admin/measuresinquizzes/index.php', array(
                         'courseid' => $this->courseid,
                 )),
 
-                'viewusers' =>
-                        new moodle_url('/blocks/course_statistics/pages/admin/measuresfortheforum/index.php?viewusers=1'),
-
                 'filterform' => $this->form,
 
-                'topicsdata' => $this->topicsdata,
+                'usersdata' => $this->usersdata,
 
                 'searchperiod' => $this->searchperiod,
 

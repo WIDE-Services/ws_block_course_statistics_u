@@ -59,5 +59,18 @@ interface logic_interface {
      */
     public function group_viewtopics_data($courseid , $forumid , $searchperiod , $from , $to);
 
+    /**
+     * Activity for each users in forum , topics
+     * @package    block_course_statistics
+     * @param int $courseid
+     * @param int $forumid
+     * @param int $topicid
+     * @param bool $searchperiod
+     * @param int $from
+     * @param int $to
+     * @return array
+     */
+    public function group_viewusers_data($courseid , $forumid ,  $topicid , $searchperiod , $from , $to);
+
 }
 

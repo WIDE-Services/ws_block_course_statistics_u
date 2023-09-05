@@ -17,7 +17,7 @@ along with Moodle. If not, see
 }}
 
 {{!
-@template block_course_statistics/generalmeasures/main
+@template block_event_management/measurespertool/usersmain
 }}
 {{#access}}
     <div class="page-wrapper">
@@ -38,7 +38,7 @@ along with Moodle. If not, see
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <h3 class="title-5 m-b-35">{{#str}}generalmeasures, block_course_statistics{{/str}}</h3>
+                            <h3 class="title-5 m-b-35">{{#str}}measuresfortheforum, block_course_statistics{{/str}}</h3>
 
                             <div class="table-responsive table-responsive-data2">
                                 <br>
@@ -47,13 +47,14 @@ along with Moodle. If not, see
 
                                     <tr>
                                         <th></th>
-
+                                        <th>{{#str}}lastname{{/str}}</th>
+                                        <th>{{#str}}firstname{{/str}}</th>
                                         <th>{{#str}}course{{/str}}</th>
-                                        <th>{{#str}}sessions, block_course_statistics{{/str}}</th>
-                                        <th>{{#str}}avgtimesession, block_course_statistics{{/str}}</th>
-                                        <th>{{#str}}totaltimeinsubject, block_course_statistics{{/str}}</th>
-                                        <th>{{#str}}numberofactions, block_course_statistics{{/str}}</th>
-                                        <th>{{#str}}avgnumberactionsessions, block_course_statistics{{/str}}</th>
+                                        <th>{{#str}}forum, block_course_statistics{{/str}}</th>
+                                        <th>{{#str}}topic, block_course_statistics{{/str}}</th>
+                                        <th>{{#str}}posts, block_course_statistics{{/str}}</th>
+                                        <th>{{#str}}postanswers, block_course_statistics{{/str}}</th>
+                                        <th>{{#str}}postreads, block_course_statistics{{/str}}</th>
                                     </tr>
 
                                     </thead>
@@ -62,22 +63,24 @@ along with Moodle. If not, see
 
                                     <tbody>
 
-                                    {{#coursedata}}
+                                    {{#usersdata}}
 
                                         <tr class="tr-shadow">
-
                                             <td></td>
 
-                                            <td><a href="{{{viewusers}}}&courseid={{courseid}}&from={{from}}&to={{to}}&searchperiod={{searchperiod}}">{{coursetitle}}</a></td>
-                                            <td>{{totalsessions}}</td>
-                                            <td>{{avgtimesession}}</td>
-                                            <td>{{totaltime}}</td>
-                                            <td>{{numberofactions}}</td>
-                                            <td>{{avgnumberofactions}}</td>
+                                            <td>{{lastname}}</a></td>
+                                            <td>{{firstname}}</a></td>
+                                            <td>{{coursetitle}}</td>
+                                            <td>{{forum}}</td>
+                                            <td>{{topic}} </td>
+                                            <td>{{posts}}</td>
+                                            <td>{{postanswers}}</td>
+                                            <td>{{postreads}}</td>
 
                                         </tr>
 
-                                    {{/coursedata}}
+                                    {{/usersdata}}
+
                                     </tbody>
                                 </table>
 

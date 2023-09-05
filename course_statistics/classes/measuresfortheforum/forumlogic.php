@@ -24,6 +24,7 @@
 namespace block_course_statistics\measuresfortheforum;
 
 use block_course_statistics\dbquery;
+use context_course;
 
 /**
  * Class main
@@ -201,7 +202,7 @@ class forumlogic implements logic_interface {
      * @return array
      * @throws \dml_exception
      */
-    public function group_viewtopics_data($courseid , $forumid, $searchperiod = false , $from = null , $to = null) {
+    public function group_viewtopics_data($courseid , $forumid , $searchperiod = false , $from = null , $to = null) {
         $dbquery = new dbquery();
 
         $datatopics = array();
@@ -230,20 +231,21 @@ class forumlogic implements logic_interface {
             $topicpostanswers = $topicposts - 1;
 
             // 6. How many of the posts are read by the users.
-            // Might the Moodle is buggy at mdl_forum_read table is always empty no matter what... so...
 
-            $postreads = 0;
+            $postreads = $dbquery->db_topic_post_reads($forumid , $topic->id ,
+                    $searchperiod , $from , $to);
 
             $data = [
                     'courseid' => $courseid,
                     'forumid' => $forumid,
+                    'topicid' => $topic->id,
                     'course' => $dbquery->db_course_title($courseid)->fullname,
                     'forums' => $dbquery->db_course_forums($courseid , $forumid)->name,
                     'posts' => $topicposts,
                     'topics' => $topic->name,
                     'postanswers' => $topicpostanswers,
                     'initialized' => $initialized,
-                    'postreads' => $postreads,
+                    'postreads' => count($postreads),
 
             ];
 
@@ -255,5 +257,76 @@ class forumlogic implements logic_interface {
         return $measures;
 
     }
+
+    /**
+     * Activity for each users in forum , topics
+     * @param int $courseid
+     * @param int $forumid
+     * @param int $topicid
+     * @param bool $searchperiod
+     * @param int $from
+     * @param int $to
+     * @return array
+     */
+    public function group_viewusers_data($courseid , $forumid , $topicid , $searchperiod = false , $from = null , $to = null) {
+
+        $dbquery = new dbquery();
+
+        $datausers = array();
+        $measures = array();
+
+        // Im not getting the subscribed users in the forum cause the subscription might be optional.
+
+        // So im getting the the enrolled users in course instead to be sure that ill catch the ones that posted in topic.
+        $enrolledusers = get_enrolled_users(context_course::instance($courseid));
+
+        // Foreach subscribed user how many posts , answers , reads has in this topic of the forum?
+        if ($enrolledusers  && !empty($enrolledusers )) {
+
+            foreach ($enrolledusers as $sub) {
+
+                $topictitle = $dbquery->db_topic_title($topicid);
+
+                // Find user activity in forum how many post , answers , reads has.
+                $posts = $dbquery->db_topic_user_posts($sub->id , $courseid , $forumid , $topicid ,
+                        $searchperiod , $from , $to);
+
+                // Find answers , posts that have a parent discussion.
+                $answers = $dbquery->db_topic_user_answers($sub->id , $courseid , $forumid , $topicid ,
+                        $searchperiod , $from , $to);
+
+                // Find post read by the user.
+
+                $reads = $dbquery->db_user_post_reads($sub->id , $forumid , $topicid ,
+                        $searchperiod , $from , $to);
+
+                // I need to catchy only the ones that made a post in the topic.
+                if (count($posts) > 0) {
+                    $data = [
+                            'courseid' => $courseid,
+                            'forumid' => $forumid,
+                            'userid' => $sub->id,
+                            'lastname' => $sub->lastname,
+                            'firstname' => $sub->firstname,
+                            'coursetitle' => $dbquery->db_course_title($courseid)->fullname,
+                            'forum' => $dbquery->db_course_forums($courseid , $forumid)->name,
+                            'posts' => count($posts),
+                            'topic' => $topictitle->name,
+                            'postanswers' => count($answers),
+                            'postreads' => count($reads),
+
+                    ];
+
+                    $datausers[] = $data;
+                }
+
+            }
+        }
+
+        $measures['usersdata'] = $datausers;
+
+        return $measures;
+    }
+
 }
 

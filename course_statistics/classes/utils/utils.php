@@ -120,6 +120,7 @@ class utils {
         $consecutives = array();
         $i = 0;
 
+        // Lets create the consecutive parts based on the array.
         foreach ($package as $key => $pkg) {
 
             if ($i == 0) {
@@ -145,7 +146,6 @@ class utils {
 
             $i++;
         }
-
         foreach ($consecutives as $key => $consecutive) {
 
             // Startsession of activity.
@@ -195,6 +195,13 @@ class utils {
 
                             $activitysametime += $activityfinishtime - $datamax->timecreated;
                             $activitysessiontime[$key]['activitysessiontime'] = $activityfinishtime - $datamax->timecreated;
+
+                        } else {
+
+                            $activityfinishtime = $datamax->timecreated;
+                            $activitysessiontime[$key]['endactivitysession'] = $datamax->timecreated;
+                            $activitysessiontime[$key]['activitysessiontime'] = $datamax->timecreated - $datamin->timecreated;
+
                         }
 
                     } else {
