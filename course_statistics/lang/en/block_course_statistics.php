@@ -48,6 +48,9 @@ $string['start_period'] = 'Start period : ';
 $string['end_period'] = 'End period : ';
 $string['search'] = 'Search';
 
+// Form validation error.
+$string['invaliddates'] = 'The provided dates are not valid . The end date is less than the start date.';
+
 // Data tables labels.
 $string['sessions'] = 'Sessions';
 $string['totaltimeinsubject'] = 'Total Time In The Subject';
@@ -98,3 +101,10 @@ $string['scheduletask_description'] = 'Enabling Schedule task will pre calculate
 // Access.
 $string['accessdenied'] = ' Access Denied';
 
+// Breadcrumb.
+$string['courses'] = 'Courses';
+$string['activities'] = 'Activities';
+$string['quizzes'] = 'Quizzes';
+$string['forums'] = 'Forums';
+$string['topics'] = 'Topics';
+$string['users'] = 'Users';

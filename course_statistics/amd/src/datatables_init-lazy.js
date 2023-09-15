@@ -21,112 +21,120 @@ define(
     ],
     function ($) {
 
-        var init = function () {
+        function initializeDataTable(config) {
 
-            $('.loader').show();
-
-            $('.statistics thead tr').clone(true).appendTo('.statistics thead');
-            $('.statistics thead tr:eq(1) th').each(function (i) {
-                var title = $(this).text();
-                $(this).html('<input type="text" placeholder="Filter ' + title + '" />');
-                $('input', this).on('keyup change', function () {
-
-                    if ($('.statistics').DataTable().column(i).search() !== this.value) {
-                        $('.statistics').DataTable()
-                            .column(i)
-                            /*.search(exact_search, true, false)*/
-                            .search(this.value)
-                            .draw();
+            var defaultConfig = {
+                orderCellsTop: true,
+                responsive: {
+                    details: {
+                        type: 'column',
+                        target: 2
                     }
-                });
-            });
-            $('.statistics thead tr:eq(1) th:eq(0) input').remove();
+                },
+                "lengthChange": true,
+                columnDefs: [
+                    {
+                        orderable: false,
+                        className: 'select-checkbox select-all-rows-checkbox noVis',
+                        targets: 0
+                    },
+                    {
+                        className: 'control noVis',
+                        orderable: false,
+                        targets: 0
+                    },
+                ],
+                select: {
+                    style: 'multi',
+                    selector: '.select-checkbox'
+                },
+                dom: '<B<lf><t>ip>',
+                buttons: [{
 
+                    extend: 'collection',
+                    className: 'exportButton',
+                    text: 'Export',
+
+                    buttons: [
+                        {
+                            extend: 'copy',
+                            exportOptions: {
+                                columns: ':visible',
+                                //columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                                //rows: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'print',
+                            exportOptions: {
+                                columns: ':visible',
+                                //columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                                //rows: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'excel',
+                            exportOptions: {
+                                columns: ':visible',
+                                // columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                                //rows: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'csv',
+                            exportOptions: {
+                                columns: ':visible',
+                                //columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                                //rows: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'pdf',
+                            exportOptions: {
+                                columns: ':visible',
+                                rows: ':visible'
+                            }
+                        }
+
+                    ]
+
+                },
+                    {
+                        extend: 'colvis',
+                        columns: ':not(.noVis)'
+                    }
+                ],
+                ...config
+            };
 
             $(document).ready(function () {
 
-                var table = $('.statistics').DataTable({
-                    orderCellsTop: true,
-                    responsive: {
-                        details: {
-                            type: 'column',
-                            target: 1
+                $('.loader').show();
+
+                $('.statistics thead tr').clone(true).appendTo('.statistics thead');
+                $('.statistics thead tr:eq(1) th').each(function (i) {
+                    var title = $(this).text();
+                    $(this).html('<input type="text" placeholder="Filter ' + title + '" />');
+                    $('input', this).on('keyup change', function () {
+
+                        if ($('.statistics').DataTable().column(i).search() !== this.value) {
+                            $('.statistics').DataTable()
+                                .column(i)
+                                /*.search(exact_search, true, false)*/
+                                .search(this.value)
+                                .draw();
                         }
-                    },
-                    "lengthChange": true,
-                    columnDefs: [
-                        {
-                            orderable: false,
-                            className: 'select-checkbox select-all-rows-checkbox',
-                            targets: 0
-                        },
-                        {
-                            className: 'control',
-                            orderable: false,
-                            targets: 0
-                        },
-                    ],
-                    select: {
-                        style: 'multi',
-                        selector: '.select-checkbox'
-                    },
-                    order: [
-                        [2, 'desc']
-                    ],
+                    });
+                });
+                $('.statistics thead tr:eq(1) th:eq(0) input').remove();
 
-                    dom: '<B<lf><t>ip>',
-                    buttons: [{
+                var table = $('.statistics').DataTable(defaultConfig);
 
-                        extend: 'collection',
-                        className: 'exportButton',
-                        text: 'Export',
-
-                        buttons: [
-                            {
-                                extend: 'copy',
-                                exportOptions: {
-                                    columns: ':visible',
-                                    //columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-                                    //rows: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'print',
-                                exportOptions: {
-                                    columns: ':visible',
-                                    //columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-                                    //rows: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'excel',
-                                exportOptions: {
-                                    columns: ':visible',
-                                    // columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-                                    //rows: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'csv',
-                                exportOptions: {
-                                    columns: ':visible',
-                                    //columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-                                    //rows: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'pdf',
-                                exportOptions: {
-                                    columns: ':visible',
-                                    rows: ':visible'
-                                }
-                            }
-
-                        ]
-
-                    },
-                        'colvis']
-                });//end DataTable
+                table.on('buttons-action', function(e, buttonApi) {
+                    if (buttonApi.text() === 'Copy') {
+                        alert('Copy option selected!');
+                    }
+                });
 
                 table.columns().every(function () {
 
@@ -204,9 +212,9 @@ define(
 
             });//end document.ready
 
-        };//end init
+        }
 
         return {
-            init: init
+            initializeDataTable: initializeDataTable
         };
     });

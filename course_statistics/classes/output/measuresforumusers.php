@@ -80,6 +80,7 @@ class measuresforumusers implements renderable, templatable {
             $searchperiod = false , $from = null , $to = null , $access = false) {
 
         $this->courseid = (isset($params['courseid'])) ? $params['courseid'] : null;
+        $this->forumid = (isset($params['forumid'])) ? $params['forumid'] : null;
         $this->form = $form;
         $this->usersdata = $usersdata;
         $this->searchperiod = $searchperiod;
@@ -117,6 +118,27 @@ class measuresforumusers implements renderable, templatable {
                 'urlrquiz' => new moodle_url('/blocks/course_statistics/pages/admin/measuresinquizzes/index.php', array(
                         'courseid' => $this->courseid,
                 )),
+
+                'bcmbcourses' =>
+                        new moodle_url(
+                                '/blocks/course_statistics/pages/admin/measuresfortheforum/index.php?courseid='.
+                                $this->courseid
+                        ),
+
+                'bcmbforums' =>
+                        new moodle_url(
+                                '/blocks/course_statistics/pages/admin/measuresfortheforum/index.php?viewforum=1'
+
+                        ),
+
+                'bcmbtopics' =>
+                        new moodle_url(
+                                '/blocks/course_statistics/pages/admin/measuresfortheforum/index.php?viewtopic=1'
+
+                        ),
+
+                'paramcourseid' => $this->courseid,
+                'paramforumid' => $this->forumid,
 
                 'filterform' => $this->form,
 

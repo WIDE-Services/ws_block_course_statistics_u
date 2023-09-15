@@ -88,6 +88,7 @@ class quizlogic implements logic_interface {
                     'course' => $course->fullname,
                     'quiz' => $coursequizzes,
                     'totaltime' => utils::format_activitytime($totaltime),
+                    'numtotaltime' => $totaltime,
                     'attempts' => $totalattempts,
                     'avgscore' => number_format($avgscore , 2).' %',
 
@@ -141,6 +142,7 @@ class quizlogic implements logic_interface {
                     'course' => $dbquery->db_course_title($courseid)->fullname,
                     'quiz' => $quiz->name,
                     'totaltime' => utils::format_activitytime($totaltime),
+                    'numtotaltime' => $totaltime,
                     'attempts' => $totalattempts,
                     'avgscore' => number_format($avgscore , 2).' %',
 
@@ -193,6 +195,7 @@ class quizlogic implements logic_interface {
                     'firstname' => $firstname,
                     'quiz' => $quiztitle,
                     'totaltime' => utils::format_activitytime($totaltime),
+                    'numtotaltime' => $totaltime,
                     'attempts' => $totalattempts,
                     'attempt' => $attempt,
                     'cmid' => $cmid,

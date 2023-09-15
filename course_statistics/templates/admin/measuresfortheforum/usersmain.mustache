@@ -40,6 +40,17 @@ along with Moodle. If not, see
                         <div class="col-md-12">
                             <h3 class="title-5 m-b-35">{{#str}}measuresfortheforum, block_course_statistics{{/str}}</h3>
 
+                            <!-- Breadcrumb -->
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="{{bcmbcourses}}">{{#str}}courses, block_course_statistics{{/str}}</a></li>
+                                    <li class="breadcrumb-item"><a href="{{bcmbforums}}&courseid={{paramcourseid}}">{{#str}}forums, block_course_statistics{{/str}}</a></li>
+                                    <li class="breadcrumb-item"><a href="{{bcmbtopics}}&courseid={{paramcourseid}}&forumid={{paramforumid}}">{{#str}}topics, block_course_statistics{{/str}}</a></li>
+                                    <li class="breadcrumb-item"><a href="#">{{#str}}users, block_course_statistics{{/str}}</a></li>
+                                </ol>
+                            </nav>
+                            <!-- END Breadcrumb -->
+
                             <div class="table-responsive table-responsive-data2">
                                 <br>
                                 <table class="statistics display table table-data2" cellspacing="0" width="100%">
@@ -97,7 +108,9 @@ along with Moodle. If not, see
 {{/access}}
 {{^access}}
     <div class="container">
+
         <div class="jumbotron bg-danger">
+
             <h1>{{#str}}accessdenied, block_course_statistics{{/str}}</h1>
         </div>
 
@@ -106,12 +119,19 @@ along with Moodle. If not, see
 <!-- end document-->
 
 {{#js}}
+
+    var tableconfig = {
+    order: [
+    [6, 'desc']
+    ]
+    };
+
     require(
     ['block_course_statistics/datatables_init-lazy',
     'block_course_statistics/jszip-lazy'
-    ] , function(Main,Jszip) {
+    ] , function(dataTableModule,Jszip) {
+    dataTableModule.initializeDataTable(tableconfig);
     window.JSZip = Jszip;
-    Main.init();
     });
 
 {{/js}}

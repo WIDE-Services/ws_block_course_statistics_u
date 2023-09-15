@@ -560,7 +560,7 @@ class utils {
 
         }
 
-        return get_string('none');
+        return 0;
 
     }
 

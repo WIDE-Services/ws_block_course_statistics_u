@@ -120,6 +120,12 @@ class measurescoursequizzes implements renderable, templatable {
                 'viewusers' => new moodle_url('/blocks/course_statistics/pages/admin/measuresinquizzes/index.php?viewusers=1'
                 ),
 
+                'bcmbcourses' =>
+                        new moodle_url(
+                                '/blocks/course_statistics/pages/admin/measuresinquizzes/index.php?courseid='.
+                                $this->courseid
+                        ),
+
                 'filterform' => $this->form,
 
                 'quizdata' => $this->quizdata,

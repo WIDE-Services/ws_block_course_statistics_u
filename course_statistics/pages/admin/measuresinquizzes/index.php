@@ -67,7 +67,6 @@ $PAGE->set_heading($header);
 $coursestatistics = new coursestatistics();
 $coursestatistics->get_block_course_statistics_css($PAGE);
 
-require_capability('block/course_statistics:admin', $coursecontext);
 $PAGE->requires->jquery();
 
 $mform = new filterform($pageurl, ['courseid' => $courseid ], 'get');
@@ -78,9 +77,10 @@ $mform = new filterform($pageurl, ['courseid' => $courseid ], 'get');
 if ($mform->is_cancelled()) {
     // If the form was canceled, redirect to the same page or a specific URL.
     redirect($pageurl);
-} else if ($mform->is_submitted()) {
-    // This branch is executed if the form is submitted and the data is successfully validated.
-    $fromform = $mform->get_data();
+
+} else if ($fromform = $mform->get_data()) {
+    // This branch is executed if the data is successfully validated.
+
     $from = $fromform->startperiod;
     $to = $fromform->endperiod;
 

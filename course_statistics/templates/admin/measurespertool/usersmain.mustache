@@ -40,6 +40,16 @@ along with Moodle. If not, see
                         <div class="col-md-12">
                             <h3 class="title-5 m-b-35">{{#str}}measurespertool, block_course_statistics{{/str}}</h3>
 
+                            <!-- Breadcrumb -->
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="{{bcmbcourses}}">{{#str}}courses, block_course_statistics{{/str}}</a></li>
+                                    <li class="breadcrumb-item"><a href="{{bcmbactivities}}&courseid={{paramcourseid}}">{{#str}}activities, block_course_statistics{{/str}}</a></li>
+                                    <li class="breadcrumb-item"><a href="#">{{#str}}users, block_course_statistics{{/str}}</a></li>
+                                </ol>
+                            </nav>
+                            <!-- END Breadcrumb -->
+
                             <div class="table-responsive table-responsive-data2">
                                 <br>
                                 <table class="statistics display table table-data2" cellspacing="0" width="100%">
@@ -72,9 +82,9 @@ along with Moodle. If not, see
                                             <td>{{firstname}}</a></td>
                                             <td>{{coursetitle}}</td>
                                             <td>{{activity}}</td>
-                                            <td>{{activitytime}} </td>
+                                            <td data-sort="{{numactivitytime}}"><span class="hidden-span"> {{numactivitytime}} </span>{{activitytime}} </td>
                                             <td>{{activitysessions}}</td>
-                                            <td>{{avgtimesession}}</td>
+                                            <td data-sort="{{numavgtimesession}}"><span class="hidden-span"> {{numavgtimesession}} </span>{{avgtimesession}}</td>
                                             <td>{{avgusesession}}</td>
 
                                         </tr>
@@ -96,22 +106,32 @@ along with Moodle. If not, see
     </div>
 {{/access}}
 {{^access}}
+
     <div class="container">
+
         <div class="jumbotron bg-danger">
             <h1>{{#str}}accessdenied, block_course_statistics{{/str}}</h1>
         </div>
 
     </div>
+
 {{/access}}
 <!-- end document-->
 
 {{#js}}
+
+    var tableconfig = {
+    order: [
+    [5, 'desc']
+    ]
+    };
+
     require(
     ['block_course_statistics/datatables_init-lazy',
     'block_course_statistics/jszip-lazy'
-    ] , function(Main,Jszip) {
+    ] , function(dataTableModule,Jszip) {
+    dataTableModule.initializeDataTable(tableconfig);
     window.JSZip = Jszip;
-    Main.init();
     });
 
 {{/js}}

@@ -52,5 +52,24 @@ class filterform extends moodleform {
 
     }
 
+    /**
+     * Validate dates
+     * @param array $data
+     * @param array $files
+     * @return array|void
+     * @throws \coding_exception
+     */
+    public function validation($data, $files) {
+
+        $errors = parent::validation($data, $files);
+
+        if ($data['startperiod'] > $data['endperiod'] ) {
+            $errors['endperiod'] = get_string('invaliddates', 'block_course_statistics');
+        }
+
+        return $errors;
+
+    }
+
 }
 

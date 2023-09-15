@@ -121,6 +121,20 @@ class measuresforumtopics implements renderable, templatable {
                 'viewusers' =>
                         new moodle_url('/blocks/course_statistics/pages/admin/measuresfortheforum/index.php?viewusers=1'),
 
+                'bcmbcourses' =>
+                        new moodle_url(
+                                '/blocks/course_statistics/pages/admin/measuresfortheforum/index.php?courseid='.
+                                $this->courseid
+                        ),
+
+                'bcmbforums' =>
+                        new moodle_url(
+                                '/blocks/course_statistics/pages/admin/measuresfortheforum/index.php?viewforum=1'
+
+                        ),
+
+                'paramcourseid' => $this->courseid,
+
                 'filterform' => $this->form,
 
                 'topicsdata' => $this->topicsdata,

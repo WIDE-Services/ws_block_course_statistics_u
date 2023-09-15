@@ -40,6 +40,15 @@ along with Moodle. If not, see
                         <div class="col-md-12">
                             <h3 class="title-5 m-b-35">{{#str}}measuresinquizzes, block_course_statistics{{/str}}</h3>
 
+                            <!-- Breadcrumb -->
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="{{bcmbcourses}}">{{#str}}courses, block_course_statistics{{/str}}</a></li>
+                                    <li class="breadcrumb-item"><a href="#">{{#str}}quizzes, block_course_statistics{{/str}}</a></li>
+                                </ol>
+                            </nav>
+                            <!-- END Breadcrumb -->
+
                             <div class="table-responsive table-responsive-data2">
                                 <br>
                                 <table class="statistics display table table-data2" cellspacing="0" width="100%">
@@ -71,7 +80,7 @@ along with Moodle. If not, see
 
                                             <td>{{course}}</td>
                                             <td><a href="{{{viewusers}}}&courseid={{courseid}}&quizid={{quizid}}&from={{from}}&to={{to}}&searchperiod={{searchperiod}}">{{quiz}}</a></td>
-                                            <td>{{totaltime}}</td>
+                                            <td data-sort="{{numtotaltime}}"><span class="hidden-span"> {{numtotaltime}} </span>{{totaltime}}</td>
                                             <td>{{attempts}}</td>
                                             <td>{{avgscore}}</td>
 
@@ -104,12 +113,19 @@ along with Moodle. If not, see
 <!-- end document-->
 
 {{#js}}
+
+    var tableconfig = {
+    order: [
+    [3, 'desc']
+    ]
+    };
+
     require(
     ['block_course_statistics/datatables_init-lazy',
     'block_course_statistics/jszip-lazy'
-    ] , function(Main,Jszip) {
+    ] , function(dataTableModule,Jszip) {
+    dataTableModule.initializeDataTable(tableconfig);
     window.JSZip = Jszip;
-    Main.init();
     });
 
 {{/js}}

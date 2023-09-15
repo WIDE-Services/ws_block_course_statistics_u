@@ -40,6 +40,7 @@ class coursestatistics {
      * @return void
      */
     public function get_block_course_statistics_css($PAGE) {
+        $PAGE->requires->css('/blocks/course_statistics/style/styles.css');
         $PAGE->requires->css('/blocks/course_statistics/style/theme.css');
         $PAGE->requires->css('/blocks/course_statistics/style/checkboxes.css');
         $PAGE->requires->css('/blocks/course_statistics/style/jquery.dataTables.css');

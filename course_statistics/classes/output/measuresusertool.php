@@ -112,6 +112,19 @@ class measuresusertool implements renderable, templatable {
                             'courseid' => $this->courseid,
                     )),
 
+                    'bcmbcourses' =>
+                            new moodle_url(
+                                    '/blocks/course_statistics/pages/admin/measurespertool/index.php?courseid='.
+                                    $this->courseid
+                            ),
+
+                    'bcmbactivities' =>
+                            new moodle_url(
+                                    '/blocks/course_statistics/pages/admin/measurespertool/index.php?viewmodules=1'
+                            ),
+
+                    'paramcourseid' => $this->courseid,
+
                     'filterform' => $this->form,
                     'usersdata' => $this->usersdata,
 

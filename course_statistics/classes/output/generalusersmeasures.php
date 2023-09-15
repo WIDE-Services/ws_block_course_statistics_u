@@ -129,6 +129,11 @@ class generalusersmeasures implements renderable, templatable {
                                     $this->courseid
                     ),
 
+                    'bcmbcourses' =>
+                            new moodle_url(
+                                    '/blocks/course_statistics/pages/admin/generalmeasures/index.php?courseid='.
+                                    $this->courseid
+                            ),
                     'filterform' => $this->form,
 
                     'usersdata' => $this->usersdata,

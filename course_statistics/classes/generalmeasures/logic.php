@@ -305,7 +305,8 @@ class logic implements logic_interface {
                         'totaltimeformated' => utils::format_activitytime($info->totaltime),
                         'totaltime' => $info->totaltime,
                         'totalsessions' => $info->sessions,
-                        'avgtimesession' => utils::format_activitytime($info->avgsessiontime),
+                        'avgtimesessionformated' => utils::format_activitytime($info->avgsessiontime),
+                        'avgtimesession' => $info->avgsessiontime,
                         'numberofactions' => $info->totalactions,
                         'avgnumberofactions' => number_format($info->avgsessionactions , 1)
 
@@ -328,9 +329,11 @@ class logic implements logic_interface {
                     'courseid' => $course->id,
                     'coursetitle' => $this->course_title($course->id),
                     'totaltime' => utils::format_activitytime($totaltime),
+                    'numtotaltime' => $totaltime,
                     'totalsessions' => $totalsessions,
                     'avgtimesession' => ($totaltime != 0 || $totalsessions != 0) ?
                             utils::format_activitytime($totaltime / $totalsessions) : 0,
+                    'numavgtimesession' => ($totaltime != 0 || $totalsessions != 0) ? $totaltime / $totalsessions : 0,
                     'numberofactions' => $totalactions,
                     'avgnumberofactions' => ($totalactions != 0 || $totalsessions != 0) ?
                             number_format($totalactions / $totalsessions , 1) : 0
@@ -371,9 +374,10 @@ class logic implements logic_interface {
                     'firstname' => $enrolleduser->firstname,
                     'coursetitle' => $this->course_title($courseid),
                     'totaltimeformated' => utils::format_activitytime($info->totaltime),
-                    'totaltime' => $info->totaltime,
+                    'numtotaltime' => $info->totaltime,
                     'totalsessions' => $info->sessions,
                     'avgtimesession' => utils::format_activitytime($info->avgsessiontime),
+                    'numavgtimesession' => $info->avgsessiontime,
                     'numberofactions' => $info->totalactions,
                     'avgnumberofactions' => number_format($info->avgsessionactions , 1)
 

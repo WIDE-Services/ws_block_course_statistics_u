@@ -484,8 +484,10 @@ class toollogic implements logic_interface {
                         'coursetitle' => $this->course_title($courseid),
                         'activity' => $res->activity,
                         'activitytime' => utils::format_activitytime($res->activitytime),
+                        'numactivitytime' => $res->activitytime,
                         'activitysessions' => $res->activitysessions,
                         'avgtimesession' => utils::format_activitytime($avgtimesession),
+                        'numavgtimesession' => $avgtimesession,
                         'avgusesession' => number_format($avgusesession  , 1).'%',
                 ];
                 $usersdata[] = $data;
@@ -522,8 +524,10 @@ class toollogic implements logic_interface {
                     'activity' => $info->activity,
                     'cminstance' => $module->id,
                     'activitytotaltime' => utils::format_activitytime($info->totalactivitytime),
+                    'numactivitytotaltime' => $info->totalactivitytime,
                     'activitytotalsessions' => $info->totalactivitysessions,
                     'activityavgtime' => utils::format_activitytime($info->totalactivityavgtime),
+                    'numactivityavgtime' => $info->totalactivityavgtime,
                     'averageusedinsessions' => number_format($info->averageusedinsessions  , 1).'%',
                 ];
                 $activitiesdata[] = $data;
@@ -582,9 +586,11 @@ class toollogic implements logic_interface {
                     'coursetitle' => $this->course_title($course->id),
                     'activities' => count($coursemodules),
                     'activitiestotaltime' => utils::format_activitytime($totaltime),
+                    'numactivitiestotaltime' => $totaltime,
                     'activitiessessions' => $totalsessions,
                     'activitiesavgtime' => ($totaltime != 0 || $totalsessions != 0) ?
                             utils::format_activitytime($totaltime / $totalsessions) : 0,
+                    'numactivitiesavgtime' => ($totaltime != 0 || $totalsessions != 0) ? $totaltime / $totalsessions : 0,
             ];
             $generaldata[] = $data;
         }

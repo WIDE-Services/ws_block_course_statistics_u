@@ -117,6 +117,18 @@ class measuresquizusers implements renderable, templatable {
                 )),
 
                 'viewquiz' => new moodle_url('/mod/quiz/review.php'),
+                'bcmbcourses' =>
+                        new moodle_url(
+                                '/blocks/course_statistics/pages/admin/measuresinquizzes/index.php?courseid='.
+                                $this->courseid
+                        ),
+
+                'bcmbquizzes' =>
+                        new moodle_url(
+                                '/blocks/course_statistics/pages/admin/measuresinquizzes/index.php?viewquizzes=1'
+                        ),
+
+                'paramcourseid' => $this->courseid,
 
                 'filterform' => $this->form,
 

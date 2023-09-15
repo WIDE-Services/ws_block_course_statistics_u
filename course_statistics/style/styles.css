@@ -13,83 +13,31 @@
  * along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
  *
 */
+/* Hide span in data table for correct sorting */
+.hidden-span {
+    display: none;
+}
+
+/* Breadcrumb */
+.breadcrumb-item+.breadcrumb-item::before{
+    content: ">";
+}
+
+/* Hide first element of Column visibility in Data tables that coresponds to the chckbox column */
+.buttons-columnVisibility[data-cv-idx="0"] {
+    display: none !important;
+}
+
 
 /* results tables */
 
-.results_omades {
-    display: flow-root;
-    text-align: center;
-}
-
-button.results_btn, button.results_clear {
-    margin: auto;
-    margin-top: 20px;
-}
-
-.results_table input[type=radio] {
-    display: inline-block;
-    margin-left: 2px;
-}
-
-.results_table .nodata {
-    text-align: center;
-}
-
 .datatable_info .params {
     text-align: left;
-    /*display: grid;
-    margin: auto;
-    align-content: space-around;
-    justify-content: center;
-    align-items: stretch;
-    justify-items: center;*/
+
 }
 
 .loader {
     text-align: center;
 }
 
-.results_table .users, .results_table .cycles, .results_table .categories, .results_table .courses, .results_table .quizes {
-    border-style: inset;
-    border-top: none;
-}
 
-.showquizes {
-    background: #0069d9;
-    border-color: black;
-}
-
-.modal-dialog {
-    width: 80%;
-    max-width: none;
-}
-
-#imagemodal .xbutton {
-    display: contents;
-    font-size: 30px;
-}
-
-#imagemodal .xbutton:hover {
-    cursor: pointer;
-}
-
-.results_omades select {
-    width: 100%;
-}
-
-.titlequizparams {
-    display: table;
-    text-align: center;
-    margin: auto;
-}
-
-.titlequizparams li {
-    list-style-type: circle;
-    text-align: left;
-}
-
-.titlequizparams li:first-child {
-    list-style-type: none;
-    margin-bottom: 20px;
-    font-weight: 600;
-}
