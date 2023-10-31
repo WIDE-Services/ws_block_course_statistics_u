@@ -38,64 +38,51 @@ class quizlogic implements logic_interface {
     }
     /**
      * Group all info of quizzes in a courses
+     * @param int $courseid
      * @param bool $isteacher
      * @param bool $searchperiod
      * @param int $from
      * @param int $to
      * @return mixed
      */
-    public function group_courses_quizzes_data($isteacher , $searchperiod = false , $from = null , $to = null) {
-        global $USER;
+    public function group_courses_quizzes_data($courseid , $isteacher , $searchperiod = false , $from = null , $to = null) {
 
         $dbquery = new dbquery();
         $datacourses = array();
         $measures = array();
 
-        // IF user is teacher find the course that is teacher and calculate Forum measures.
-        // ELSE is admin measure Forums in all courses.
-        if ($isteacher && !is_siteadmin($USER->id)) {
+        $totaltime = 0;
+        $totalattempts = 0;
+        $avgscore = 0;
 
-            $courses = $dbquery->db_teacher_courses($USER->id);
+        // 1. Find Quizzes in each course that we look.
 
-        } else {
+        $quizzes = $dbquery->db_course_quizzes($courseid , null , $searchperiod , $from , $to);
 
-            $courses = $dbquery->db_all_courses();
+        $coursequizzes = count($quizzes);
+
+        // 2. In these quizzes what is the total time  and total attempts of the users in it.
+
+        if ($quizzes && !empty($quizzes)) {
+            $totaldata = $dbquery->db_users_quizzes_total_time($quizzes , $searchperiod , $from , $to);
+            $totaltime = $totaldata['totaltime'];
+            $totalattempts = $totaldata['totalattempts'];
+
+            // 3. Calculate the avg score of users in these quizzes.
+            $avgscore = $dbquery->db_avg_users_score($quizzes , $searchperiod , $from , $to);
         }
-        foreach ($courses as $course) {
+        $data = [
+                'courseid' => $courseid,
+                'course' => $dbquery->db_course_title($courseid)->fullname ,
+                'quiz' => $coursequizzes,
+                'totaltime' => utils::format_activitytime($totaltime),
+                'numtotaltime' => $totaltime,
+                'attempts' => $totalattempts,
+                'avgscore' => number_format($avgscore , 2).' %',
 
-            $totaltime = 0;
-            $totalattempts = 0;
-            $avgscore = 0;
+        ];
 
-            // 1. Find Quizzes in each course that we look.
-
-            $quizzes = $dbquery->db_course_quizzes($course->id , null , $searchperiod , $from , $to);
-
-            $coursequizzes = count($quizzes);
-
-            // 2. In these quizzes what is the total time  and total attempts of the users in it.
-
-            if ($quizzes && !empty($quizzes)) {
-                $totaldata = $dbquery->db_users_quizzes_total_time($quizzes , $searchperiod , $from , $to);
-                $totaltime = $totaldata['totaltime'];
-                $totalattempts = $totaldata['totalattempts'];
-
-                // 3. Calculate the avg score of users in these quizzes.
-                $avgscore = $dbquery->db_avg_users_score($quizzes , $searchperiod , $from , $to);
-            }
-            $data = [
-                    'courseid' => $course->id,
-                    'course' => $course->fullname,
-                    'quiz' => $coursequizzes,
-                    'totaltime' => utils::format_activitytime($totaltime),
-                    'numtotaltime' => $totaltime,
-                    'attempts' => $totalattempts,
-                    'avgscore' => number_format($avgscore , 2).' %',
-
-            ];
-
-            $datacourses[] = $data;
-        }
+        $datacourses[] = $data;
 
         $measures['generaldata'] = $datacourses;
 

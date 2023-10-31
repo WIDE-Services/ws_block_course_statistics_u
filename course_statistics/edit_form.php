@@ -15,17 +15,29 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version
+ * Configuration Settings for the course_statistics
+ *
  * @package    block_course_statistics
- * @copyright  2022 onwards WIDE Services  {@link https://www.wideservices.gr}
+ * @copyright 2022 onwards WIDE Services  {@link https://www.wideservices.gr}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+/**
+ * Configuration setting of the block.
+ */
+class block_course_statistics_edit_form extends block_edit_form {
 
-defined('MOODLE_INTERNAL') || die();
+    /**
+     * Settings Specification.
+     * @param obj $mform
+     * @return void
+     */
+    protected function specific_definition($mform) {
 
-$plugin->version   = 2020041063;
-$plugin->requires  = 2015111600;
-$plugin->component = 'block_course_statistics';
-$plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = 'Moodle 3.x+';
+        $mform->addElement('header', 'configheader', get_string('blocksettings', 'block'));
+
+        $pluginsettings = new moodle_url('/blocks/course_statistics/settings/course_selection.php');
+        $mform->addElement('html', '<h3 style="width: 100%;" class="main"><a href="' . $pluginsettings . '">' .
+                get_string('config_course_selection', 'block_course_statistics') . '</a></h3><hr>');
+    }
+}

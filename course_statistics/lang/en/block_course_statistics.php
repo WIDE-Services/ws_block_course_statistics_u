@@ -98,6 +98,19 @@ $string['check_schedule_task'] = 'Retrieve data from plugin tables and not direc
 $string['scheduletask_title'] = 'Enable Schedule task';
 $string['scheduletask_description'] = 'Enabling Schedule task will pre calculate the statistics from Moodle logs.';
 
+// Configuration Settings.
+$string['config_course_selection'] = 'Statistics measurement course selection.';
+$string['config_course_selection_title'] = 'Course Selection';
+$string['config_course_selection_header'] = 'Course selection for statistic measurements';
+$string['select_courses'] = 'Select courses : ';
+$string['coursetitle'] = 'Course Title';
+$string['courseid'] = 'Course ID';
+$string['activities'] = 'Activities';
+$string['enrolments'] = 'Enrolments';
+$string['action'] = 'Action';
+$string['pausemeasure'] = 'Pause Measure';
+$string['startmeasure'] = 'Start Measure';
+
 // Access.
 $string['accessdenied'] = ' Access Denied';
 

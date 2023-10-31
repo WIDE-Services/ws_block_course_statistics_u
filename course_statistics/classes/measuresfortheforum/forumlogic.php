@@ -38,6 +38,7 @@ class forumlogic implements logic_interface {
     }
     /**
      * Group all info of forums in courses
+     * @param int $courseid
      * @param bool $isteacher
      * @param bool $searchperiod
      * @param int $from
@@ -45,75 +46,59 @@ class forumlogic implements logic_interface {
      * @return array
      * @throws \dml_exception
      */
-    public function group_courses_forums_data($isteacher , $searchperiod = false , $from = null , $to = null) {
-
-        global $USER;
+    public function group_courses_forums_data($courseid , $isteacher , $searchperiod = false , $from = null , $to = null) {
 
         $dbquery = new dbquery();
 
         $datacourses = array();
         $measures = array();
 
-        // IF user is teacher find the course that is teacher and calculate Forum measures.
-        // ELSE is admin measure Forums in all courses.
-        if ($isteacher && !is_siteadmin($USER->id)) {
+        // 1. Find Forums in each course that we look.
 
-            $courses = $dbquery->db_teacher_courses($USER->id);
+        $forums = $dbquery->db_course_forums($courseid , null , $searchperiod , $from , $to);
 
-        } else {
+        $courseforums = count($forums);
 
-            $courses = $dbquery->db_all_courses();
-        }
-        foreach ($courses as $course) {
+        // 2. How many discussions (topics) the course forums has in total.
 
-            // 1. Find Forums in each course that we look.
+        $topics = $dbquery->db_forums_topics($courseid , null , $searchperiod , $from , $to);
 
-            $forums = $dbquery->db_course_forums($course->id , null , $searchperiod , $from , $to);
+        $forumtopics = count($topics);
 
-            $courseforums = count($forums);
+        // 3. How many posts the course has in its Forums.
 
-            // 2. How many discussions (topics) the course forums has in total.
+        $posts = $dbquery->db_topics_posts($courseid , null , null  , $searchperiod , $from , $to);
 
-            $topics = $dbquery->db_forums_topics($course->id , null , $searchperiod , $from , $to);
+        $topicposts = count($posts);
 
-            $forumtopics = count($topics);
+        // 4. If posts are more than one in a topic is active and already initialized.
 
-            // 3. How many posts the course has in its Forums.
+        $initialized = (!empty($forums)) ? $dbquery->db_topics_initialized($courseid , $forums ,
+                null , null  , $searchperiod , $from , $to) : 0;
 
-            $posts = $dbquery->db_topics_posts($course->id , null , null  , $searchperiod , $from , $to);
+        // 5. How many post answers (replies) the topics have in total.
+        // Any other post in a topic except the first one is a reply.
 
-            $topicposts = count($posts);
+        $topicpostanswers = $topicposts - $forumtopics;
 
-            // 4. If posts are more than one in a topic is active and already initialized.
+        // 6. How many of the posts are read by the users.
+        // Might the Moodle is buggy at mdl_forum_read table is always empty no matter what... so...
 
-            $initialized = (!empty($forums)) ? $dbquery->db_topics_initialized($course->id , $forums ,
-            null , null  , $searchperiod , $from , $to) : 0;
+        $postreads = 0;
 
-            // 5. How many post answers (replies) the topics have in total.
-            // Any other post in a topic except the first one is a reply.
+        $data = [
+                'courseid' => $courseid,
+                'course' => $dbquery->db_course_title($courseid)->fullname ,
+                'forums' => $courseforums,
+                'posts' => $topicposts,
+                'topics' => $forumtopics,
+                'postanswers' => $topicpostanswers,
+                'initialized' => $initialized,
+                'postreads' => $postreads,
 
-            $topicpostanswers = $topicposts - $forumtopics;
+        ];
 
-            // 6. How many of the posts are read by the users.
-            // Might the Moodle is buggy at mdl_forum_read table is always empty no matter what... so...
-
-            $postreads = 0;
-
-            $data = [
-                    'courseid' => $course->id,
-                    'course' => $course->fullname,
-                    'forums' => $courseforums,
-                    'posts' => $topicposts,
-                    'topics' => $forumtopics,
-                    'postanswers' => $topicpostanswers,
-                    'initialized' => $initialized,
-                    'postreads' => $postreads,
-
-            ];
-
-            $datacourses[] = $data;
-
-        }
+        $datacourses[] = $data;
 
         $measures['generaldata'] = $datacourses;
 

@@ -49,20 +49,25 @@ class statistics extends scheduled_task {
     public function execute() {
         global $DB;
 
-        // Fetch all courses.
+        // Fetch all courses. Problem with big databases , never ends.
 
-        $courses = $DB->get_records('course' , [] , 'id' , 'id , fullname');
+        // Solution select course to get measures from plugins configuration page.
+
+        $courses = $DB->get_records('cs_course_measures' , ['measure' => 1] , 'courseid' , 'courseid');
         foreach ($courses as $course) {
 
-            $enrolledusers = get_enrolled_users(context_course::instance($course->id));
+            $enrolledusers = get_enrolled_users(context_course::instance($course->courseid));
 
-            $toollogic = new toollogic();
+            if (!empty($enrolledusers)) {
+                $toollogic = new toollogic();
 
-            $toollogic->get_enrolled_users_sessions($enrolledusers , $course->id);
+                $toollogic->get_enrolled_users_sessions($enrolledusers , $course->courseid);
 
-            $logic = new logic();
+                $logic = new logic();
 
-            $logic->get_enrolled_users_sessions($enrolledusers , $course->id);
+                $logic->get_enrolled_users_sessions($enrolledusers , $course->courseid);
+            }
+
         }
     }
 }

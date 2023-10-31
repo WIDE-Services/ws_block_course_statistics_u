@@ -183,7 +183,7 @@ if ($viewquizzes != 0) {
 
     if ($isteacher) {
 
-        $measures = $logic->group_courses_quizzes_data($isteacher , $searchperiod , $from , $to);
+        $measures = $logic->group_courses_quizzes_data($courseid , $isteacher , $searchperiod , $from , $to);
 
         $maindashboard = new measuresinquizzes($params , $data->form , $measures["generaldata"] ,
                 $searchperiod , $from , $to , $access = true);
@@ -191,7 +191,7 @@ if ($viewquizzes != 0) {
     } else if (has_capability('block/course_statistics:admin', $coursecontext)) {
 
 
-        $measures = $logic->group_courses_quizzes_data($isteacher , $searchperiod , $from , $to);
+        $measures = $logic->group_courses_quizzes_data($courseid , $isteacher , $searchperiod , $from , $to);
 
         $maindashboard = new measuresinquizzes($params , $data->form , $measures["generaldata"] ,
                 $searchperiod , $from , $to , $access = true);

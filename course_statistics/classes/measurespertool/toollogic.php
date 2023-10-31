@@ -548,52 +548,46 @@ class toollogic implements logic_interface {
      */
     public function group_courses_tools_data($courseid , $isteacher , $searchperiod = false , $from = null , $to = null) {
 
-        global $USER;
-
         $dbquery = new dbquery();
 
         $measures = array();
 
         $generaldata = array();
-        // If user is teacher find the course that is teacher and calculate measures.
-        // Else is admin and measure all courses.
 
-        $courses = ($isteacher) ? $dbquery->db_teacher_courses($USER->id) : $dbquery->db_all_courses();
-
-        foreach ($courses as $course) {
-            $coursedata = array();
-            $enrolledusers = get_enrolled_users(context_course::instance($course->id));
-            // How many modules the course has?
-            $coursemodules = get_course_mods($course->id);
-            // Course Data.
-            foreach ($enrolledusers as $enrolleduser) {
-                $info = $dbquery->db_course_tools_data($enrolleduser->id , $course->id , $searchperiod  , $from , $to);
-                $data = [
-                        'totaltime' => $info->totalactivitiestime,
-                        'totalsessions' => $info->totalactivitiessessions,
-                ];
-                $coursedata[] = $data;
-            }
-            $totalsessions = 0;
-            $totaltime = 0;
-            // General Data.
-            foreach ($coursedata as $thiscourse) {
-                $totalsessions += $thiscourse["totalsessions"];
-                $totaltime += $thiscourse["totaltime"];
-            }
+        $coursedata = array();
+        $enrolledusers = get_enrolled_users(context_course::instance($courseid ));
+        // How many modules the course has?
+        $coursemodules = get_course_mods($courseid);
+        // Course Data.
+        foreach ($enrolledusers as $enrolleduser) {
+            $info = $dbquery->db_course_tools_data($enrolleduser->id , $courseid , $searchperiod  , $from , $to);
             $data = [
-                    'courseid' => $course->id,
-                    'coursetitle' => $this->course_title($course->id),
-                    'activities' => count($coursemodules),
-                    'activitiestotaltime' => utils::format_activitytime($totaltime),
-                    'numactivitiestotaltime' => $totaltime,
-                    'activitiessessions' => $totalsessions,
-                    'activitiesavgtime' => ($totaltime != 0 || $totalsessions != 0) ?
-                            utils::format_activitytime($totaltime / $totalsessions) : 0,
-                    'numactivitiesavgtime' => ($totaltime != 0 || $totalsessions != 0) ? $totaltime / $totalsessions : 0,
+                    'totaltime' => $info->totalactivitiestime,
+                    'totalsessions' => $info->totalactivitiessessions,
             ];
-            $generaldata[] = $data;
+            $coursedata[] = $data;
         }
+        $totalsessions = 0;
+        $totaltime = 0;
+        // General Data.
+        foreach ($coursedata as $thiscourse) {
+            $totalsessions += $thiscourse["totalsessions"];
+            $totaltime += $thiscourse["totaltime"];
+        }
+        $data = [
+                'courseid' => $courseid ,
+                'coursetitle' => $this->course_title($courseid),
+                'activities' => count($coursemodules),
+                'activitiestotaltime' => utils::format_activitytime($totaltime),
+                'numactivitiestotaltime' => $totaltime,
+                'activitiessessions' => $totalsessions,
+                'activitiesavgtime' => ($totaltime != 0 || $totalsessions != 0) ?
+                        utils::format_activitytime($totaltime / $totalsessions) : 0,
+                'numactivitiesavgtime' => ($totaltime != 0 || $totalsessions != 0) ? $totaltime / $totalsessions : 0,
+        ];
+
+        $generaldata[] = $data;
+
         $measures['generaldata'] = $generaldata;
         return $measures;
     }

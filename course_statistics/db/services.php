@@ -15,17 +15,23 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version
+ * Services Course statistics
+ *
  * @package    block_course_statistics
- * @copyright  2022 onwards WIDE Services  {@link https://www.wideservices.gr}
+ * @copyright 2022 onwards WIDE Services  {@link https://www.wideservices.gr}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2020041063;
-$plugin->requires  = 2015111600;
-$plugin->component = 'block_course_statistics';
-$plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = 'Moodle 3.x+';
+$functions = array(
+        'block_course_statistics_pause_measure' => array(
+                'classname' => 'block_course_statistics_external',
+                'methodname' => 'pause_measure',
+                'classpath' => 'blocks/course_statistics/classes/external.php',
+                'description' => 'Pause measurement for a course.',
+                'type' => 'write',
+                'ajax' => true
+
+        )
+);

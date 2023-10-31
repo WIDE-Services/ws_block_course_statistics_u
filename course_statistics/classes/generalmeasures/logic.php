@@ -274,72 +274,58 @@ class logic implements logic_interface {
      */
     public function group_courses_measures_data($courseid , $isteacher , $searchperiod = false , $from = null , $to = null) {
 
-        global $USER;
-
         $dbquery = new dbquery();
 
         $measures = array();
         $coursedata = array();
-        // IF user is teacher find the course that is teacher and calculate measures.
-        // ELSE is admin and measure all courses.
-        if ($isteacher && !is_siteadmin($USER->id)) {
-            $courses = $dbquery->db_teacher_courses($USER->id);
-        } else {
-            $courses = $dbquery->db_all_courses();
-        }
-        foreach ($courses as $course) {
 
-            $enrolledusers = get_enrolled_users(context_course::instance($course->id));
-            $userdata = array();
-            $udata = array();
-            $cdata = array();
+        $enrolledusers = get_enrolled_users(context_course::instance($courseid));
+        $userdata = array();
+        // User Data.
+        foreach ($enrolledusers as $enrolleduser) {
+            $info = $dbquery->db_user_course_data($enrolleduser->id , $courseid , $searchperiod , $from , $to);
+            $udata = [
+                    'userid' => $enrolleduser->id,
+                    'lastname' => $enrolleduser->lastname,
+                    'firstname' => $enrolleduser->firstname,
+                    'coursetitle' => $this->course_title($courseid),
+                    'totaltimeformated' => utils::format_activitytime($info->totaltime),
+                    'totaltime' => $info->totaltime,
+                    'totalsessions' => $info->sessions,
+                    'avgtimesessionformated' => utils::format_activitytime($info->avgsessiontime),
+                    'avgtimesession' => $info->avgsessiontime,
+                    'numberofactions' => $info->totalactions,
+                    'avgnumberofactions' => number_format($info->avgsessionactions , 1)
 
-            // User Data.
-            foreach ($enrolledusers as $enrolleduser) {
-                $info = $dbquery->db_user_course_data($enrolleduser->id , $course->id , $searchperiod , $from , $to);
-                $udata = [
-                        'userid' => $enrolleduser->id,
-                        'lastname' => $enrolleduser->lastname,
-                        'firstname' => $enrolleduser->firstname,
-                        'coursetitle' => $this->course_title($course->id),
-                        'totaltimeformated' => utils::format_activitytime($info->totaltime),
-                        'totaltime' => $info->totaltime,
-                        'totalsessions' => $info->sessions,
-                        'avgtimesessionformated' => utils::format_activitytime($info->avgsessiontime),
-                        'avgtimesession' => $info->avgsessiontime,
-                        'numberofactions' => $info->totalactions,
-                        'avgnumberofactions' => number_format($info->avgsessionactions , 1)
-
-                ];
-
-                $userdata[] = $udata;
-
-            }
-
-            $totalsessions = 0;
-            $totaltime = 0;
-            $totalactions = 0;
-
-            foreach ($userdata as $user) {
-                $totalsessions += $user["totalsessions"];
-                $totaltime += $user["totaltime"];
-                $totalactions += $user["numberofactions"];
-            }
-            $cdata = [
-                    'courseid' => $course->id,
-                    'coursetitle' => $this->course_title($course->id),
-                    'totaltime' => utils::format_activitytime($totaltime),
-                    'numtotaltime' => $totaltime,
-                    'totalsessions' => $totalsessions,
-                    'avgtimesession' => ($totaltime != 0 || $totalsessions != 0) ?
-                            utils::format_activitytime($totaltime / $totalsessions) : 0,
-                    'numavgtimesession' => ($totaltime != 0 || $totalsessions != 0) ? $totaltime / $totalsessions : 0,
-                    'numberofactions' => $totalactions,
-                    'avgnumberofactions' => ($totalactions != 0 || $totalsessions != 0) ?
-                            number_format($totalactions / $totalsessions , 1) : 0
             ];
-            $coursedata[] = $cdata;
+
+            $userdata[] = $udata;
+
         }
+
+        $totalsessions = 0;
+        $totaltime = 0;
+        $totalactions = 0;
+
+        foreach ($userdata as $user) {
+            $totalsessions += $user["totalsessions"];
+            $totaltime += $user["totaltime"];
+            $totalactions += $user["numberofactions"];
+        }
+        $cdata = [
+                'courseid' => $courseid,
+                'coursetitle' => $this->course_title($courseid),
+                'totaltime' => utils::format_activitytime($totaltime),
+                'numtotaltime' => $totaltime,
+                'totalsessions' => $totalsessions,
+                'avgtimesession' => ($totaltime != 0 || $totalsessions != 0) ?
+                        utils::format_activitytime($totaltime / $totalsessions) : 0,
+                'numavgtimesession' => ($totaltime != 0 || $totalsessions != 0) ? $totaltime / $totalsessions : 0,
+                'numberofactions' => $totalactions,
+                'avgnumberofactions' => ($totalactions != 0 || $totalsessions != 0) ?
+                        number_format($totalactions / $totalsessions , 1) : 0
+        ];
+        $coursedata[] = $cdata;
 
         $measures['coursedata'] = $coursedata;
 

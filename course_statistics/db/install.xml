@@ -53,5 +53,16 @@
             </KEYS>
         </TABLE>
 
+        <TABLE NAME="cs_course_measures" COMMENT="Contains the selected course by the admin/manger that measures will be calculated.">
+            <FIELDS>
+                <FIELD NAME="id" SEQUENCE="true" TYPE="int" LENGTH="10" NOTNULL="true" />
+                <FIELD NAME="courseid" SEQUENCE="false" TYPE="int" LENGTH="10"  NOTNULL="false"  COMMENT="Course ID"/>
+                <FIELD NAME="measure" SEQUENCE="false" TYPE="int" LENGTH="2" NOTNULL="false" DEFAULT="1" COMMENT="Measure"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id" />
+            </KEYS>
+        </TABLE>
+
     </TABLES>
 </XMLDB>

@@ -213,14 +213,14 @@ if ($viewforum != 0) {
 
     if ($isteacher) {
 
-        $measures = $logic->group_courses_forums_data($isteacher , $searchperiod , $from , $to);
+        $measures = $logic->group_courses_forums_data($courseid , $isteacher , $searchperiod , $from , $to);
 
         $maindashboard = new measuresfortheforum($params , $data->form , $measures["generaldata"] ,
                 $searchperiod , $from , $to , $access = true);
 
     } else if (has_capability('block/course_statistics:admin', $coursecontext)) {
 
-        $measures = $logic->group_courses_forums_data($isteacher , $searchperiod , $from , $to);
+        $measures = $logic->group_courses_forums_data($courseid , $isteacher , $searchperiod , $from , $to);
 
         $maindashboard = new measuresfortheforum($params , $data->form , $measures["generaldata"] ,
                 $searchperiod , $from , $to , $access = true);

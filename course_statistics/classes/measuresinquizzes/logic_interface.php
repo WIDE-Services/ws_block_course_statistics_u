@@ -28,13 +28,14 @@ interface logic_interface {
     /**
      * Group all info of quizzes in a courses
      * @package    block_course_statistics
+     * @param int $courseid
      * @param bool $isteacher
      * @param bool $searchperiod
      * @param int $from
      * @param int $to
      * @return mixed
      */
-    public function group_courses_quizzes_data($isteacher , $searchperiod , $from , $to);
+    public function group_courses_quizzes_data($courseid , $isteacher , $searchperiod , $from , $to);
 
     /**
      * Group all info of quizzes in a course

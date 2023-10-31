@@ -217,11 +217,24 @@ class utils {
 
                 if ($datamin && !empty($datamin)) {
 
-                    $activitytime += (isset($module->timecreated) && isset($datamin->timecreated)) ?
-                            ($module->timecreated - $datamin->timecreated) : 0;
-                    $activitysessiontime[$key]['endactivitysession'] = (isset($module->timecreated)) ? $module->timecreated : 0;
-                    $activitysessiontime[$key]['activitysessiontime'] = (isset($module->timecreated) &&
-                            isset($datamin->timecreated)) ? ($module->timecreated - $datamin->timecreated) : 0;
+                    $forgottenopenmodule = (isset($module->timecreated) && isset($datamax->timecreated)) ?
+                            ($module->timecreated - $datamax->timecreated) : 0;
+
+                    // Check if the diff between them is more than 2 hours (7200 secs) if yes then dont calculate.
+                    // If it is then something went wrong and dont calculate the last forgotten opened module.
+                    if ($forgottenopenmodule < 7200) {
+                        $activitytime += (isset($module->timecreated) && isset($datamin->timecreated)) ?
+                                ($module->timecreated - $datamin->timecreated) : 0;
+
+                        $activitysessiontime[$key]['endactivitysession'] = (isset($module->timecreated)) ? $module->timecreated : 0;
+                        $activitysessiontime[$key]['activitysessiontime'] = (isset($module->timecreated) &&
+                                isset($datamin->timecreated)) ? ($module->timecreated - $datamin->timecreated) : 0;
+                    } else {
+
+                        $activityfinishtime = $datamax->timecreated;
+                        $activitysessiontime[$key]['endactivitysession'] = $datamax->timecreated;
+                        $activitysessiontime[$key]['activitysessiontime'] = $datamax->timecreated - $datamin->timecreated;
+                    }
                 }
 
             }

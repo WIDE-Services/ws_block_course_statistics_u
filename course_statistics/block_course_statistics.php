@@ -32,6 +32,13 @@ class block_course_statistics extends block_base {
     }
 
     /**
+     * If block has settings enabled.
+     * @return bool
+     */
+    public function has_config() {
+        return true;
+    }
+    /**
      * specialization method
      */
     public function specialization() {
