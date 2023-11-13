@@ -51,7 +51,7 @@ class course_selection_form extends moodleform {
         $courses = $DB->get_records_menu('course', null, 'id', 'id,fullname');
         $mform->addElement('select', 'selectedcourses',
                 get_string('select_courses', 'block_course_statistics'),
-                $courses, array('multiple' => 'multiple', 'size' => 10));
+                $courses, ['multiple' => 'multiple', 'size' => 10]);
         $mform->setType('selectedcourses', PARAM_INT);
 
         // Add a submit button.
@@ -66,7 +66,7 @@ class course_selection_form extends moodleform {
      * @return array
      */
     public function validation($data, $files) {
-        $errors = array();
+        $errors = [];
         // Add any validation rules here.
         return $errors;
     }
@@ -86,7 +86,7 @@ class course_selection_form extends moodleform {
 
                 // Check if the courseid already exists in cs_course_measures.
 
-                $existingrecord = $DB->record_exists('cs_course_measures', array('courseid' => $courseid));
+                $existingrecord = $DB->record_exists('cs_course_measures', ['courseid' => $courseid]);
 
                 if (!$existingrecord) {
                     // Save selected courses to the database.

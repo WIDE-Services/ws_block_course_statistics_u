@@ -52,20 +52,5 @@ class coursestatistics {
 
     }
 
-    /**
-     * Returns the values of the selected settings values
-     * @return object
-     * @throws \dml_exception
-     */
-    public function get_course_statistics_settings() {
-
-        $settings = (object) [
-                'scheduletask' => get_config('block_course_statistics', 'scheduletask')
-
-        ];
-
-        return $settings;
-    }
-
 }
 

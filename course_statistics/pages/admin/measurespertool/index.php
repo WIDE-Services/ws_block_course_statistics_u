@@ -48,12 +48,12 @@ $userid = $USER->id;  // Owner of the page.
 $coursecontext = context_course::instance($courseid);
 $header = fullname($USER);
 $pagetitle = get_string('pluginname', 'block_course_statistics');
-$params = array(
+$params = [
         'courseid' => $courseid ,
         'viewusers' => $viewusers,
         'viewmodules' => $viewmodules,
-        'cminstance' => $cminstance
-);
+        'cminstance' => $cminstance,
+];
 
 $pageurl = new moodle_url('/blocks/course_statistics/pages/admin/measurespertool/index.php');
 $pageurl->params($params);
@@ -68,7 +68,13 @@ $coursestatistics = new coursestatistics();
 $coursestatistics->get_block_course_statistics_css($PAGE);
 
 $PAGE->requires->jquery();
-
+$PAGE->requires->strings_for_js([
+        'filter',
+        'copy',
+        'export',
+        'pausemeasure',
+        'startmeasure',
+], 'block_course_statistics');
 $mform = new filterform($pageurl, ['courseid' => $courseid ], 'get');
 
 // Form logic through general measures results.

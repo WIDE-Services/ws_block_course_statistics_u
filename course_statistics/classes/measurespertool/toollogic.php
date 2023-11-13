@@ -84,9 +84,9 @@ class toollogic implements logic_interface {
             // From all the logstore table and find the activity sessions from the beginning which is wrong.
             $activitysessions = $this->calculate_user_activity_session_time($courseid , $enrolleduser->id , $scheduledtime);
 
-            $insertdata = array();
-            $insertactivitysessions = array();
-            $insertbbbsessions = array();
+            $insertdata = [];
+            $insertactivitysessions = [];
+            $insertbbbsessions = [];
 
             foreach ($activitysessions as $instance => $row) {
 
@@ -130,15 +130,16 @@ class toollogic implements logic_interface {
 
         $where = 'courseid = :courseid AND userid = :userid AND contextlevel = 70 '.$and;
 
-        $params = array(
+        $params = [
                     'courseid' => $courseid,
-                    'userid' => $userid
-            );
+                    'userid' => $userid,
+            ];
+
         $logs = utils::get_activity_events_select($where, $params);
 
-        $rows = array();
+        $rows = [];
 
-        $packages = array();
+        $packages = [];
 
         if ($logs) {
 
@@ -462,39 +463,48 @@ class toollogic implements logic_interface {
         $dbquery = new dbquery();
 
         $results = $dbquery->db_users_measures_in_activity($courseid , $cminstance , $searchperiod , $from , $to);
-        $measures = array();
-        $usersdata = array();
+        $measures = [];
+        $usersdata = [];
 
+        foreach ($results as $res) {
+            $usersdata[$res->userid]['userid'] = $res->userid;
+        }
         if (!empty($results)) {
 
-            foreach ($results as $res) {
+            foreach ($usersdata as $userid => $theusers) {
+                $activitytime = 0;
+                $activitysessions = 0;
+                foreach ($results as $res) {
 
-                // Find all course sessions and divide the specific activity session.
-                $info = $dbquery->db_user_course_data($res->userid , $courseid , $searchperiod , $from , $to);
+                    if ($userid == $res->userid) {
 
-                $avgtimesession = (isset($res->activitysessions) && $res->activitysessions != 0) ?
-                        $res->activitytime / $res->activitysessions : 0;
+                        // Find all course sessions and divide the specific activity session.
+                        $info = $dbquery->db_user_course_data($res->userid , $courseid , $searchperiod , $from , $to);
 
-                $avgusesession = (isset($res->activitysessions) &&  $res->activitysessions != 0 && $info->sessions != 0) ?
-                        number_format(($res->activitysessions / $info->sessions) * 100 , 1) : 0;
+                        $activitytime += $res->activitytime;
+                        $activitysessions++;
 
-                $data = [
-                        'firstname' => $res->firstname,
-                        'lastname' => $res->lastname,
-                        'coursetitle' => $this->course_title($courseid),
-                        'activity' => $res->activity,
-                        'activitytime' => utils::format_activitytime($res->activitytime),
-                        'numactivitytime' => $res->activitytime,
-                        'activitysessions' => $res->activitysessions,
-                        'avgtimesession' => utils::format_activitytime($avgtimesession),
-                        'numavgtimesession' => $avgtimesession,
-                        'avgusesession' => number_format($avgusesession  , 1).'%',
-                ];
-                $usersdata[] = $data;
+                        $data[$res->userid]['userid'] = $res->userid;
+                        $data[$res->userid]['firstname'] = $res->firstname;
+                        $data[$res->userid]['lastname'] = $res->lastname;
+                        $data[$res->userid]['coursetitle'] = $this->course_title($courseid);
+                        $data[$res->userid]['activity'] = $res->activity;
+                        $data[$res->userid]['activitytime'] = utils::format_activitytime($activitytime);
+                        $data[$res->userid]['numactivitytime'] = $activitytime;
+                        $data[$res->userid]['activitysessions'] = $activitysessions;
+                        $data[$res->userid]['avgtimesession'] =
+                                utils::format_activitytime($activitytime / $activitysessions);
+                        $data[$res->userid]['numavgtimesession'] = $activitytime / $activitysessions;
+                        $data[$res->userid]['avgusesession'] =
+                                number_format(($activitysessions / $info->sessions) * 100  , 1).'%';
+
+                    }
+
+                }
             }
-        }
 
-        $measures['usersdata'] = $usersdata;
+        }
+        $measures['usersdata'] = array_values($data);
 
         return $measures;
     }
@@ -512,7 +522,7 @@ class toollogic implements logic_interface {
 
         $dbquery = new dbquery();
 
-        $measures = array();
+        $measures = [];
 
         // Find the statistics For each activity/module in Course.
         $coursemodules = get_course_mods($courseid);
@@ -532,7 +542,9 @@ class toollogic implements logic_interface {
                 ];
                 $activitiesdata[] = $data;
         }
+
         $measures['activitiesdata'] = $activitiesdata;
+
         return $measures;
     }
 
@@ -550,11 +562,11 @@ class toollogic implements logic_interface {
 
         $dbquery = new dbquery();
 
-        $measures = array();
+        $measures = [];
 
-        $generaldata = array();
+        $generaldata = [];
 
-        $coursedata = array();
+        $coursedata = [];
         $enrolledusers = get_enrolled_users(context_course::instance($courseid ));
         // How many modules the course has?
         $coursemodules = get_course_mods($courseid);

@@ -50,7 +50,7 @@ define(
 
                     extend: 'collection',
                     className: 'exportButton',
-                    text: 'Export',
+                    text: M.util.get_string('export', 'block_course_statistics'),
 
                     buttons: [
                         {
@@ -110,8 +110,11 @@ define(
 
                 $('.statistics thead tr').clone(true).appendTo('.statistics thead');
                 $('.statistics thead tr:eq(1) th').each(function (i) {
-                    var title = $(this).text();
-                    $(this).html('<input type="text" placeholder="Filter ' + title + '" />');
+                    var filter = M.util.get_string('filter' , 'block_course_statistics');
+
+                    var title = filter + " " +$(this).text();
+
+                    $(this).html('<input type="text" placeholder="' + title + '" />');
                     $('input', this).on('keyup change', function () {
 
                         if ($('.statistics').DataTable().column(i).search() !== this.value) {
@@ -128,7 +131,8 @@ define(
                 var table = $('.statistics').DataTable(defaultConfig);
 
                 table.on('buttons-action', function(e, buttonApi) {
-                    if (buttonApi.text() === 'Copy') {
+                    var copybtn = M.util.get_string('copy', 'block_course_statistics');
+                    if (buttonApi.text() == copybtn) {
                         alert('Copy option selected!');
                     }
                 });

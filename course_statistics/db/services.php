@@ -24,14 +24,14 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$functions = array(
-        'block_course_statistics_pause_measure' => array(
+$functions = [
+        'block_course_statistics_pause_measure' => [
                 'classname' => 'block_course_statistics_external',
                 'methodname' => 'pause_measure',
                 'classpath' => 'blocks/course_statistics/classes/external.php',
                 'description' => 'Pause measurement for a course.',
                 'type' => 'write',
-                'ajax' => true
+                'ajax' => true,
 
-        )
-);
+        ],
+];

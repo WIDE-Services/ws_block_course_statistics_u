@@ -25,6 +25,21 @@
 class block_course_statistics extends block_base {
 
     /**
+     * Applicable formats.
+     *
+     * @return array
+     */
+    public function applicable_formats() {
+        return [
+                'admin' => false,
+                'site-index' => false,
+                'course-view' => true,
+                'mod' => false,
+                'my' => false,
+        ];
+    }
+
+    /**
      * init method
      */
     public function init() {
@@ -38,6 +53,8 @@ class block_course_statistics extends block_base {
     public function has_config() {
         return true;
     }
+
+
     /**
      * specialization method
      */
@@ -50,6 +67,16 @@ class block_course_statistics extends block_base {
         if (!isset($this->config->show_activitytime)) {
             $this->config->show_activitytime = 0;
         }
+    }
+
+
+    /**
+     * Controls whether multiple block instances are allowed.
+     *
+     * @return bool
+     */
+    public function instance_allow_multiple(): bool {
+        return false;
     }
 
     /**
@@ -79,17 +106,20 @@ class block_course_statistics extends block_base {
 
         // The content can be viewed only by the manager, teacher or editing teacher.
         if (has_capability('block/course_statistics:admin', context_course::instance($this->page->course->id))
-                ||  has_capability('block/course_statistics:teacher', context_course::instance($this->page->course->id), $USER->id)
+                ||  has_capability('block/course_statistics:teacher',
+                        context_course::instance($this->page->course->id), $USER->id)
         ) {
 
             $this->content->footer .= html_writer::tag('hr', null);
-            $this->content->footer .= html_writer::tag('p', get_string('access_info', 'block_course_statistics'));
+            $this->content->footer .= html_writer::tag('p',
+                    get_string('access_info', 'block_course_statistics'));
 
-            $url = new moodle_url('/blocks/course_statistics/pages/admin/generalmeasures/index.php', array(
+            $url = new moodle_url('/blocks/course_statistics/pages/admin/generalmeasures/index.php', [
                     'courseid' => $this->page->course->id,
-            ));
+            ]);
 
-            $this->content->footer .= $OUTPUT->single_button($url, get_string('access_button', 'block_course_statistics'), 'get');
+            $this->content->footer .= $OUTPUT->single_button($url,
+                    get_string('access_button', 'block_course_statistics'), 'get');
 
         }
 

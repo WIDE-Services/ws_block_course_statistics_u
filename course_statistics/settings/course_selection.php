@@ -21,6 +21,7 @@
  * @copyright 2022 onwards WIDE Services  {@link https://www.wideservices.gr}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+use block_course_statistics\coursestatistics;
 
 require_once('../../../config.php');
 
@@ -40,6 +41,18 @@ $PAGE->set_context($context);
 $PAGE->set_title(get_string('config_course_selection_title', 'block_course_statistics'));
 $PAGE->set_heading(get_string('config_course_selection_header', 'block_course_statistics'));
 
+$coursestatistics = new coursestatistics();
+$coursestatistics->get_block_course_statistics_css($PAGE);
+
+// This is not the best way to pass the strings.
+$PAGE->requires->strings_for_js([
+        'filter',
+        'copy',
+        'export',
+        'pausemeasure',
+        'startmeasure',
+], 'block_course_statistics');
+
 // Retrieve all courses from the database.
 $selectedcourses = $DB->get_records_sql("
     SELECT
@@ -49,7 +62,7 @@ $selectedcourses = $DB->get_records_sql("
     FROM {course} c
     LEFT JOIN {enrol} en ON en.courseid = c.id
     LEFT JOIN {user_enrolments} ue ON ue.enrolid = en.id
-    GROUP BY c.id, c.fullname
+    WHERE c.id <> 1 GROUP BY c.id, c.fullname
 ");
 
 // Add an index to each course.
@@ -59,14 +72,14 @@ foreach ($selectedcourses as $course) {
 
     // Check which ones are selected to be measured by the scheduled task.
     $checkmeasure = $DB->get_record('cs_course_measures' , ['courseid' => $course->courseid]);
-    $course->index = $index++;
     $course->measure = (!empty($checkmeasure)) ? $checkmeasure->measure : 0;
     $indexedcourses[] = $course;
 }
 
 // Render the Mustache template.
 $data = [
-        'courses' => array_values($indexedcourses)
+        'courses' => array_values($indexedcourses),
+        'current_lang' => current_language(),
 ];
 
 // Render page.

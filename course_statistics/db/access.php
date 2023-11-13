@@ -23,45 +23,45 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$capabilities = array(
-        'block/course_statistics:addinstance' => array(
+$capabilities = [
+        'block/course_statistics:addinstance' => [
                 'riskbitmask' => RISK_SPAM | RISK_XSS,
                 'captype' => 'write',
                 'contextlevel' => CONTEXT_BLOCK,
-                'archetypes' => array(
+                'archetypes' => [
                         'editingteacher' => CAP_ALLOW,
-                        'manager' => CAP_ALLOW
-                ), 'clonepermissionsfrom' => 'moodle/site:manageblocks'
-        ),
+                        'manager' => CAP_ALLOW,
+                ], 'clonepermissionsfrom' => 'moodle/site:manageblocks',
+        ],
 
-        'block/course_statistics:myaddinstance' => array(
+        'block/course_statistics:myaddinstance' => [
                 'riskbitmask' => RISK_SPAM | RISK_XSS,
                 'captype' => 'write',
                 'contextlevel' => CONTEXT_BLOCK,
-                'archetypes' => array(
+                'archetypes' => [
                         'teacher' => CAP_ALLOW,
                         'editingteacher' => CAP_ALLOW,
-                        'manager' => CAP_ALLOW
-                )
-        ),
+                        'manager' => CAP_ALLOW,
+                ],
+        ],
 
-        'block/course_statistics:admin' => array(
+        'block/course_statistics:admin' => [
                 'captype' => 'write',
                 'contextlevel' => CONTEXT_COURSE,
-                'archetypes' => array(
+                'archetypes' => [
 
-                        'manager' => CAP_ALLOW
-                )
-        ),
+                        'manager' => CAP_ALLOW,
+                ],
+        ],
 
-        'block/course_statistics:teacher' => array(
+        'block/course_statistics:teacher' => [
                 'captype' => 'write',
                 'contextlevel' => CONTEXT_COURSE,
-                'archetypes' => array(
+                'archetypes' => [
 
                         'teacher' => CAP_ALLOW,
                         'editingteacher' => CAP_ALLOW,
-                )
-        )
+                ],
+        ],
 
-);
+];

@@ -83,8 +83,10 @@ class block_course_statistics_external extends external_api {
      */
     public static function pause_measure_parameters() {
         return new external_function_parameters(
-                array('courseid' => new external_value(PARAM_INT, 'The courseid from cs_course_measure table', VALUE_REQUIRED),
-                        'status' => new external_value(PARAM_INT, 'The status from cs_course_measure table', VALUE_REQUIRED))
+                [
+                        'courseid' => new external_value(PARAM_INT, 'The courseid from cs_course_measure table', VALUE_REQUIRED),
+                        'status' => new external_value(PARAM_INT, 'The status from cs_course_measure table', VALUE_REQUIRED),
+                ]
         );
     }
 

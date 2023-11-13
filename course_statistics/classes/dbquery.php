@@ -16,6 +16,7 @@
 
 namespace block_course_statistics;
 
+use block_course_statistics\utils\utils;
 use dml_exception;
 
 /**
@@ -433,9 +434,8 @@ class dbquery {
         global $DB;
 
         // The data must be retrieved from table cs_activities_session_dates.
-
         $sql = "SELECT csd.* , cas.userid , cas.cminstance , cas.courseid ,
-                        cas.activity , cas.activitytitle , cas.activitytime, u.firstname , u.lastname
+                        cas.activity , cas.activitysessions , cas.activitytitle , cas.activitytime, u.firstname , u.lastname
                     FROM {cs_activities_session_dates} csd
                     JOIN {cs_user_activity_sessions} cas ON cas.id = csd.asid
                     JOIN {user} u ON u.id = cas.userid
@@ -450,11 +450,12 @@ class dbquery {
 
         $results = $DB->get_records_sql($sql);
 
-        $usermeasures = array();
+        $usermeasures = [];
 
         if (!empty($results )) {
 
             foreach ($results as $user) {
+
                 $objectmeasure = new \stdClass();
                 $objectmeasure->userid = $user->userid;
                 $objectmeasure->firstname = $user->firstname;
@@ -464,7 +465,7 @@ class dbquery {
                 $objectmeasure->activitytitle = $user->activitytitle;
                 // Moodle couldnt find the endsession and the result was negative. Case of loosing session.
                 $objectmeasure->activitytime = ($user->sessiontime >= 0) ? $user->sessiontime : 0;
-                $objectmeasure->activitysessions = $user->session;
+                $objectmeasure->activitysessions = $user->activitysessions;
 
                 $usermeasures[] = $objectmeasure;
             }
@@ -558,7 +559,7 @@ class dbquery {
                 'courselevel' => CONTEXT_COURSE,
                 'courseid' => $courseid,
                 'userid' => $userid,
-                'exittime' => $exittime
+                'exittime' => $exittime,
         ];
 
         $nextsession = $DB->get_record_sql($sql, $params);
@@ -1211,7 +1212,7 @@ class dbquery {
 
         $result = [
                 'totaltime' => $totaltime,
-                'totalattempts' => $totalattempts
+                'totalattempts' => $totalattempts,
         ];
 
         return $result;
@@ -1220,6 +1221,7 @@ class dbquery {
 
     /**
      * Calculate the avg score of users in these quizzes.
+     * @param int $courseid
      * @param array $quizzes
      * @param bool $searchperiod
      * @param int $from
@@ -1227,37 +1229,40 @@ class dbquery {
      * @return float|int
      * @throws dml_exception
      */
-    public function db_avg_users_score($quizzes , $searchperiod = false , $from = null , $to = null) {
+    public function db_avg_users_score($courseid , $quizzes , $searchperiod = false , $from = null , $to = null) {
 
         global $DB;
 
         $totalscore = 0;
-        $totalattempts = 0;
+        $totalmarks = 0;
 
         foreach ($quizzes as $quiz) {
 
             // Retrieve quiz grades for the course.
-            $sql = "SELECT qg.* FROM {quiz_grades} qg
-            WHERE qg.quiz = {$quiz->id} ";
+
+            $attemptmarks = $DB->get_record('quiz' , ['course' => $courseid]);
+
+            $sql = "SELECT q.id , q.sumgrades FROM {quiz_attempts} q
+            WHERE q.quiz = {$quiz->id} ";
 
             if ($searchperiod) {
 
-                $sql .= " AND qg.timemodified >= {$from} AND qg.timemodified <= {$to}";
+                $sql .= " AND q.timemodified >= {$from} AND q.timemodified <= {$to}";
 
             }
 
-            $quizgrades = $DB->get_records_sql( $sql );
+            $quizattempts = $DB->get_records_sql($sql);
 
-            foreach ($quizgrades as $grade) {
+            foreach ($quizattempts as $grade) {
                 // Sum up grades.
-                $totalscore += $grade->grade;
+                $totalscore += $grade->sumgrades;
 
             }
-            $totalattempts += count($quizgrades);
+            $totalmarks += count($quizattempts) * $attemptmarks->sumgrades;
         }
 
         // Calculate average score.
-        $averagescore = ($totalattempts > 0) ? $totalscore / $totalattempts : 0;
+        $averagescore = ($totalmarks > 0) ? ($totalscore / $totalmarks) * 100 : 0;
 
         return $averagescore;
     }
@@ -1271,7 +1276,7 @@ class dbquery {
      * @return array
      * @throws dml_exception
      */
-    public function db_users_quiz_total_time($quizid , $searchperiod = false , $from = null , $to = null) {
+    public function db_users_quiz_total_time($quizid, $searchperiod = false, $from = null, $to = null) {
 
         global $DB;
 
@@ -1304,7 +1309,7 @@ class dbquery {
 
         $result = [
                 'totaltime' => $totaltime,
-                'totalattempts' => count($quizattempts)
+                'totalattempts' => count($quizattempts),
         ];
 
         return $result;
@@ -1358,7 +1363,7 @@ class dbquery {
                         'attempt' => $result->id,
                         'cmid' => $result->cmid,
                         'totaltime' => $timespent,
-                        'totalattempts' => $totalattempts
+                        'totalattempts' => $totalattempts,
                 ];
             } else {
                 $userquizdata[$userid]['totaltime'] += $timespent;
@@ -1372,6 +1377,7 @@ class dbquery {
 
     /**
      * Calculate the avg score of users in this quiz.
+     * @param int $courseid
      * @param int $quizid
      * @param int $userid
      * @param bool $searchperiod
@@ -1380,53 +1386,57 @@ class dbquery {
      * @return float|int
      * @throws dml_exception
      */
-    public function db_avg_users_quiz_score($quizid , $userid = null , $searchperiod = false , $from = null , $to = null) {
+    public function db_avg_users_quiz_score($courseid, $quizid,
+            $userid = null , $searchperiod = false , $from = null , $to = null) {
 
         global $DB;
 
         $totalscore = 0;
-        $totalattempts = 0;
+        $totalmarks = 0;
 
         // Retrieve quiz grades for the course.
-        if (is_null($userid)) {
 
-            // Retrieve quiz grades for the course.
-            $sql = "SELECT qg.* FROM {quiz_grades} qg
-            WHERE qg.quiz = {$quizid} ";
+        $attemptmarks = $DB->get_record('quiz' , ['course' => $courseid]);
+
+        // Retrieve quiz grades for the course.
+        if (is_null($userid) || $userid == 0) {
+            $sql = "SELECT qa.id , qa.sumgrades FROM {quiz_attempts} qa
+                        JOIN {quiz} q ON q.id = qa.quiz
+                        WHERE q.id ={$quizid} AND q.course = {$courseid}";
 
             if ($searchperiod) {
 
-                $sql .= " AND qg.timemodified >= {$from} AND qg.timemodified <= {$to}";
+                $sql .= " AND qa.timemodified >= {$from} AND qa.timemodified <= {$to}";
 
             }
 
-            $quizgrades = $DB->get_records_sql($sql);
+            $quizattempts = $DB->get_records_sql($sql);
 
         } else {
-
-            // Retrieve quiz grades for the course.
-            $sql = "SELECT qg.* FROM {quiz_grades} qg
-            WHERE qg.quiz = {$quizid} AND qg.userid = {$userid} ";
+            $sql = "SELECT q.id , q.sumgrades FROM {quiz_attempts} q
+            WHERE q.quiz = {$quizid} AND q.userid = {$userid}";
 
             if ($searchperiod) {
 
-                $sql .= " AND qg.timemodified >= {$from} AND qg.timemodified <= {$to}";
+                $sql .= " AND q.timemodified >= {$from} AND q.timemodified <= {$to}";
 
             }
 
-            $quizgrades = $DB->get_records_sql($sql);
+            $quizattempts = $DB->get_records_sql($sql);
 
         }
-        foreach ($quizgrades as $grade) {
 
+        foreach ($quizattempts as $grade) {
             // Sum up grades.
-            $totalscore += $grade->grade;
-            $totalattempts++;
+            $totalscore += $grade->sumgrades;
 
         }
+
+        $totalmarks += count($quizattempts) * $attemptmarks->sumgrades;
 
         // Calculate average score.
-        $averagescore = ($totalattempts > 0) ? $totalscore / $totalattempts : 0;
+
+        $averagescore = ($totalmarks > 0) ? ($totalscore / $totalmarks) * 100 : 0;
 
         return $averagescore;
 

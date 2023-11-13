@@ -33,7 +33,7 @@ class utils {
     /**
      * @var string[] $logstores
      */
-    public static $logstores = array('logstore_standard', 'logstore_legacy');
+    public static $logstores = ['logstore_standard', 'logstore_legacy'];
 
     /**
      * Return formatted events from logstores.
@@ -43,7 +43,7 @@ class utils {
      */
     public static function get_activity_events_select($selectwhere, array $params): array {
 
-        $return = array();
+        $return = [];
 
         static $allreaders = null;
 
@@ -112,12 +112,12 @@ class utils {
         $dbquery = new dbquery();
 
         $slice = 0;
-        $activitypart = array();
-        $activitysessiontime = array();
+        $activitypart = [];
+        $activitysessiontime = [];
         $activitytime = 0;
         $activitysametime = 0;
         $activityfinishtime = 0;
-        $consecutives = array();
+        $consecutives = [];
         $i = 0;
 
         // Lets create the consecutive parts based on the array.
@@ -268,7 +268,7 @@ class utils {
 
         $lastactivityaccess = $dbquery->db_last_activity_access($lastactivitytime);
 
-        return (object) array(
+        return (object) [
                 'module' => strtoupper($modulename),
                 'activitytitle' => $activitytitle,
                 'activitysessions' => count($consecutives),
@@ -278,8 +278,8 @@ class utils {
                 'firstaccess' => date('m/d/Y H:i:s', $firstactivityaccess->timecreated),
                 'lastaccess' => date('m/d/Y H:i:s', $lastactivityaccess->timecreated),
                 'colour' => $chartcolour,
-                'activitysessiontime' => $activitysessiontime
-        );
+                'activitysessiontime' => $activitysessiontime,
+        ];
     }
 
     /**
@@ -360,15 +360,15 @@ class utils {
 
         }
 
-        return (object) array(
+        return (object) [
                 'module' => strtoupper($modulename) ,
                 'activitytitle' => $activitytitle ,
                 'userid' => $user ,
                 'courseid' => $course ,
                 'activitytime' => ($quiztotaltime >= 0) ? $quiztotaltime : 0 ,
                 'colour' => $chartcolour,
-                'activitysessiontime' => null
-        );
+                'activitysessiontime' => null,
+        ];
 
     }
 
@@ -417,15 +417,15 @@ class utils {
 
         }
 
-        return (object) array(
-                'module' => strtoupper($modulename) ,
-                'activitytitle' => $activitytitle ,
-                'userid' => $user ,
-                'courseid' => $course ,
+        return (object) [
+                'module' => strtoupper($modulename),
+                'activitytitle' => $activitytitle,
+                'userid' => $user,
+                'courseid' => $course,
                 'activitytime' => ($scormtotaltime >= 0) ? $scormtotaltime : 0 ,
-                'colour' => $chartcolour ,
+                'colour' => $chartcolour,
 
-        );
+        ];
     }
 
     /**
@@ -447,7 +447,7 @@ class utils {
 
         $dbquery = new dbquery();
 
-        $sessions = array();
+        $sessions = [];
         $currentsession = null;
 
         $duration = 0;
@@ -461,7 +461,7 @@ class utils {
                     // Start a new session.
                     $currentsession = [
                             'startactivitysession' => $result->timecreated,
-                            'endactivitysession' => null
+                            'endactivitysession' => null,
                     ];
                 } else if ($result->action === 'left' && $currentsession !== null) {
                     // End the current session.
@@ -470,7 +470,7 @@ class utils {
                     $sessions[] = [
                             'startactivitysession' => $currentsession['startactivitysession'],
                             'endactivitysession' => $currentsession['endactivitysession'],
-                            'activitysessiontime' => $sessionduration
+                            'activitysessiontime' => $sessionduration,
                     ];
                     $currentsession = null;
                 }
@@ -481,7 +481,7 @@ class utils {
                 $sessions[] = [
                         'startactivitysession' => $currentsession['startactivitysession'],
                         'endactivitysession' => null,
-                        'activitysessiontime' => null // Indicate that the session is incomplete.
+                        'activitysessiontime' => null, // Indicate that the session is incomplete.
                 ];
             }
 
@@ -493,7 +493,7 @@ class utils {
 
         }
 
-        return (object) array(
+        return (object) [
                 'module' => strtoupper($modulename) ,
                 'activitytitle' => $activitytitle ,
                 'activitysessions' => count($sessions),
@@ -503,9 +503,9 @@ class utils {
                 'firstaccess' => 0,
                 'lastaccess' => 0,
                 'colour' => $chartcolour ,
-                'activitysessiontime' => $sessions
+                'activitysessiontime' => $sessions,
 
-        );
+        ];
 
     }
 

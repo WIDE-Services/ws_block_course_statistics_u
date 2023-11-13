@@ -43,6 +43,7 @@ $string['user_access_info'] = 'Student Course Statistics:';
 $string['capability_admin'] = 'Course Statistics , Admin Dashboard.';
 
 // Filters period form.
+$string['measures_per_period'] = 'Measures per period ';
 $string['select_course'] = 'Select course : ';
 $string['start_period'] = 'Start period : ';
 $string['end_period'] = 'End period : ';
@@ -115,9 +116,15 @@ $string['startmeasure'] = 'Start Measure';
 $string['accessdenied'] = ' Access Denied';
 
 // Breadcrumb.
-$string['courses'] = 'Courses';
+$string['courses'] = 'Course';
 $string['activities'] = 'Activities';
 $string['quizzes'] = 'Quizzes';
 $string['forums'] = 'Forums';
 $string['topics'] = 'Topics';
 $string['users'] = 'Users';
+
+// Datatable.
+$string['filter'] = 'Filter';
+$string['copy'] = 'Copy';
+$string['export'] = 'Export';
+

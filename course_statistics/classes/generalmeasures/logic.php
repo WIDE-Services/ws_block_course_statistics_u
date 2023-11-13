@@ -108,7 +108,7 @@ class logic implements logic_interface {
         $coursesessions = $dbquery->db_course_sessions($courseid , $userid , $scheduledtime);
 
         $i = 0;
-        $packages = array();
+        $packages = [];
         foreach ($coursesessions as $key => $session) {
 
                 $packages[$i] = $key;
@@ -118,7 +118,7 @@ class logic implements logic_interface {
         // Below im grouping the consecutives ids from logstore.
         // And i assume its consecutive group is a course session.
 
-        $consecutives = array();
+        $consecutives = [];
         $previous = null;
         $i = 0;
 
@@ -174,7 +174,7 @@ class logic implements logic_interface {
         // The min value is the start session and the max is NOT the end Session!
         // For the end session i need to find the next user action did outside the course.
         // After the MAX value of the group session!
-        $totalsessiontime = array();
+        $totalsessiontime = [];
         $previous = null;
 
         foreach ($consecutives as $key => $consecutive) {
@@ -276,11 +276,11 @@ class logic implements logic_interface {
 
         $dbquery = new dbquery();
 
-        $measures = array();
-        $coursedata = array();
+        $measures = [];
+        $coursedata = [];
 
         $enrolledusers = get_enrolled_users(context_course::instance($courseid));
-        $userdata = array();
+        $userdata = [];
         // User Data.
         foreach ($enrolledusers as $enrolleduser) {
             $info = $dbquery->db_user_course_data($enrolleduser->id , $courseid , $searchperiod , $from , $to);
@@ -295,7 +295,7 @@ class logic implements logic_interface {
                     'avgtimesessionformated' => utils::format_activitytime($info->avgsessiontime),
                     'avgtimesession' => $info->avgsessiontime,
                     'numberofactions' => $info->totalactions,
-                    'avgnumberofactions' => number_format($info->avgsessionactions , 1)
+                    'avgnumberofactions' => number_format($info->avgsessionactions , 1),
 
             ];
 
@@ -323,7 +323,7 @@ class logic implements logic_interface {
                 'numavgtimesession' => ($totaltime != 0 || $totalsessions != 0) ? $totaltime / $totalsessions : 0,
                 'numberofactions' => $totalactions,
                 'avgnumberofactions' => ($totalactions != 0 || $totalsessions != 0) ?
-                        number_format($totalactions / $totalsessions , 1) : 0
+                        number_format($totalactions / $totalsessions , 1) : 0,
         ];
         $coursedata[] = $cdata;
 
@@ -346,10 +346,10 @@ class logic implements logic_interface {
 
         $dbquery = new dbquery();
 
-        $measures = array();
+        $measures = [];
 
         $enrolledusers = get_enrolled_users(context_course::instance($courseid));
-        $userdata = array();
+        $userdata = [];
         // User Data.
         foreach ($enrolledusers as $enrolleduser) {
             $info = $dbquery->db_user_course_data($enrolleduser->id , $courseid , $searchperiod , $from , $to);
@@ -365,7 +365,7 @@ class logic implements logic_interface {
                     'avgtimesession' => utils::format_activitytime($info->avgsessiontime),
                     'numavgtimesession' => $info->avgsessiontime,
                     'numberofactions' => $info->totalactions,
-                    'avgnumberofactions' => number_format($info->avgsessionactions , 1)
+                    'avgnumberofactions' => number_format($info->avgsessionactions , 1),
 
             ];
 

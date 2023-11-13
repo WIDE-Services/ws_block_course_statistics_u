@@ -45,10 +45,10 @@ $coursecontext = context_course::instance($courseid);
 $header = fullname($USER);
 $pagetitle = get_string('pluginname', 'block_course_statistics');
 
-$params = array(
+$params = [
         'courseid' => $courseid ,
-        'viewusers' => $viewusers
-);
+        'viewusers' => $viewusers,
+];
 
 $pageurl = new moodle_url('/blocks/course_statistics/pages/admin/generalmeasures/index.php');
 $pageurl->params($params);
@@ -63,6 +63,13 @@ $coursestatistics = new coursestatistics();
 $coursestatistics->get_block_course_statistics_css($PAGE);
 
 $PAGE->requires->jquery();
+$PAGE->requires->strings_for_js([
+        'filter',
+        'copy',
+        'export',
+        'pausemeasure',
+        'startmeasure',
+], 'block_course_statistics');
 
 $mform = new filterform($pageurl, ['courseid' => $courseid ], 'get');
 
@@ -126,14 +133,14 @@ if ($viewusers != 0) {
 
         $measures = $logic->group_users_measures_data($courseid , $searchperiod , $from , $to);
 
-        $maindashboard = new generalusersmeasures($params , $data->form , $measures ["userdata"] ,
+        $maindashboard = new generalusersmeasures($params , $data->form , $measures["userdata"] ,
                 $searchperiod , $from , $to , $access = true);
 
     } else if (has_capability('block/course_statistics:admin', $coursecontext)) {
 
         $measures = $logic->group_users_measures_data($courseid , $searchperiod , $from , $to);
 
-        $maindashboard = new generalusersmeasures($params , $data->form , $measures ["userdata"] ,
+        $maindashboard = new generalusersmeasures($params , $data->form , $measures["userdata"] ,
                 $searchperiod , $from , $to , $access = true );
 
     } else {

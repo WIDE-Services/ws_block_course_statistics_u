@@ -107,21 +107,21 @@ class measurescourseforums implements renderable, templatable {
 
                 'header' => get_string('capability_admin' , 'block_course_statistics'),
                 'iconcourse' => new moodle_url('/blocks/course_statistics/assets/dashboard/course.png'),
-                'urlcourse' => new moodle_url('/blocks/course_statistics/pages/admin/generalmeasures/index.php', array(
+                'urlcourse' => new moodle_url('/blocks/course_statistics/pages/admin/generalmeasures/index.php', [
                         'courseid' => $this->courseid,
-                )),
+                ]),
                 'iconactivity' => new moodle_url('/blocks/course_statistics/assets/dashboard/activity.png'),
-                'urlactivity' => new moodle_url('/blocks/course_statistics/pages/admin/measurespertool/index.php', array(
+                'urlactivity' => new moodle_url('/blocks/course_statistics/pages/admin/measurespertool/index.php', [
                         'courseid' => $this->courseid,
-                )),
+                ]),
                 'iconforum' => new moodle_url('/blocks/course_statistics/assets/dashboard/forum.png'),
-                'urlforum' => new moodle_url('/blocks/course_statistics/pages/admin/measuresfortheforum/index.php', array(
+                'urlforum' => new moodle_url('/blocks/course_statistics/pages/admin/measuresfortheforum/index.php', [
                         'courseid' => $this->courseid,
-                )),
+                ]),
                 'iconquiz' => new moodle_url('/blocks/course_statistics/assets/dashboard/quiz.png'),
-                'urlrquiz' => new moodle_url('/blocks/course_statistics/pages/admin/measuresinquizzes/index.php', array(
+                'urlrquiz' => new moodle_url('/blocks/course_statistics/pages/admin/measuresinquizzes/index.php', [
                         'courseid' => $this->courseid,
-                )),
+                ]),
 
                 'viewtopic' => new moodle_url('/blocks/course_statistics/pages/admin/measuresfortheforum/index.php?viewtopic=1'
                 ),
@@ -133,7 +133,7 @@ class measurescourseforums implements renderable, templatable {
                         ),
 
                 'filterform' => $this->form,
-
+                'current_lang' => current_language(),
                 'forumsdata' => $this->forumsdata,
 
                 'searchperiod' => $this->searchperiod,

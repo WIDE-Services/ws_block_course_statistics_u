@@ -23,16 +23,15 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$tasks = array(
-
-        array(
+$tasks = [
+        [
                 'classname' => 'block_course_statistics\task\statistics',
                 'blocking' => 0,
                 'minute' => '*',
-                'hour' => '0',
+                'hour' => 0,
                 'day' => '*',
                 'month' => '*',
                 'dayofweek' => '*',
-                'disabled' => 0
-        )
-);
+                'disabled' => 0,
+        ],
+];

@@ -126,7 +126,7 @@ class provider implements
 
         $participantsql = "SELECT * FROM {cs_user_course_sessions} WHERE userid= :userid";
         $recordset = $DB->get_recordset_sql($participantsql, $params);
-        $recorddata = array();
+        $recorddata = [];
         foreach ($recordset as $record) {
             $record->timecreated = date('d-m-Y H:i', $record->timecreated);
             $record->timemodified = date('d-m-Y H:i', $record->timemodified);
@@ -138,13 +138,14 @@ class provider implements
 
         $participantsql = "SELECT * FROM {cs_user_activity_sessions} WHERE userid= :userid";
         $recordset = $DB->get_recordset_sql($participantsql, $params);
-        $recorddata = array();
+        $recorddata = [];
         foreach ($recordset as $record) {
             $recorddata[] = (object) $record;
             writer::with_context($context)->export_data(['cs_user_activity_sessions'], $record);
         }
         $recordset->close();
-        writer::with_context($context)->export_data([get_string('pluginname', 'block_course_statistics')], (object) $recorddata);
+        writer::with_context($context)->export_data([get_string('pluginname', 'block_course_statistics')],
+                (object) $recorddata);
     }
 
     /**
@@ -158,9 +159,9 @@ class provider implements
         $user = $contextlist->get_user();
         $userid = $user->id;
 
-        $DB->delete_records('cs_user_course_sessions', array('userid' => $userid));
-        $DB->delete_records('cs_user_activity_sessions', array('userid' => $userid));
-        $allfiles = $DB->get_records_sql('files', array('component' => 'block_course_statistics', 'userid' => $userid));
+        $DB->delete_records('cs_user_course_sessions', ['userid' => $userid]);
+        $DB->delete_records('cs_user_activity_sessions', ['userid' => $userid]);
+        $allfiles = $DB->get_records_sql('files', ['component' => 'block_course_statistics', 'userid' => $userid]);
         foreach ($allfiles as $file) {
             $newrecord = new stdClass();
             $newrecord->id = $file->id;
@@ -180,7 +181,7 @@ class provider implements
 
         $DB->delete_records('cs_user_course_sessions');
         $DB->delete_records('cs_user_activity_sessions');
-        $allfiles = $DB->get_records_sql('files', array('component' => 'block_course_statistics'));
+        $allfiles = $DB->get_records_sql('files', ['component' => 'block_course_statistics']);
         foreach ($allfiles as $file) {
             $newrecord = new stdClass();
             $newrecord->id = $file->id;
@@ -201,9 +202,9 @@ class provider implements
         $user = $userlist->get_user();
         $userid = $user->id;
 
-        $DB->delete_records('cs_user_course_sessions', array('userid' => $userid));
-        $DB->delete_records('cs_user_activity_sessions', array('userid' => $userid));
-        $allfiles = $DB->get_records_sql('files', array('component' => 'block_course_statistics', 'userid' => $userid));
+        $DB->delete_records('cs_user_course_sessions', ['userid' => $userid]);
+        $DB->delete_records('cs_user_activity_sessions', ['userid' => $userid]);
+        $allfiles = $DB->get_records_sql('files', ['component' => 'block_course_statistics', 'userid' => $userid]);
         foreach ($allfiles as $file) {
             $newrecord = new stdClass();
             $newrecord->id = $file->id;

@@ -43,12 +43,12 @@ $to = optional_param('to', null, PARAM_INT);
 // The searchperiod optional param is a balander for the from, to params so i dont do many checks.
 $searchperiod = optional_param('searchperiod', false, PARAM_BOOL);
 
-$params = array(
+$params = [
         'courseid' => $courseid ,
         'quizid' => $quizid ,
         'viewquizzes' => $viewquizzes ,
-        'viewusers' => $viewusers
-);
+        'viewusers' => $viewusers,
+];
 
 $userid = $USER->id;  // Owner of the page.
 $coursecontext = context_course::instance($courseid);
@@ -68,7 +68,13 @@ $coursestatistics = new coursestatistics();
 $coursestatistics->get_block_course_statistics_css($PAGE);
 
 $PAGE->requires->jquery();
-
+$PAGE->requires->strings_for_js([
+        'filter',
+        'copy',
+        'export',
+        'pausemeasure',
+        'startmeasure',
+], 'block_course_statistics');
 $mform = new filterform($pageurl, ['courseid' => $courseid ], 'get');
 
 // Form logic through general measures results.

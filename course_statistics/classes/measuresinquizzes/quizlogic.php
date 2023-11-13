@@ -48,8 +48,8 @@ class quizlogic implements logic_interface {
     public function group_courses_quizzes_data($courseid , $isteacher , $searchperiod = false , $from = null , $to = null) {
 
         $dbquery = new dbquery();
-        $datacourses = array();
-        $measures = array();
+        $datacourses = [];
+        $measures = [];
 
         $totaltime = 0;
         $totalattempts = 0;
@@ -69,7 +69,7 @@ class quizlogic implements logic_interface {
             $totalattempts = $totaldata['totalattempts'];
 
             // 3. Calculate the avg score of users in these quizzes.
-            $avgscore = $dbquery->db_avg_users_score($quizzes , $searchperiod , $from , $to);
+            $avgscore = $dbquery->db_avg_users_score($courseid , $quizzes , $searchperiod , $from , $to);
         }
         $data = [
                 'courseid' => $courseid,
@@ -100,8 +100,8 @@ class quizlogic implements logic_interface {
     public function group_viewquizzes_data($courseid , $searchperiod = false , $from = null , $to = null) {
 
         $dbquery = new dbquery();
-        $dataquizzes = array();
-        $measures = array();
+        $dataquizzes = [];
+        $measures = [];
 
         // 1. Find Quizzes in this course that we look.
 
@@ -121,7 +121,7 @@ class quizlogic implements logic_interface {
             $totalattempts = $totaldata['totalattempts'];
 
             // 3. Calculate the avg score of users in this quiz.
-            $avgscore = $dbquery->db_avg_users_quiz_score($quiz->id , null , $searchperiod , $from , $to);
+            $avgscore = $dbquery->db_avg_users_quiz_score($courseid , $quiz->id , null , $searchperiod , $from , $to);
             $data = [
 
                     'courseid' => $courseid,
@@ -154,12 +154,12 @@ class quizlogic implements logic_interface {
      */
     public function group_viewusers_data($courseid , $quizid , $searchperiod = false , $from = null , $to = null) {
         $dbquery = new dbquery();
-        $datausers = array();
-        $measures = array();
+        $datausers = [];
+        $measures = [];
 
         // 1. Find users results of this quiz in the course.
 
-        $results = $dbquery->db_users_quiz_attempts($courseid ,  $quizid , $searchperiod , $from , $to);
+        $results = $dbquery->db_users_quiz_attempts($courseid,  $quizid , $searchperiod , $from , $to);
 
         foreach ($results as $userid => $res) {
 
@@ -171,7 +171,7 @@ class quizlogic implements logic_interface {
             $attempt = $res['attempt'];
             $cmid = $res['cmid'];
             // 3. Calculate the avg score of users in this quiz.
-            $avgscore = $dbquery->db_avg_users_quiz_score($quizid , $userid , $searchperiod , $from , $to);
+            $avgscore = $dbquery->db_avg_users_quiz_score($courseid, $quizid , $userid , $searchperiod , $from , $to);
             $data = [
 
                     'courseid' => $courseid,

@@ -42,7 +42,7 @@ interface logic_interface {
      * @param int $courseid
      * @return mixed
      */
-    public function get_enrolled_users_sessions($enrolledusers , $courseid);
+    public function get_enrolled_users_sessions($enrolledusers, $courseid);
 
 
     /**
@@ -54,7 +54,7 @@ interface logic_interface {
      * @param int $scheduledtime
      * @return mixed
      */
-    public function calculate_user_course_session_time($courseid , $userid , $scheduledtime);
+    public function calculate_user_course_session_time($courseid, $userid, $scheduledtime);
 
     /**
      * Prepares courses data for the view template
@@ -66,7 +66,7 @@ interface logic_interface {
      * @param int $to
      * @return mixed
      */
-    public function group_courses_measures_data($courseid , $isteacher , $searchperiod , $from , $to);
+    public function group_courses_measures_data($courseid, $isteacher, $searchperiod, $from, $to);
 
     /**
      * Prepares users data for the view template
@@ -77,7 +77,7 @@ interface logic_interface {
      * @param int $to
      * @return mixed
      */
-    public function group_users_measures_data($courseid , $searchperiod , $from , $to);
+    public function group_users_measures_data($courseid, $searchperiod, $from, $to);
 
 }
 

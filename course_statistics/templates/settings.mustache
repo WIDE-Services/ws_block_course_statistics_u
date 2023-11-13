@@ -35,8 +35,7 @@ along with Moodle. If not, see
                                 <thead>
 
                                 <tr>
-
-                                    <th>#</th>
+                                    <th></th>
                                     <th>{{#str}}coursetitle , block_course_statistics{{/str}}</th>
                                     <th>{{#str}}courseid , block_course_statistics{{/str}}</th>
                                     <th>{{#str}}enrolments , block_course_statistics{{/str}}</th>
@@ -53,19 +52,18 @@ along with Moodle. If not, see
                                 {{#courses}}
 
                                     <tr class="tr-shadow">
-
-                                        <td>{{index}}</td>
+                                        <td></td>
                                         <td>{{coursename}}</td>
                                         <td>{{courseid}}</td>
                                         <td>{{enrolled_user_count}}</td>
-                                        <td>
+                                        <td data-sort="{{measure}}">
 
                                             {{#measure}}
-                                                <a href="#" class="btn btn-warning measurements" id = "pausemeasure_{{courseid}}"
+                                                <a  class="btn btn-warning measurements" id = "pausemeasure_{{courseid}}"
                                                    role="button" status='0' courseid = '{{courseid}}'>{{#str}}pausemeasure , block_course_statistics{{/str}}</a>
                                             {{/measure}}
                                             {{^measure}}
-                                                <a href="#" class="btn btn-success measurements"  id ="pausemeasure_{{courseid}}"
+                                                <a class="btn btn-success measurements"  id ="pausemeasure_{{courseid}}"
                                                    role="button" status='1' courseid = '{{courseid}}'>{{#str}}startmeasure , block_course_statistics{{/str}}</a>
                                             {{/measure}}
 
@@ -98,14 +96,26 @@ along with Moodle. If not, see
     ]
     };
 
+    // Get the current language from Moodle's global configuration.
+    var lang = '{{current_lang}}';
+
+    // Check if the language is not the English one ('en').
+    if (lang != 'en') {
+    // If the language is any other language, set the language option for DataTable.
+    tableconfig.language = {
+    url: M.cfg.wwwroot + '/blocks/course_statistics/lang/{{current_lang}}/{{current_lang}}.json'
+    };
+    }
+
     require(
     ['block_course_statistics/datatables_init-lazy',
     'block_course_statistics/jszip-lazy',
-    'block_course_statistics/pause_measure-lazy',
-    ] , function(dataTableModule,Jszip, Main) {
+    'block_course_statistics/pause_measure-lazy'
+    ], function(dataTableModule, Jszip, Main) {
     dataTableModule.initializeDataTable(tableconfig);
     window.JSZip = Jszip;
     Main.pausemeasure();
     });
 
 {{/js}}
+

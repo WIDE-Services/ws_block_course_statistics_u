@@ -100,21 +100,21 @@ class measuresquizusers implements renderable, templatable {
         return $data = [
                 'header' => get_string('capability_admin' , 'block_course_statistics'),
                 'iconcourse' => new moodle_url('/blocks/course_statistics/assets/dashboard/course.png'),
-                'urlcourse' => new moodle_url('/blocks/course_statistics/pages/admin/generalmeasures/index.php', array(
+                'urlcourse' => new moodle_url('/blocks/course_statistics/pages/admin/generalmeasures/index.php', [
                         'courseid' => $this->courseid,
-                )),
+                ]),
                 'iconactivity' => new moodle_url('/blocks/course_statistics/assets/dashboard/activity.png'),
-                'urlactivity' => new moodle_url('/blocks/course_statistics/pages/admin/measurespertool/index.php', array(
+                'urlactivity' => new moodle_url('/blocks/course_statistics/pages/admin/measurespertool/index.php', [
                         'courseid' => $this->courseid,
-                )),
+                ]),
                 'iconforum' => new moodle_url('/blocks/course_statistics/assets/dashboard/forum.png'),
-                'urlforum' => new moodle_url('/blocks/course_statistics/pages/admin/measuresfortheforum/index.php', array(
+                'urlforum' => new moodle_url('/blocks/course_statistics/pages/admin/measuresfortheforum/index.php', [
                         'courseid' => $this->courseid,
-                )),
+                ]),
                 'iconquiz' => new moodle_url('/blocks/course_statistics/assets/dashboard/quiz.png'),
-                'urlrquiz' => new moodle_url('/blocks/course_statistics/pages/admin/measuresinquizzes/index.php', array(
+                'urlrquiz' => new moodle_url('/blocks/course_statistics/pages/admin/measuresinquizzes/index.php', [
                         'courseid' => $this->courseid,
-                )),
+                ]),
 
                 'viewquiz' => new moodle_url('/mod/quiz/review.php'),
                 'bcmbcourses' =>
@@ -131,7 +131,7 @@ class measuresquizusers implements renderable, templatable {
                 'paramcourseid' => $this->courseid,
 
                 'filterform' => $this->form,
-
+                'current_lang' => current_language(),
                 'usersdata' => $this->usersdata,
 
                 'searchperiod' => $this->searchperiod,

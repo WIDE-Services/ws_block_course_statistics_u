@@ -50,8 +50,8 @@ class forumlogic implements logic_interface {
 
         $dbquery = new dbquery();
 
-        $datacourses = array();
-        $measures = array();
+        $datacourses = [];
+        $measures = [];
 
         // 1. Find Forums in each course that we look.
 
@@ -81,7 +81,7 @@ class forumlogic implements logic_interface {
 
         $topicpostanswers = $topicposts - $forumtopics;
 
-        // 6. How many of the posts are read by the users.
+        // 6. How many of the posts were read by the users.
         // Might the Moodle is buggy at mdl_forum_read table is always empty no matter what... so...
 
         $postreads = 0;
@@ -119,8 +119,8 @@ class forumlogic implements logic_interface {
 
         $dbquery = new dbquery();
 
-        $dataforums = array();
-        $measures = array();
+        $dataforums = [];
+        $measures = [];
 
         // 1. Find Forums in this course that we look.
 
@@ -190,8 +190,8 @@ class forumlogic implements logic_interface {
     public function group_viewtopics_data($courseid , $forumid , $searchperiod = false , $from = null , $to = null) {
         $dbquery = new dbquery();
 
-        $datatopics = array();
-        $measures = array();
+        $datatopics = [];
+        $measures = [];
 
         // 1. Find topics in this forum that we look.
 
@@ -257,8 +257,8 @@ class forumlogic implements logic_interface {
 
         $dbquery = new dbquery();
 
-        $datausers = array();
-        $measures = array();
+        $datausers = [];
+        $measures = [];
 
         // Im not getting the subscribed users in the forum cause the subscription might be optional.
 
