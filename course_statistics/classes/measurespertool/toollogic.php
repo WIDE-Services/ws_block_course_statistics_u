@@ -528,10 +528,12 @@ class toollogic implements logic_interface {
         $coursemodules = get_course_mods($courseid);
 
         foreach ($coursemodules as $module) {
+
                 $info = $dbquery->db_course_activities_data($module->course , $module->id , $searchperiod , $from , $to);
+
                 $data = [
                     'coursetitle' => $this->course_title($courseid),
-                    'activity' => $info->activity,
+                    'activity' => strtoupper($module->modname),
                     'cminstance' => $module->id,
                     'activitytotaltime' => utils::format_activitytime($info->totalactivitytime),
                     'numactivitytotaltime' => $info->totalactivitytime,
