@@ -27,8 +27,8 @@ $tasks = [
         [
                 'classname' => 'block_course_statistics\task\statistics',
                 'blocking' => 0,
-                'minute' => '*',
-                'hour' => '*',
+                'minute' => '10',
+                'hour' => '0',
                 'day' => '*',
                 'month' => '*',
                 'dayofweek' => '*',
