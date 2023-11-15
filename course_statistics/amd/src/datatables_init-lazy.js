@@ -18,7 +18,7 @@ define(
     ],
     function ($) {
 
-        function initializeDataTable(config) {
+        function initializeDataTable(config, removeFourthColumnFilter = false) {
 
             var defaultConfig = {
                 orderCellsTop: true,
@@ -89,7 +89,7 @@ define(
                             extend: 'pdf',
                             exportOptions: {
                                 columns: ':visible',
-                                rows: ':visible'
+                                //rows: ':visible'
                             }
                         }
 
@@ -127,6 +127,9 @@ define(
                     });
                 });
                 $('.statistics thead tr:eq(1) th:eq(0) input').remove();
+                if (removeFourthColumnFilter) {
+                    $('.statistics thead tr:eq(1) th:eq(4) input').remove(); // Remove only if the flag is true
+                }
 
                 var table = $('.statistics').DataTable(defaultConfig);
 

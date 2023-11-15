@@ -81,9 +81,9 @@ along with Moodle. If not, see
                                             <td>{{firstname}}</td>
                                             <td>{{coursetitle}}</td>
                                             <td>{{activity}}</td>
-                                            <td data-sort="{{numactivitytime}}"><span class="hidden-span">{{numactivitytime}}</span>{{activitytime}}</td>
+                                            <td data-order="{{numactivitytime}}"><span class="hidden-span">{{numactivitytime}}</span>{{activitytime}}</td>
                                             <td>{{activitysessions}}</td>
-                                            <td data-sort="{{numavgtimesession}}"><span class="hidden-span">{{numavgtimesession}}</span>{{avgtimesession}}</td>
+                                            <td data-order="{{numavgtimesession}}"><span class="hidden-span">{{numavgtimesession}}</span>{{avgtimesession}}</td>
                                             <td>{{avgusesession}}</td>
                                         </tr>
 
@@ -127,10 +127,13 @@ along with Moodle. If not, see
     var lang = '{{current_lang}}';
 
     // Check if the language is not the English one ('en').
-    if (lang != 'en') {
+    if (lang !== 'en') {
+    // Remove anything after '_' and remove '_' itself if 'el_wp' is found.
+    var langToLoad = lang.indexOf('_wp') !== -1 ? lang.substring(0, lang.indexOf('_wp')).replace('_', '') : lang;
+
     // If the language is any other language, set the language option for DataTable.
     tableconfig.language = {
-    url: M.cfg.wwwroot + '/blocks/course_statistics/lang/{{current_lang}}/{{current_lang}}.json'
+    url: M.cfg.wwwroot + '/blocks/course_statistics/lang/' + langToLoad + '/' + langToLoad + '.json'
     };
     }
 

@@ -58,7 +58,7 @@ along with Moodle. If not, see
                                         <th>{{#str}}course{{/str}}</th>
                                         <th>{{#str}}forum, block_course_statistics{{/str}}</th>
                                         <th>{{#str}}topic{{/str}}</th>
-                                        <th>{{#str}}posts{{/str}}</th>
+                                        <th>{{#str}}posts, block_course_statistics{{/str}}</th>
                                         <th>{{#str}}postanswers, block_course_statistics{{/str}}</th>
                                         <th>{{#str}}topicinitialized, block_course_statistics{{/str}}</th>
                                         <th>{{#str}}postreads, block_course_statistics{{/str}}</th>
@@ -126,10 +126,13 @@ along with Moodle. If not, see
     var lang = '{{current_lang}}';
 
     // Check if the language is not the English one ('en').
-    if (lang != 'en') {
+    if (lang !== 'en') {
+    // Remove anything after '_' and remove '_' itself if 'el_wp' is found.
+    var langToLoad = lang.indexOf('_wp') !== -1 ? lang.substring(0, lang.indexOf('_wp')).replace('_', '') : lang;
+
     // If the language is any other language, set the language option for DataTable.
     tableconfig.language = {
-    url: M.cfg.wwwroot + '/blocks/course_statistics/lang/{{current_lang}}/{{current_lang}}.json'
+    url: M.cfg.wwwroot + '/blocks/course_statistics/lang/' + langToLoad + '/' + langToLoad + '.json'
     };
     }
 
