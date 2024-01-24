@@ -357,7 +357,7 @@ class dbquery {
     public function db_course_activities_data($courseid , $cmid , $searchperiod = false , $from = null , $to = null) {
 
         global $DB;
-
+        $sessiontimeout = get_config('','sessiontimeout');
         $statistics = new \stdClass();
 
         $totalactivitytime = 0;
@@ -365,13 +365,16 @@ class dbquery {
         $statistics->activity = '';
 
         // The data must be retrieved from table cs_activities_session_dates.
+        // Dont fetch the session times that are over the idle time.
+
         $sql = "SELECT csd.* , cas.cminstance , cas.courseid ,
                         cas.activity , cas.activitytitle ,
                         cas.activitytime , cas.activitysessions
                     FROM {cs_activities_session_dates} csd
                     JOIN {cs_user_activity_sessions} cas ON cas.id = csd.asid
                     WHERE cas.cminstance = {$cmid}
-                    AND cas.courseid = {$courseid}";
+                    AND cas.courseid = {$courseid}
+                    AND csd.sessiontime < {$sessiontimeout}";
 
         if ($searchperiod) {
             $sql .= " AND csd.startsession >= {$from} AND csd.endsession <= {$to}";
@@ -396,13 +399,15 @@ class dbquery {
                 $totalactivitytime / $totalactivitysessions : 0;
 
         // Calculate all activitysessions in this course for a period time if is set.
+        // Dont fetch the session times that are over the idle time.
 
         $allsql = "SELECT csd.* , cas.cminstance , cas.courseid ,
                         cas.activity , cas.activitytitle ,
                         cas.activitytime , cas.activitysessions
                     FROM {cs_activities_session_dates} csd
                     JOIN {cs_user_activity_sessions} cas ON cas.id = csd.asid
-                    WHERE cas.courseid = {$courseid}";
+                    WHERE cas.courseid = {$courseid}
+                    AND csd.sessiontime < {$sessiontimeout}";
 
         if ($searchperiod) {
             $allsql .= " AND csd.startsession >= {$from} AND csd.endsession <= {$to}";
@@ -494,16 +499,19 @@ class dbquery {
         global $DB;
 
         $statistics = new \stdClass();
-
+        $sessiontimeout = get_config('','sessiontimeout');
         $totalactivitiestime = 0;
         $totalactivitiessessions = 0;
+
+        // Dont fetch the session times that are over the idle time.
         $sql = "SELECT csd.* , cas.cminstance , cas.courseid ,
                         cas.activity , cas.activitytitle ,
                         cas.activitytime , cas.activitysessions
                     FROM {cs_activities_session_dates} csd
                     JOIN {cs_user_activity_sessions} cas ON cas.id = csd.asid
                     WHERE cas.userid = {$userid}
-                    AND cas.courseid = {$courseid}";
+                    AND cas.courseid = {$courseid}
+                    AND csd.sessiontime < {$sessiontimeout}";
 
         if ($searchperiod) {
             $sql .= " AND csd.startsession >= {$from} AND csd.endsession <= {$to}";

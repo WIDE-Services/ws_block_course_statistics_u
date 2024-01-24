@@ -580,7 +580,7 @@ class toollogic implements logic_interface {
         $coursemodules = get_course_mods($courseid);
         // Course Data.
         foreach ($enrolledusers as $enrolleduser) {
-            $info = $dbquery->db_course_tools_data($enrolleduser->id , $courseid , $searchperiod  , $from , $to);
+            $info = $dbquery->db_course_tools_data($enrolleduser->id, $courseid, $searchperiod, $from, $to);
             $data = [
                     'totaltime' => $info->totalactivitiestime,
                     'totalsessions' => $info->totalactivitiessessions,

@@ -111,7 +111,7 @@ $string['enrolments'] = 'Enrolments';
 $string['action'] = 'Action';
 $string['pausemeasure'] = 'Pause Measure';
 $string['startmeasure'] = 'Start Measure';
-
+$string['resetmeasure'] = 'Reset Measure';
 // Access.
 $string['accessdenied'] = ' Access Denied';
 
