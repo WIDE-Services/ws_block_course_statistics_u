@@ -100,6 +100,7 @@ class logic implements logic_interface {
     public function calculate_user_course_session_time($courseid , $userid , $scheduledtime = null) {
 
         $dbquery = new dbquery();
+        $sessiontimeout = get_config('','sessiontimeout');
 
         // We need to find the contextlevels saved in logstore from the user.
         // When was in the course. The context levels that we need for course are :
@@ -196,7 +197,7 @@ class logic implements logic_interface {
                         ($coursesessions[$sessionpart['max'][$key]]->target == $coursesessions[$previous]->target) == 'course' &&
                         $sessionpart['max'][$key] == $previous - 1) {
 
-                    // Check if the diff between them is more than 8 hours (28800 secs) if yes then dont calculate.
+                    // Check if the diff between them is more than the sessiontimeout if yes then dont calculate.
                     // If it is then something went wrong and dont calculate.
                     // In this case the user might have forgotten the course opened or pc went in sleep mode.
                     // And the user enters again the other day this null/forgotten time will ot be calculated.
@@ -206,7 +207,7 @@ class logic implements logic_interface {
                     $checktime = (int)$coursesessions[$previous]->timecreated -
                             (int)$coursesessions[$sessionpart['max'][$key]]->timecreated;
 
-                    if ($checktime < 28800) {
+                    if ($checktime < $sessiontimeout) {
                         $totalsessiontime[$key] = $checktime;
 
                             $insert->endsession = (int)$coursesessions[$previous]->timecreated;
@@ -222,7 +223,7 @@ class logic implements logic_interface {
 
                     $checktime = (int)$nextaction->timecreated - (int)$coursesessions[$sessionpart['max'][$key]]->timecreated;
 
-                    if ($checktime < 28800) {
+                    if ($checktime < $sessiontimeout) {
 
                         $totalsessiontime[$key] = $checktime;
 

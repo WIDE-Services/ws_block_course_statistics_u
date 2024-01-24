@@ -189,6 +189,7 @@ class dbquery {
         $thisinsert = 0;
         $moduleid = 0;
         // Check first if data already exists.
+
         foreach ($inserts as $insert) {
 
             if (!$DB->record_exists($table , (array)$insert)) {
@@ -1333,13 +1334,11 @@ class dbquery {
         $totalattempts = 1;
 
         // Retrieve quiz attempts for the specified quiz.
-        $sql = "SELECT qa.* , q.name , u.lastname , u.firstname , cm.id as cmid
+        $sql = "SELECT  qa.* , q.name , u.lastname , u.firstname
                 FROM {quiz_attempts} qa
                 JOIN {quiz} q ON q.id = qa.quiz
                 JOIN {user} u ON u.id = qa.userid
-                JOIN {course_modules} cm ON cm.instance = q.id
                 WHERE qa.quiz = {$quizid}
-                    AND cm.course = {$courseid}
                     AND qa.timefinish <> 0";
 
         if ($searchperiod) {
@@ -1354,6 +1353,12 @@ class dbquery {
             $userid = $result->userid;
             $timespent = $result->timefinish - $result->timestart;
 
+            // Get cmid using a separate query. Cause if added to my basic query will have dublicated first column no matter what.
+            $moduleid = $DB->get_field('modules', 'id', ['name' => 'quiz']); // 'quiz' is the module name
+            $cmid = $DB->get_field('course_modules', 'id', ['instance' => $quizid,
+                    'course' => $courseid, 'module' => $moduleid]);
+
+
             // Store or update user's data.
             if (!isset($userquizdata[$userid])) {
                 $userquizdata[$userid] = [
@@ -1361,7 +1366,7 @@ class dbquery {
                         'firstname' => $result->firstname,
                         'quiz' => $result->name,
                         'attempt' => $result->id,
-                        'cmid' => $result->cmid,
+                        'cmid' => $cmid,
                         'totaltime' => $timespent,
                         'totalattempts' => $totalattempts,
                 ];

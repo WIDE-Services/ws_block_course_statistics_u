@@ -92,6 +92,12 @@ if ($mform->is_cancelled()) {
 
     $searchperiod = true;
 
+    // Store values in the session
+    $_SESSION['measure_period'] = [
+            'from' => $from,
+            'to' => $to,
+    ];
+
     // Display the form.
     $data = new stdClass();
     $data->form = $mform->render();
@@ -101,10 +107,20 @@ if ($mform->is_cancelled()) {
     // or on the initial display of the form.
 
     // If you have default values or want to pre-fill the form, set them here.
-    $defaultdata = new stdClass();
-    $defaultdata->startperiod = $from; // Set default start period value.
-    $defaultdata->endperiod = $to; // Set default end period value.
-    $mform->set_data($defaultdata);
+    if (isset($_SESSION['measure_period'])) {
+        $defaultdata = new stdClass();
+        $defaultdata->startperiod = $_SESSION['measure_period']['from'];
+        $defaultdata->endperiod = $_SESSION['measure_period']['to'];
+        $mform->set_data($defaultdata);
+    } else {
+
+        // If you have default values or want to pre-fill the form, set them here.
+        $defaultdata = new stdClass();
+        $defaultdata->startperiod = $from; // Set default start period value.
+        $defaultdata->endperiod = $to; // Set default end period value.
+        $mform->set_data($defaultdata);
+
+    }
 
     // Display the form.
     $data = new stdClass();

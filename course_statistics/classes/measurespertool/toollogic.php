@@ -84,9 +84,9 @@ class toollogic implements logic_interface {
             // From all the logstore table and find the activity sessions from the beginning which is wrong.
             $activitysessions = $this->calculate_user_activity_session_time($courseid , $enrolleduser->id , $scheduledtime);
 
+
             $insertdata = [];
             $insertactivitysessions = [];
-            $insertbbbsessions = [];
 
             foreach ($activitysessions as $instance => $row) {
 
@@ -108,7 +108,7 @@ class toollogic implements logic_interface {
             }
 
             // Insert records to DB once for every user.
-            $dbquery->db_insert_multidata('cs_user_activity_sessions' , $insertdata , $insertactivitysessions , $insertbbbsessions);
+            $dbquery->db_insert_multidata('cs_user_activity_sessions' , $insertdata , $insertactivitysessions);
 
         }
 
@@ -481,6 +481,12 @@ class toollogic implements logic_interface {
                         // Find all course sessions and divide the specific activity session.
                         $info = $dbquery->db_user_course_data($res->userid , $courseid , $searchperiod , $from , $to);
 
+                        // Get the course module object.
+                       // $coursemodule = get_coursemodule_from_id('', $module->id);
+
+                        // Use the course module object to get the activity title.
+                        //$activitytitle = $coursemodule->name;
+
                         $activitytime += $res->activitytime;
                         $activitysessions++;
 
@@ -529,11 +535,17 @@ class toollogic implements logic_interface {
 
         foreach ($coursemodules as $module) {
 
-                $info = $dbquery->db_course_activities_data($module->course , $module->id , $searchperiod , $from , $to);
+            $info = $dbquery->db_course_activities_data($module->course , $module->id , $searchperiod , $from , $to);
 
-                $data = [
+            // Get the course module object.
+            $coursemodule = get_coursemodule_from_id('', $module->id);
+
+            // Use the course module object to get the activity title.
+            $activitytitle = $coursemodule->name;
+
+            $data = [
                     'coursetitle' => $this->course_title($courseid),
-                    'activity' => strtoupper($module->modname),
+                    'activity' => strtoupper($module->modname) ." : ". $activitytitle,
                     'cminstance' => $module->id,
                     'activitytotaltime' => utils::format_activitytime($info->totalactivitytime),
                     'numactivitytotaltime' => $info->totalactivitytime,
@@ -541,8 +553,8 @@ class toollogic implements logic_interface {
                     'activityavgtime' => utils::format_activitytime($info->totalactivityavgtime),
                     'numactivityavgtime' => $info->totalactivityavgtime,
                     'averageusedinsessions' => number_format($info->averageusedinsessions  , 1).'%',
-                ];
-                $activitiesdata[] = $data;
+            ];
+            $activitiesdata[] = $data;
         }
 
         $measures['activitiesdata'] = $activitiesdata;

@@ -59,6 +59,7 @@ class statistics extends scheduled_task {
             $enrolledusers = get_enrolled_users(context_course::instance($course->courseid));
 
             if (!empty($enrolledusers)) {
+
                 $toollogic = new toollogic();
 
                 $toollogic->get_enrolled_users_sessions($enrolledusers , $course->courseid);
