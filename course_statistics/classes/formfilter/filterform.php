@@ -41,9 +41,9 @@ class filterform extends moodleform {
     public function definition() {
 
         $mform = & $this->_form;
-        $mform->addElement('date_selector', 'startperiod',
+        $mform->addElement('date_time_selector', 'startperiod',
         get_string('start_period', 'block_course_statistics'));
-        $mform->addElement('date_selector', 'endperiod',
+        $mform->addElement('date_time_selector', 'endperiod',
          get_string('end_period', 'block_course_statistics'));
 
         // Buttons.
