@@ -68,7 +68,6 @@ class statistics extends scheduled_task {
 
                 $logic->get_enrolled_users_sessions($enrolledusers , $course->courseid);
             }
-
         }
     }
 }

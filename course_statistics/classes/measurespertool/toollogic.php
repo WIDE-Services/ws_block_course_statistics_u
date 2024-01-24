@@ -481,12 +481,6 @@ class toollogic implements logic_interface {
                         // Find all course sessions and divide the specific activity session.
                         $info = $dbquery->db_user_course_data($res->userid , $courseid , $searchperiod , $from , $to);
 
-                        // Get the course module object.
-                       // $coursemodule = get_coursemodule_from_id('', $module->id);
-
-                        // Use the course module object to get the activity title.
-                        //$activitytitle = $coursemodule->name;
-
                         $activitytime += $res->activitytime;
                         $activitysessions++;
 
@@ -494,7 +488,7 @@ class toollogic implements logic_interface {
                         $data[$res->userid]['firstname'] = $res->firstname;
                         $data[$res->userid]['lastname'] = $res->lastname;
                         $data[$res->userid]['coursetitle'] = $this->course_title($courseid);
-                        $data[$res->userid]['activity'] = $res->activity;
+                        $data[$res->userid]['activity'] = $res->activity." : ".$res->activitytitle;
                         $data[$res->userid]['activitytime'] = utils::format_activitytime($activitytime);
                         $data[$res->userid]['numactivitytime'] = $activitytime;
                         $data[$res->userid]['activitysessions'] = $activitysessions;
