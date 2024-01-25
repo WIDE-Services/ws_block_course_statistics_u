@@ -213,7 +213,6 @@ class utils {
                                 isset($datamin->timecreated)) ? ($module->timecreated - $datamin->timecreated) : 0;
                     }
                 }
-
             }
         }
 

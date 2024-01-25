@@ -1400,16 +1400,15 @@ class dbquery {
      * @throws dml_exception
      */
     public function db_avg_users_quiz_score($courseid, $quizid,
-            $userid = null , $searchperiod = false , $from = null , $to = null) {
+            $userid = null, $searchperiod = false, $from = null, $to = null) {
 
         global $DB;
 
         $totalscore = 0;
-        $totalmarks = 0;
 
         // Retrieve quiz grades for the course.
 
-        $attemptmarks = $DB->get_record('quiz' , ['course' => $courseid]);
+        $attemptmarks = $DB->get_record('quiz' , ['course' => $courseid, 'id' => $quizid]);
 
         // Retrieve quiz grades for the course.
         if (is_null($userid) || $userid == 0) {
@@ -1426,6 +1425,7 @@ class dbquery {
             $quizattempts = $DB->get_records_sql($sql);
 
         } else {
+
             $sql = "SELECT q.id , q.sumgrades FROM {quiz_attempts} q
             WHERE q.quiz = {$quizid} AND q.userid = {$userid}";
 
@@ -1445,7 +1445,8 @@ class dbquery {
 
         }
 
-        $totalmarks += count($quizattempts) * $attemptmarks->sumgrades;
+        // The number of question in the attempts multiply with the defined quiz sumgrade for the questions.
+        $totalmarks = count($quizattempts) * $attemptmarks->sumgrades;
 
         // Calculate average score.
 
