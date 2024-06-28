@@ -465,7 +465,7 @@ class toollogic implements logic_interface {
         $results = $dbquery->db_users_measures_in_activity($courseid , $cminstance , $searchperiod , $from , $to);
         $measures = [];
         $usersdata = [];
-        $user = []; // Array must be initialized outside of inner loop and if condition
+        $data = []; // Array must be initialized outside of inner loop and if condition
 
         foreach ($results as $res) {
             $usersdata[$res->userid]['userid'] = $res->userid;
