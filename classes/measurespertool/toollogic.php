@@ -108,7 +108,7 @@ class toollogic implements logic_interface {
             }
 
             // Insert records to DB once for every user.
-            $dbquery->db_insert_multidata('cs_user_activity_sessions' , $insertdata , $insertactivitysessions);
+            $dbquery->db_insert_multidata('block_course_statistics_ases' , $insertdata , $insertactivitysessions);
 
         }
 

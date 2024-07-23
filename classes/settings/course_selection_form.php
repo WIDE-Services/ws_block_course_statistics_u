@@ -84,15 +84,15 @@ class course_selection_form extends moodleform {
         if (isset($data->selectedcourses) && is_array($data->selectedcourses)) {
             foreach ($data->selectedcourses as $courseid) {
 
-                // Check if the courseid already exists in cs_course_measures.
+                // Check if the courseid already exists in cs_course_measures / block_course_statistics_meas.
 
-                $existingrecord = $DB->record_exists('cs_course_measures', ['courseid' => $courseid]);
+                $existingrecord = $DB->record_exists('block_course_statistics_meas', ['courseid' => $courseid]);
 
                 if (!$existingrecord) {
                     // Save selected courses to the database.
                     $record = new stdClass();
                     $record->courseid = $courseid;
-                    $DB->insert_record('cs_course_measures', $record);
+                    $DB->insert_record('block_course_statistics_meas', $record);
                 }
             }
         }

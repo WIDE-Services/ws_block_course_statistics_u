@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <XMLDB PATH="blocks/course_statistics/db" VERSION="2020041024" COMMENT="XML DB file for Moodle blocks/course_statistics" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
     <TABLES>
-
-        <TABLE NAME="cs_user_course_sessions" COMMENT="All sessions of a user in a course">
+        <!-- Frankenstyle DB table cs_user_course_sessions changed to block_course_statistics_cses -->
+        <TABLE NAME="block_course_statistics_cses" COMMENT="All sessions of a user in a course">
             <FIELDS>
                 <FIELD NAME="id" SEQUENCE="true" TYPE="int" LENGTH="10" NOTNULL="true" />
                 <FIELD NAME="courseid" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="true" />
@@ -20,7 +20,8 @@
             </KEYS>
         </TABLE>
 
-        <TABLE NAME="cs_user_activity_sessions" COMMENT="Statistics of activity sessions of user in a course">
+        <!-- Frankenstyle DB table cs_user_activity_sessions changed to block_course_statistics_ases -->
+        <TABLE NAME="block_course_statistics_ases" COMMENT="Statistics of activity sessions of user in a course">
             <FIELDS>
                 <FIELD NAME="id" SEQUENCE="true" TYPE="int" LENGTH="10" NOTNULL="true" />
                 <FIELD NAME="courseid" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="true" />
@@ -38,7 +39,8 @@
             </KEYS>
         </TABLE>
 
-        <TABLE NAME="cs_activities_session_dates" COMMENT="Statistics for each activity individually. When an activity started and when ended.">
+        <!-- Frankenstyle DB table cs_activities_session_dates changed to block_course_statistics_sdt -->
+        <TABLE NAME="block_course_statistics_sdt" COMMENT="Statistics for each activity individually. When an activity started and when ended.">
             <FIELDS>
                 <FIELD NAME="id" SEQUENCE="true" TYPE="int" LENGTH="10" NOTNULL="true" />
                 <FIELD NAME="asid" SEQUENCE="false" TYPE="int" LENGTH="10" NOTNULL="true" />
@@ -53,7 +55,8 @@
             </KEYS>
         </TABLE>
 
-        <TABLE NAME="cs_course_measures" COMMENT="Contains the selected course by the admin/manger that measures will be calculated.">
+        <!-- Frankenstyle DB table cs_course_measures changed to block_course_statistics_meas -->
+        <TABLE NAME="block_course_statistics_meas" COMMENT="Contains the selected course by the admin/manger that measures will be calculated.">
             <FIELDS>
                 <FIELD NAME="id" SEQUENCE="true" TYPE="int" LENGTH="10" NOTNULL="true" />
                 <FIELD NAME="courseid" SEQUENCE="false" TYPE="int" LENGTH="10"  NOTNULL="false"  COMMENT="Course ID"/>

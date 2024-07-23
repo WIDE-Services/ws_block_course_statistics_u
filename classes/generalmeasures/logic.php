@@ -257,7 +257,7 @@ class logic implements logic_interface {
             $insert->actions = count($consecutive);
 
             // Insert Session Info.
-             $dbquery->db_insert_data('cs_user_course_sessions' , $insert);
+             $dbquery->db_insert_data('block_course_statistics_cses' , $insert);
 
         }
 

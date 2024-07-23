@@ -71,7 +71,7 @@ $index = 1;
 foreach ($selectedcourses as $course) {
 
     // Check which ones are selected to be measured by the scheduled task.
-    $checkmeasure = $DB->get_record('cs_course_measures' , ['courseid' => $course->courseid]);
+    $checkmeasure = $DB->get_record('block_course_statistics_meas' , ['courseid' => $course->courseid]);
     $course->measure = (!empty($checkmeasure)) ? $checkmeasure->measure : 0;
     $indexedcourses[] = $course;
 }

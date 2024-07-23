@@ -41,17 +41,21 @@ class block_course_statistics_external extends external_api {
         $courseid = $params['courseid'];
         $status = $params['status'];
 
+        // Context validation.
+        $context = context_system::instance();
+        require_capability('block/course_statistics:admin', $context);
+
         // If not exists insert else update.
-        $courseexist = $DB->record_exists('cs_course_measures' , ['courseid' => $courseid]);
+        $courseexist = $DB->record_exists('block_course_statistics_meas' , ['courseid' => $courseid]);
 
         if (!$courseexist) {
 
-            // If this course doesnt exist, create it to table cm_course_measures.
+            // If this course doesnt exist, create it to table cm_course_measures/ block_course_statistics_meas.
             $newmeasure = new stdClass();
             $newmeasure->courseid = $courseid;
             $newmeasure->status = 0;
 
-            $isinsert = $DB->insert_record('cs_course_measures', $newmeasure);
+            $isinsert = $DB->insert_record('block_course_statistics_meas', $newmeasure);
 
             if (!$isinsert) {
                 throw new Exception('We couldnt insert the course with id : '.$courseid .' in cm_course_measures table.');
@@ -59,17 +63,17 @@ class block_course_statistics_external extends external_api {
 
         } else {
 
-            $courseexist = $DB->get_record('cs_course_measures', ['courseid' => $courseid]);
+            $courseexist = $DB->get_record('block_course_statistics_meas', ['courseid' => $courseid]);
 
             $changemeasure = new stdClass();
             $changemeasure->id = $courseexist->id;
             $changemeasure->measure = $status;
 
-            $isupdated = $DB->update_record('cs_course_measures', $changemeasure);
+            $isupdated = $DB->update_record('block_course_statistics_meas', $changemeasure);
 
             if (!$isupdated ) {
                 throw new Exception('We couldnt update the status of the course with id : '.$courseid .
-                        ' in cm_course_measures table.');
+                        ' in block_course_statistics_meas table.');
             }
         }
 
@@ -84,8 +88,10 @@ class block_course_statistics_external extends external_api {
     public static function pause_measure_parameters() {
         return new external_function_parameters(
                 [
-                        'courseid' => new external_value(PARAM_INT, 'The courseid from cs_course_measure table', VALUE_REQUIRED),
-                        'status' => new external_value(PARAM_INT, 'The status from cs_course_measure table', VALUE_REQUIRED),
+                        'courseid' => new external_value(PARAM_INT,
+                                'The courseid from block_course_statistics_meas table', VALUE_REQUIRED),
+                        'status' => new external_value(PARAM_INT,
+                                'The status from block_course_statistics_meas table', VALUE_REQUIRED),
                 ]
         );
     }

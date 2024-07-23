@@ -45,30 +45,30 @@ class provider implements
 
         // Here you will add more items into the collection.
         $collection->add_database_table(
-                'cs_user_course_sessions',
+                'block_course_statistics_cses',
                 [
-                        'courseid' => 'privacy:metadata:cs_user_course_sessions:courseid',
-                        'userid' => 'privacy:metadata:cs_user_course_sessions:userid',
-                        'startsession' => 'privacy:metadata:cs_user_course_sessions:startsession',
-                        'endsession' => 'privacy:metadata:cs_user_course_sessions:endsession',
-                        'sessiontime' => 'privacy:metadata:cs_user_course_sessions:sessiontime',
-                        'actions' => 'privacy:metadata:cs_user_course_sessions:actions',
+                        'courseid' => 'privacy:metadata:block_course_statistics_cses:courseid',
+                        'userid' => 'privacy:metadata:block_course_statistics_cses:userid',
+                        'startsession' => 'privacy:metadata:block_course_statistics_cses:startsession',
+                        'endsession' => 'privacy:metadata:block_course_statistics_cses:endsession',
+                        'sessiontime' => 'privacy:metadata:block_course_statistics_cses:sessiontime',
+                        'actions' => 'privacy:metadata:block_course_statistics_cses:actions',
                 ],
-                'privacy:metadata:cs_user_course_sessions'
+                'privacy:metadata:block_course_statistics_cses'
         );
 
         $collection->add_database_table(
-                'cs_user_activity_sessions',
+                'block_course_statistics_ases',
                 [
-                        'courseid' => 'privacy:metadata:cs_user_activity_sessions:courseid',
-                        'userid' => 'privacy:metadata:cs_user_activity_sessions:userid',
-                        'activity' => 'privacy:metadata:cs_user_activity_sessions:activity',
-                        'cminstance' => 'privacy:metadata:cs_user_activity_sessions:cminstance',
-                        'activitytitle' => 'privacy:metadata:cs_user_activity_sessions:activitytitle',
-                        'activitytime' => 'privacy:metadata:cs_user_activity_sessions:activitytime',
-                        'activitysessions' => 'privacy:metadata:cs_user_activity_sessions:activitysessions',
+                        'courseid' => 'privacy:metadata:block_course_statistics_ases:courseid',
+                        'userid' => 'privacy:metadata:block_course_statistics_ases:userid',
+                        'activity' => 'privacy:metadata:block_course_statistics_ases:activity',
+                        'cminstance' => 'privacy:metadata:block_course_statistics_ases:cminstance',
+                        'activitytitle' => 'privacy:metadata:block_course_statistics_ases:activitytitle',
+                        'activitytime' => 'privacy:metadata:block_course_statistics_ases:activitytime',
+                        'activitysessions' => 'privacy:metadata:block_course_statistics_ases:activitysessions',
                 ],
-                'privacy:metadata:cs_user_activity_sessions'
+                'privacy:metadata:block_course_statistics_ases'
         );
 
         return $collection;
@@ -102,10 +102,10 @@ class provider implements
         if (!$context instanceof \context_system) {
             return;
         }
-        $sql = "SELECT userid FROM {cs_user_course_sessions} ";
+        $sql = "SELECT userid FROM {block_course_statistics_cses} ";
         $userlist->add_from_sql('userid', $sql);
 
-        $sql = "SELECT userid FROM {cs_user_activity_sessions} ";
+        $sql = "SELECT userid FROM {block_course_statistics_ases} ";
         $userlist->add_from_sql('userid', $sql);
     }
 
@@ -124,7 +124,7 @@ class provider implements
         $params['userid'] = $user->id;
         $params['userid2'] = $user->id;
 
-        $participantsql = "SELECT * FROM {cs_user_course_sessions} WHERE userid= :userid";
+        $participantsql = "SELECT * FROM {block_course_statistics_cses} WHERE userid= :userid";
         $recordset = $DB->get_recordset_sql($participantsql, $params);
         $recorddata = [];
         foreach ($recordset as $record) {
@@ -132,16 +132,16 @@ class provider implements
             $record->timemodified = date('d-m-Y H:i', $record->timemodified);
             $record->timeapproved = date('d-m-Y H:i', $record->timeapproved);
             $recorddata[] = (object) $record;
-            writer::with_context($context)->export_data(['cs_user_course_sessions'], $record);
+            writer::with_context($context)->export_data(['block_course_statistics_cses'], $record);
         }
         $recordset->close();
 
-        $participantsql = "SELECT * FROM {cs_user_activity_sessions} WHERE userid= :userid";
+        $participantsql = "SELECT * FROM {block_course_statistics_ases} WHERE userid= :userid";
         $recordset = $DB->get_recordset_sql($participantsql, $params);
         $recorddata = [];
         foreach ($recordset as $record) {
             $recorddata[] = (object) $record;
-            writer::with_context($context)->export_data(['cs_user_activity_sessions'], $record);
+            writer::with_context($context)->export_data(['block_course_statistics_ases'], $record);
         }
         $recordset->close();
         writer::with_context($context)->export_data([get_string('pluginname', 'block_course_statistics')],
@@ -159,8 +159,8 @@ class provider implements
         $user = $contextlist->get_user();
         $userid = $user->id;
 
-        $DB->delete_records('cs_user_course_sessions', ['userid' => $userid]);
-        $DB->delete_records('cs_user_activity_sessions', ['userid' => $userid]);
+        $DB->delete_records('block_course_statistics_cses', ['userid' => $userid]);
+        $DB->delete_records('block_course_statistics_ases', ['userid' => $userid]);
         $allfiles = $DB->get_records_sql('files', ['component' => 'block_course_statistics', 'userid' => $userid]);
         foreach ($allfiles as $file) {
             $newrecord = new stdClass();
@@ -179,8 +179,8 @@ class provider implements
     public static function delete_data_for_all_users_in_context(\context $context) {
         global $DB;
 
-        $DB->delete_records('cs_user_course_sessions');
-        $DB->delete_records('cs_user_activity_sessions');
+        $DB->delete_records('block_course_statistics_cses');
+        $DB->delete_records('block_course_statistics_ases');
         $allfiles = $DB->get_records_sql('files', ['component' => 'block_course_statistics']);
         foreach ($allfiles as $file) {
             $newrecord = new stdClass();
@@ -202,8 +202,8 @@ class provider implements
         $user = $userlist->get_user();
         $userid = $user->id;
 
-        $DB->delete_records('cs_user_course_sessions', ['userid' => $userid]);
-        $DB->delete_records('cs_user_activity_sessions', ['userid' => $userid]);
+        $DB->delete_records('block_course_statistics_cses', ['userid' => $userid]);
+        $DB->delete_records('block_course_statistics_ases', ['userid' => $userid]);
         $allfiles = $DB->get_records_sql('files', ['component' => 'block_course_statistics', 'userid' => $userid]);
         foreach ($allfiles as $file) {
             $newrecord = new stdClass();

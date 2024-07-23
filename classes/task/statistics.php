@@ -53,7 +53,7 @@ class statistics extends scheduled_task {
 
         // Solution select course to get measures from plugins configuration page.
 
-        $courses = $DB->get_records('cs_course_measures' , ['measure' => 1] , 'courseid' , 'courseid');
+        $courses = $DB->get_records('block_course_statistics_meas' , ['measure' => 1] , 'courseid' , 'courseid');
         foreach ($courses as $course) {
 
             $enrolledusers = get_enrolled_users(context_course::instance($course->courseid));
