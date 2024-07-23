@@ -34,7 +34,7 @@ use templatable;
 class generalusersmeasures implements renderable, templatable {
 
     /**
-     * @var
+     * @var array|null
      */
     protected $params;
     /**

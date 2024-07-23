@@ -110,7 +110,7 @@ class utils {
             $chartcolour ): object {
 
         $dbquery = new dbquery();
-        $sessiontimeout = get_config('','sessiontimeout');
+        $sessiontimeout = get_config('' , 'sessiontimeout');
 
         $slice = 0;
         $activitypart = [];

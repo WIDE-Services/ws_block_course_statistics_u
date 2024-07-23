@@ -72,15 +72,14 @@ class dbquery {
 
         global $DB;
 
-        $sql = "SELECT m.name 
-          FROM {modules} AS m
-          JOIN {course_modules} AS cm ON cm.module = m.id
+        $sql = "SELECT m.name
+          FROM {modules} m
+          JOIN {course_modules} cm ON cm.module = m.id
          WHERE cm.id = :instance";
 
         $params = ['instance' => $instance];
 
         return $DB->get_record_sql($sql, $params);
-
 
     }
 
@@ -123,7 +122,6 @@ class dbquery {
             throw $e; // Re-throwing the exception for higher-level handling.
         }
 
-
     }
 
     /**
@@ -136,9 +134,9 @@ class dbquery {
 
         global $DB;
 
-        $sql = "SELECT m.name 
-          FROM {modules} AS m
-          JOIN {course_modules} AS cm ON cm.module = m.id
+        $sql = "SELECT m.name
+          FROM {modules} m
+          JOIN {course_modules} cm ON cm.module = m.id
          WHERE cm.id = :instance";
 
         $params = ['instance' => $instance];
@@ -332,7 +330,7 @@ class dbquery {
 
         $params = [
                 'userid' => $userid,
-                'courseid' => $courseid
+                'courseid' => $courseid,
         ];
 
         if ($searchperiod) {
@@ -342,7 +340,6 @@ class dbquery {
         }
 
         $results = $DB->get_records_sql($sql, $params);
-
 
         $statistics->sessions = count($results);
 
@@ -376,7 +373,7 @@ class dbquery {
     public function db_course_activities_data($courseid , $cmid , $searchperiod = false , $from = null , $to = null) {
 
         global $DB;
-        $sessiontimeout = get_config('','sessiontimeout');
+        $sessiontimeout = get_config('' , 'sessiontimeout');
         $statistics = new \stdClass();
 
         $totalactivitytime = 0;
@@ -386,8 +383,8 @@ class dbquery {
         // The data must be retrieved from table cs_activities_session_dates / block_course_statistics_sdt.
         // Dont fetch the session times that are over the idle time.
 
-        $sql = "SELECT csd.*, cas.cminstance, cas.courseid, 
-               cas.activity, cas.activitytitle, 
+        $sql = "SELECT csd.*, cas.cminstance, cas.courseid,
+               cas.activity, cas.activitytitle,
                cas.activitytime, cas.activitysessions
                 FROM {block_course_statistics_sdt} csd
                     JOIN {block_course_statistics_ases} cas ON cas.id = csd.asid
@@ -398,7 +395,7 @@ class dbquery {
         $params = [
                 'cmid' => $cmid,
                 'courseid' => $courseid,
-                'sessiontimeout' => $sessiontimeout
+                'sessiontimeout' => $sessiontimeout,
         ];
 
         if ($searchperiod) {
@@ -408,7 +405,6 @@ class dbquery {
         }
 
         $results = $DB->get_records_sql($sql, $params);
-
 
         if (!empty($results)) {
 
@@ -449,9 +445,6 @@ class dbquery {
         return $statistics;
 
     }
-
-
-
     /**
      * Gets all precalculated measures for users in activity from DB in a period if set.
      * @param int $courseid
@@ -467,7 +460,7 @@ class dbquery {
         global $DB;
 
         // The data must be retrieved from table cs_activities_session_dates / block_course_statistics_sdt.
-        $sql = "SELECT csd.*, cas.userid, cas.cminstance, cas.courseid, cas.activity, 
+        $sql = "SELECT csd.*, cas.userid, cas.cminstance, cas.courseid, cas.activity,
                cas.activitysessions, cas.activitytitle, cas.activitytime, u.firstname, u.lastname
                 FROM {block_course_statistics_sdt} csd
                     JOIN {block_course_statistics_ases} cas ON cas.id = csd.asid
@@ -484,7 +477,6 @@ class dbquery {
         }
 
         $results = $DB->get_records_sql($sql, $params);
-
 
         $usermeasures = [];
 
@@ -529,7 +521,7 @@ class dbquery {
         global $DB;
 
         $statistics = new \stdClass();
-        $sessiontimeout = get_config('','sessiontimeout');
+        $sessiontimeout = get_config('' , 'sessiontimeout');
         $totalactivitiestime = 0;
         $totalactivitiessessions = 0;
 
@@ -628,21 +620,19 @@ class dbquery {
 
         global $DB;
 
-        $sql = "SELECT timecreated 
+        $sql = "SELECT timecreated
           FROM {logstore_standard_log}
-         WHERE userid = :userid 
+         WHERE userid = :userid
            AND timecreated > :exittime
-      ORDER BY timecreated ASC 
+      ORDER BY timecreated ASC
          LIMIT 1";
 
         $params = [
                 'userid' => $userid,
-                'exittime' => $exittime
+                'exittime' => $exittime,
         ];
 
         return $DB->get_record_sql($sql, $params);
-
-
     }
 
     /**
@@ -655,14 +645,13 @@ class dbquery {
 
         global $DB;
 
-        $logsqlmin = "SELECT timecreated 
+        $logsqlmin = "SELECT timecreated
                 FROM {logstore_standard_log}
                WHERE id = :minid";
 
         $params = ['minid' => $minid];
 
         return $DB->get_record_sql($logsqlmin, $params);
-
 
     }
 
@@ -676,7 +665,7 @@ class dbquery {
 
         global $DB;
 
-        $logsqlmax = "SELECT timecreated 
+        $logsqlmax = "SELECT timecreated
                 FROM {logstore_standard_log}
                WHERE id = :maxid";
 
@@ -695,14 +684,13 @@ class dbquery {
     public function db_first_activity_access($firstactivitytime) {
         global $DB;
 
-        $sqlfirstactivityaccess = "SELECT timecreated 
+        $sqlfirstactivityaccess = "SELECT timecreated
                              FROM {logstore_standard_log}
                             WHERE id = :firstactivitytime";
 
         $params = ['firstactivitytime' => $firstactivitytime];
 
         return $DB->get_record_sql($sqlfirstactivityaccess, $params);
-
 
     }
 
@@ -716,7 +704,7 @@ class dbquery {
 
         global $DB;
 
-        $sqllastactivityaccess = "SELECT timecreated 
+        $sqllastactivityaccess = "SELECT timecreated
                             FROM {logstore_standard_log}
                            WHERE id = :lastactivitytime";
 
@@ -739,21 +727,21 @@ class dbquery {
 
         global $DB;
 
-        $sqltitle = "SELECT DISTINCT srm.name AS activitytitle 
+        $sqltitle = "SELECT DISTINCT srm.name AS activitytitle
                FROM {logstore_standard_log} AS sdl
-               JOIN {user} AS u ON u.id = sdl.userid
-               JOIN {course} AS c ON c.id = sdl.courseid
-               JOIN {course_modules} AS cm ON cm.id = sdl.contextinstanceid
-               JOIN {modules} AS m ON m.id = cm.module
-               JOIN {$dbtable} AS srm ON srm.id = cm.instance
-              WHERE u.id = :userid 
-                AND c.id = :courseid 
+               JOIN {user} u ON u.id = sdl.userid
+               JOIN {course} c ON c.id = sdl.courseid
+               JOIN {course_modules} cm ON cm.id = sdl.contextinstanceid
+               JOIN {modules} m ON m.id = cm.module
+               JOIN {$dbtable} srm ON srm.id = cm.instance
+              WHERE u.id = :userid
+                AND c.id = :courseid
                 AND cm.id = :contextinstanceid";
 
         $params = [
                 'userid' => $user,
                 'courseid' => $course,
-                'contextinstanceid' => $contextinstanceid
+                'contextinstanceid' => $contextinstanceid,
         ];
 
         return $DB->get_record_sql($sqltitle, $params);
@@ -772,23 +760,23 @@ class dbquery {
 
         global $DB;
 
-        $sqlquiz = "SELECT DISTINCT qza.*, qz.name AS activitytitle 
-              FROM {logstore_standard_log} AS sdl
-              JOIN {user} AS u ON u.id = sdl.userid
-              JOIN {course} AS c ON c.id = sdl.courseid
-              JOIN {course_modules} AS cm ON cm.id = sdl.contextinstanceid
-              JOIN {modules} AS m ON m.id = cm.module
-              JOIN {quiz} AS qz ON qz.id = cm.instance
-              JOIN {quiz_attempts} AS qza ON qza.quiz = qz.id AND qza.userid = u.id
-             WHERE u.id = :userid 
-               AND c.id = :courseid 
-               AND cm.id = :contextinstanceid 
+        $sqlquiz = "SELECT DISTINCT qza.*, qz.name AS activitytitle
+              FROM {logstore_standard_log} sdl
+              JOIN {user} u ON u.id = sdl.userid
+              JOIN {course} c ON c.id = sdl.courseid
+              JOIN {course_modules} cm ON cm.id = sdl.contextinstanceid
+              JOIN {modules} m ON m.id = cm.module
+              JOIN {quiz} qz ON qz.id = cm.instance
+              JOIN {quiz_attempts} qza ON qza.quiz = qz.id AND qza.userid = u.id
+             WHERE u.id = :userid
+               AND c.id = :courseid
+               AND cm.id = :contextinstanceid
                AND qza.timefinish <> 0";
 
         $params = [
                 'userid' => $user,
                 'courseid' => $course,
-                'contextinstanceid' => $contextinstanceid
+                'contextinstanceid' => $contextinstanceid,
         ];
 
         return $DB->get_records_sql($sqlquiz, $params);
@@ -822,13 +810,13 @@ class dbquery {
         global $DB;
 
         $sqltrack = "SELECT DISTINCT sst.*, srm.name AS activitytitle
-               FROM {logstore_standard_log} AS sdl
-               JOIN {user} AS u ON u.id = sdl.userid
-               JOIN {course} AS c ON c.id = sdl.courseid
-               JOIN {course_modules} AS cm ON cm.id = sdl.contextinstanceid
-               JOIN {modules} AS m ON m.id = cm.module
-               JOIN {scorm} AS srm ON srm.id = cm.instance
-               JOIN {scorm_scoes_track} AS sst ON sst.scormid = srm.id AND sst.userid = u.id
+               FROM {logstore_standard_log} sdl
+               JOIN {user} u ON u.id = sdl.userid
+               JOIN {course} c ON c.id = sdl.courseid
+               JOIN {course_modules} cm ON cm.id = sdl.contextinstanceid
+               JOIN {modules} m ON m.id = cm.module
+               JOIN {scorm} srm ON srm.id = cm.instance
+               JOIN {scorm_scoes_track} sst ON sst.scormid = srm.id AND sst.userid = u.id
               WHERE sst.element = 'cmi.core.total_time'
                 AND u.id = :userid
                 AND c.id = :courseid
@@ -837,11 +825,10 @@ class dbquery {
         $params = [
                 'userid' => $user,
                 'courseid' => $course,
-                'contextinstanceid' => $contextinstanceid
+                'contextinstanceid' => $contextinstanceid,
         ];
 
         return $DB->get_records_sql($sqltrack, $params);
-
 
     }
 
@@ -857,27 +844,26 @@ class dbquery {
 
         global $DB;
 
-        $sql = "SELECT sl.id, sl.timecreated, bn.name, sl.action 
-          FROM {logstore_standard_log} AS sl
-          JOIN {context} AS c ON c.id = sl.contextid
-          JOIN {course_modules} AS cm ON cm.id = c.instanceid
-          JOIN {modules} AS m ON m.id = cm.module
-          JOIN {bigbluebuttonbn} AS bn ON bn.id = cm.instance
+        $sql = "SELECT sl.id, sl.timecreated, bn.name, sl.action
+          FROM {logstore_standard_log} sl
+          JOIN {context} c ON c.id = sl.contextid
+          JOIN {course_modules} cm ON cm.id = c.instanceid
+          JOIN {modules} m ON m.id = cm.module
+          JOIN {bigbluebuttonbn} bn ON bn.id = cm.instance
          WHERE sl.userid = :userid
            AND sl.courseid = :courseid
            AND sl.objecttable = :modulename
            AND sl.contextlevel = 70
-           AND (sl.action = 'joined' OR sl.action = 'left') 
+           AND (sl.action = 'joined' OR sl.action = 'left')
       ORDER BY sl.timecreated";
 
         $params = [
                 'userid' => $user,
                 'courseid' => $course,
-                'modulename' => $modulename
+                'modulename' => $modulename,
         ];
 
         return $DB->get_records_sql($sql, $params);
-
 
     }
 
@@ -898,11 +884,10 @@ class dbquery {
 
         $params = [
                 'bbbstart' => $bbbstart,
-                'bbbfinish' => $bbbfinish
+                'bbbfinish' => $bbbfinish,
         ];
 
         return $DB->get_records_sql($sqlbetweentime, $params);
-
 
     }
 
@@ -956,7 +941,7 @@ class dbquery {
 
         global $DB;
 
-        $sql = "SELECT f.* 
+        $sql = "SELECT f.*
           FROM {forum} f
          WHERE f.course = :courseid";
 
@@ -977,7 +962,6 @@ class dbquery {
 
         return $DB->get_records_sql($sql, $params);
 
-
     }
 
     /**
@@ -994,7 +978,7 @@ class dbquery {
 
         global $DB;
 
-        $sql = "SELECT fd.* 
+        $sql = "SELECT fd.*
           FROM {forum_discussions} fd
          WHERE fd.course = :courseid";
 
@@ -1013,7 +997,6 @@ class dbquery {
 
         return $DB->get_records_sql($sql, $params);
 
-
     }
 
     /**
@@ -1022,8 +1005,7 @@ class dbquery {
      * @return false|mixed|\stdClass
      * @throws dml_exception
      */
-    public function  db_topic_title($topicid) {
-
+    public function db_topic_title($topicid) {
         global $DB;
 
         return $DB->get_record('forum_discussions' , ['id' => $topicid] , 'name');
@@ -1056,7 +1038,7 @@ class dbquery {
         if (!is_null($forumid) && is_null($topicid)) {
             $sql .= " AND fd.forum = :forumid";
             $params['forumid'] = $forumid;
-        } elseif (!is_null($forumid) && !is_null($topicid)) {
+        } else if (!is_null($forumid) && !is_null($topicid)) {
             $sql .= " AND fd.forum = :forumid AND fp.discussion = :topicid";
             $params['forumid'] = $forumid;
             $params['topicid'] = $topicid;
@@ -1128,7 +1110,7 @@ class dbquery {
 
         global $DB;
 
-        $sql = "SELECT fr.* 
+        $sql = "SELECT fr.*
           FROM {forum_read} fr
           JOIN {forum} f ON f.id = fr.forumid
           JOIN {forum_discussions} fd ON fd.id = fr.discussionid
@@ -1138,7 +1120,7 @@ class dbquery {
 
         $params = [
                 'topicid' => $topicid,
-                'forumid' => $forumid
+                'forumid' => $forumid,
         ];
 
         if ($searchperiod) {
@@ -1171,7 +1153,6 @@ class dbquery {
 
         return $DB->get_records_sql($sql, $params);
 
-
     }
 
     /**
@@ -1191,20 +1172,20 @@ class dbquery {
 
         global $DB;
 
-        $sql = "SELECT fp.* 
+        $sql = "SELECT fp.*
           FROM {forum_posts} fp
           JOIN {forum_discussions} fd ON fd.id = fp.discussion
           JOIN {forum} f ON f.id = fd.forum
-         WHERE f.course = :courseid 
+         WHERE f.course = :courseid
            AND fp.userid = :userid
-           AND fd.forum = :forumid 
+           AND fd.forum = :forumid
            AND fp.discussion = :topicid";
 
         $params = [
                 'courseid' => $courseid,
                 'userid' => $userid,
                 'forumid' => $forumid,
-                'topicid' => $topicid
+                'topicid' => $topicid,
         ];
 
         if ($searchperiod) {
@@ -1238,9 +1219,9 @@ class dbquery {
           FROM {forum_posts} fp
           JOIN {forum_discussions} fd ON fd.id = fp.discussion
           JOIN {forum} f ON f.id = fd.forum
-         WHERE f.course = :courseid 
+         WHERE f.course = :courseid
            AND fp.userid = :userid
-           AND fd.forum = :forumid 
+           AND fd.forum = :forumid
            AND fp.discussion = :topicid
            AND fp.parent <> 0";
 
@@ -1248,7 +1229,7 @@ class dbquery {
                 'courseid' => $courseid,
                 'userid' => $userid,
                 'forumid' => $forumid,
-                'topicid' => $topicid
+                'topicid' => $topicid,
         ];
 
         if ($searchperiod) {
@@ -1258,7 +1239,6 @@ class dbquery {
         }
 
         return $DB->get_records_sql($sql, $params);
-
 
     }
 
@@ -1290,7 +1270,7 @@ class dbquery {
         $params = [
                 'userid' => $userid,
                 'topicid' => $topicid,
-                'forumid' => $forumid
+                'forumid' => $forumid,
         ];
 
         if ($searchperiod) {
@@ -1373,7 +1353,6 @@ class dbquery {
 
             $quizattempts = $DB->get_records_sql($sql, $params);
 
-
             foreach ($quizattempts as $attempt) {
 
                 // Calculate time spent in seconds.
@@ -1436,7 +1415,6 @@ class dbquery {
 
             $quizattempts = $DB->get_records_sql($sql, $params);
 
-
             foreach ($quizattempts as $grade) {
                 // Sum up grades.
                 $totalscore += $grade->sumgrades;
@@ -1481,7 +1459,6 @@ class dbquery {
         }
 
         $quizattempts = $DB->get_records_sql($sql, $params);
-
 
         foreach ($quizattempts as $attempt) {
 
@@ -1538,16 +1515,14 @@ class dbquery {
 
         $userresults = $DB->get_records_sql($sql, $params);
 
-
         foreach ($userresults as $result) {
             $userid = $result->userid;
             $timespent = $result->timefinish - $result->timestart;
 
             // Get cmid using a separate query. Cause if added to my basic query will have dublicated first column no matter what.
-            $moduleid = $DB->get_field('modules', 'id', ['name' => 'quiz']); // 'quiz' is the module name
-            $cmid = $DB->get_field('course_modules', 'id', ['instance' => $quizid,
+            $moduleid = $DB->get_field('modules' , 'id' , ['name' => 'quiz']); // 1 'quiz' is the module name.
+            $cmid = $DB->get_field('course_modules' , 'id' , ['instance' => $quizid,
                     'course' => $courseid, 'module' => $moduleid]);
-
 
             // Store or update user's data.
             if (!isset($userquizdata[$userid])) {
@@ -1610,7 +1585,6 @@ class dbquery {
 
             $quizattempts = $DB->get_records_sql($sql, $params);
 
-
         } else {
 
             $sql = "SELECT q.id, q.sumgrades
@@ -1628,7 +1602,6 @@ class dbquery {
 
             $quizattempts = $DB->get_records_sql($sql, $params);
 
-
         }
 
         foreach ($quizattempts as $grade) {
@@ -1641,13 +1614,11 @@ class dbquery {
         $totalmarks = count($quizattempts) * $attemptmarks->sumgrades;
 
         // Calculate average score.
-
         $averagescore = ($totalmarks > 0) ? ($totalscore / $totalmarks) * 100 : 0;
 
         return $averagescore;
 
     }
-
 
 }
 

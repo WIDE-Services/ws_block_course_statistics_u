@@ -34,7 +34,7 @@ use templatable;
 class measurescourseforums implements renderable, templatable {
 
     /**
-     * @var
+     * @var array|null
      */
     protected $params;
     /**
@@ -42,7 +42,7 @@ class measurescourseforums implements renderable, templatable {
      */
     protected $courseid;
     /**
-     * @var
+     * @var int|null
      */
     protected $instanceid;
     /**

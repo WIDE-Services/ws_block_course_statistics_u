@@ -38,7 +38,7 @@ class measuresinquizzes implements renderable, templatable {
      */
     protected $courseid;
     /**
-     * @var
+     * @var int|null
      */
     protected $instanceid;
     /**

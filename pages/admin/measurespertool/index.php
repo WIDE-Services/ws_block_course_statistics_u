@@ -91,7 +91,7 @@ if ($mform->is_cancelled()) {
 
     $searchperiod = true;
 
-    // Store values in the session
+    // Store values in the session.
     $_SESSION['measure_period'] = [
             'from' => $from,
             'to' => $to,

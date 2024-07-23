@@ -84,7 +84,6 @@ class toollogic implements logic_interface {
             // From all the logstore table and find the activity sessions from the beginning which is wrong.
             $activitysessions = $this->calculate_user_activity_session_time($courseid , $enrolleduser->id , $scheduledtime);
 
-
             $insertdata = [];
             $insertactivitysessions = [];
 
@@ -465,7 +464,7 @@ class toollogic implements logic_interface {
         $results = $dbquery->db_users_measures_in_activity($courseid , $cminstance , $searchperiod , $from , $to);
         $measures = [];
         $usersdata = [];
-        $data = []; // Array must be initialized outside of inner loop and if condition
+        $data = []; // Array must be initialized outside of inner loop and if condition.
 
         foreach ($results as $res) {
             $usersdata[$res->userid]['userid'] = $res->userid;

@@ -100,7 +100,7 @@ class logic implements logic_interface {
     public function calculate_user_course_session_time($courseid , $userid , $scheduledtime = null) {
 
         $dbquery = new dbquery();
-        $sessiontimeout = get_config('','sessiontimeout');
+        $sessiontimeout = get_config('' , 'sessiontimeout');
 
         // We need to find the contextlevels saved in logstore from the user.
         // When was in the course. The context levels that we need for course are :
