@@ -22,11 +22,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use block_course_statistics\coursestatistics;
 use block_course_statistics\output\generalmeasures;
 use block_course_statistics\output\generalusersmeasures;
-use block_course_statistics\formfilter\filterform;
-use block_course_statistics\generalmeasures\logic;
+use block_course_statistics\local\coursestatistics;
+use block_course_statistics\local\formfilter\filterform;
+use block_course_statistics\local\generalmeasures\logic;
 
 require_once(__DIR__ . '/../../../../../config.php');
 require_login();

@@ -22,13 +22,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use block_course_statistics\coursestatistics;
 use block_course_statistics\output\measuresfortheforum;
 use block_course_statistics\output\measurescourseforums;
 use block_course_statistics\output\measuresforumtopics;
 use block_course_statistics\output\measuresforumusers;
-use block_course_statistics\formfilter\filterform;
-use block_course_statistics\measuresfortheforum\forumlogic;
+use block_course_statistics\local\coursestatistics;
+use block_course_statistics\local\formfilter\filterform;
+use block_course_statistics\local\measuresfortheforum\forumlogic;
 
 require_once(__DIR__ . '/../../../../../config.php');
 

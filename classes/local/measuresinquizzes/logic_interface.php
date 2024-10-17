@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace block_course_statistics\measuresfortheforum;
+namespace block_course_statistics\local\measuresinquizzes;
 
 /**
  * Interface file for block_course_statistics
@@ -26,7 +26,7 @@ namespace block_course_statistics\measuresfortheforum;
 interface logic_interface {
 
     /**
-     * Group all info of forums in a courses
+     * Group all info of quizzes in a courses
      * @package    block_course_statistics
      * @param int $courseid
      * @param bool $isteacher
@@ -35,10 +35,10 @@ interface logic_interface {
      * @param int $to
      * @return mixed
      */
-    public function group_courses_forums_data($courseid , $isteacher , $searchperiod , $from , $to);
+    public function group_courses_quizzes_data($courseid , $isteacher , $searchperiod , $from , $to);
 
     /**
-     * Group all info of forums in a course
+     * Group all info of quizzes in a course
      * @package    block_course_statistics
      * @param int $courseid
      * @param bool $searchperiod
@@ -46,32 +46,19 @@ interface logic_interface {
      * @param int $to
      * @return mixed
      */
-    public function group_viewforums_data($courseid , $searchperiod , $from , $to);
+    public function group_viewquizzes_data($courseid ,  $searchperiod , $from , $to);
 
     /**
-     * Group all info of topics in forums
+     * Group all info of users in a quiz
      * @package    block_course_statistics
      * @param int $courseid
-     * @param int $forumid
+     * @param int $quizid
      * @param bool $searchperiod
      * @param int $from
      * @param int $to
      * @return mixed
      */
-    public function group_viewtopics_data($courseid , $forumid , $searchperiod , $from , $to);
-
-    /**
-     * Activity for each users in forum , topics
-     * @package    block_course_statistics
-     * @param int $courseid
-     * @param int $forumid
-     * @param int $topicid
-     * @param bool $searchperiod
-     * @param int $from
-     * @param int $to
-     * @return array
-     */
-    public function group_viewusers_data($courseid , $forumid ,  $topicid , $searchperiod , $from , $to);
+    public function group_viewusers_data($courseid , $quizid , $searchperiod , $from , $to);
 
 }
 

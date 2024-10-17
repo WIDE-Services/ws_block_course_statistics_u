@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace block_course_statistics\utils;
+namespace block_course_statistics\local\utils;
 
-use block_course_statistics\dbquery;
+use block_course_statistics\local\dbquery;
 use html_writer;
 use MoodleExcelWorkbook;
 use stdClass;

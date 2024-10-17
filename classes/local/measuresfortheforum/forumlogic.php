@@ -21,9 +21,9 @@
  * @copyright 2023 onwards WIDE Services  {@link https://www.wideservices.gr}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace block_course_statistics\measuresfortheforum;
+namespace block_course_statistics\local\measuresfortheforum;
 
-use block_course_statistics\dbquery;
+use block_course_statistics\local\dbquery;
 use context_course;
 
 /**

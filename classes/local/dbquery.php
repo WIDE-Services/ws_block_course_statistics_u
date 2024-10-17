@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace block_course_statistics;
+namespace block_course_statistics\local;
 
-use block_course_statistics\utils\utils;
+use block_course_statistics\local\utils\utils;
 use dml_exception;
 
 /**

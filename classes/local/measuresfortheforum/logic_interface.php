@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace block_course_statistics\generalmeasures;
+namespace block_course_statistics\local\measuresfortheforum;
 
 /**
  * Interface file for block_course_statistics
@@ -26,50 +26,19 @@ namespace block_course_statistics\generalmeasures;
 interface logic_interface {
 
     /**
-     * Course title
+     * Group all info of forums in a courses
      * @package    block_course_statistics
      * @param int $courseid
-     * @return mixed
-     * @throws \dml_exception
-     */
-    public function course_title($courseid);
-
-    /**
-     * Finds the enrolled users in a course
-     * And does calculations about the time spent in session.
-     * @package    block_course_statistics
-     * @param array  $enrolledusers
-     * @param int $courseid
-     * @return mixed
-     */
-    public function get_enrolled_users_sessions($enrolledusers, $courseid);
-
-
-    /**
-     * For each enrolled user find
-     * the course session time
-     * @package    block_course_statistics
-     * @param int $courseid
-     * @param int $userid
-     * @param int $scheduledtime
-     * @return mixed
-     */
-    public function calculate_user_course_session_time($courseid, $userid, $scheduledtime);
-
-    /**
-     * Prepares courses data for the view template
-     * @package    block_course_statistics
-     * @param int $courseid
-     * @param int $isteacher
+     * @param bool $isteacher
      * @param bool $searchperiod
      * @param int $from
      * @param int $to
      * @return mixed
      */
-    public function group_courses_measures_data($courseid, $isteacher, $searchperiod, $from, $to);
+    public function group_courses_forums_data($courseid , $isteacher , $searchperiod , $from , $to);
 
     /**
-     * Prepares users data for the view template
+     * Group all info of forums in a course
      * @package    block_course_statistics
      * @param int $courseid
      * @param bool $searchperiod
@@ -77,7 +46,32 @@ interface logic_interface {
      * @param int $to
      * @return mixed
      */
-    public function group_users_measures_data($courseid, $searchperiod, $from, $to);
+    public function group_viewforums_data($courseid , $searchperiod , $from , $to);
+
+    /**
+     * Group all info of topics in forums
+     * @package    block_course_statistics
+     * @param int $courseid
+     * @param int $forumid
+     * @param bool $searchperiod
+     * @param int $from
+     * @param int $to
+     * @return mixed
+     */
+    public function group_viewtopics_data($courseid , $forumid , $searchperiod , $from , $to);
+
+    /**
+     * Activity for each users in forum , topics
+     * @package    block_course_statistics
+     * @param int $courseid
+     * @param int $forumid
+     * @param int $topicid
+     * @param bool $searchperiod
+     * @param int $from
+     * @param int $to
+     * @return array
+     */
+    public function group_viewusers_data($courseid , $forumid ,  $topicid , $searchperiod , $from , $to);
 
 }
 

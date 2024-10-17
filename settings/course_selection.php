@@ -21,7 +21,7 @@
  * @copyright 2022 onwards WIDE Services  {@link https://www.wideservices.gr}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-use block_course_statistics\coursestatistics;
+use block_course_statistics\local\coursestatistics;
 
 require_once('../../../config.php');
 

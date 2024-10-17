@@ -16,8 +16,8 @@
 
 namespace block_course_statistics\task;
 
-use block_course_statistics\generalmeasures\logic;
-use block_course_statistics\measurespertool\toollogic;
+use block_course_statistics\local\generalmeasures\logic;
+use block_course_statistics\local\measurespertool\toollogic;
 use context_course;
 use context_system;
 use core\task\scheduled_task;

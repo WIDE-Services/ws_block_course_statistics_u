@@ -21,10 +21,10 @@
  * @copyright 2023 onwards WIDE Services  {@link https://www.wideservices.gr}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace block_course_statistics\measuresinquizzes;
+namespace block_course_statistics\local\measuresinquizzes;
 
-use block_course_statistics\dbquery;
-use block_course_statistics\utils\utils;
+use block_course_statistics\local\dbquery;
+use block_course_statistics\local\utils\utils;
 
 /**
  * Class main
