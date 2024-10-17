@@ -1521,8 +1521,12 @@ class dbquery {
 
             // Get cmid using a separate query. Cause if added to my basic query will have dublicated first column no matter what.
             $moduleid = $DB->get_field('modules' , 'id' , ['name' => 'quiz']); // 1 'quiz' is the module name.
-            $cmid = $DB->get_field('course_modules' , 'id' , ['instance' => $quizid,
-                    'course' => $courseid, 'module' => $moduleid]);
+            $cmid = $DB->get_field('course_modules' , 'id' ,
+                    [
+                            'instance' => $quizid,
+                            'course' => $courseid,
+                            'module' => $moduleid,
+                    ]);
 
             // Store or update user's data.
             if (!isset($userquizdata[$userid])) {
