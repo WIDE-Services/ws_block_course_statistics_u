@@ -17,10 +17,14 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 @package    block_course_statistics
 @copyright  2023 onwards WIDE Services {@link https://www.wideservices.gr}
 @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-}}
 
-{{!
 @template block_course_statistics/common/navsection
+@description This template renders navigation links for different statistical measures in the course.
+It expects the following context data:
+- urlcourse: URL for the general course measures page.
+- urlactivity: URL for measures per tool/activity.
+- urlforum: URL for forum-related measures.
+- urlrquiz: URL for measures in quizzes.
 }}
 <section class="statistic statistic2">
     <div class="container">

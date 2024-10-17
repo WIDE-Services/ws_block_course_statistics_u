@@ -17,11 +17,29 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 @package    block_course_statistics
 @copyright  2023 onwards WIDE Services {@link https://www.wideservices.gr}
 @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+@template block_event_management/measuresinquizzes/quizmain
+@description This template displays statistics related to quizzes within courses.
+It expects the following context data:
+- access: Boolean indicating if the user has permission to access this page.
+- quizdata: Array containing statistics for quizzes, with each element including:
+  - course: The name of the course.
+  - courseid: The ID of the course.
+  - quiz: The name of the quiz.
+  - quizid: The ID of the quiz.
+  - totaltime: Formatted total time spent on the quiz.
+  - numtotaltime: Numeric total time for sorting.
+  - attempts: The number of quiz attempts.
+  - avgscore: The average score of quiz attempts.
+  - viewusers: URL for viewing detailed user statistics related to the quiz.
+  - from: The start date for the search period.
+  - to: The end date for the search period.
+  - searchperiod: The specific period being filtered for the data.
+- bcmbcourses: URL for the breadcrumb link back to the courses overview.
+- current_lang: The current language code used for localization.
+- js: Boolean indicating if JavaScript should be included for DataTable functionality.
 }}
 
-{{!
-@template block_event_management/measuresinquizzes/quizmain
-}}
 {{#access}}
     <div class="page-wrapper">
 

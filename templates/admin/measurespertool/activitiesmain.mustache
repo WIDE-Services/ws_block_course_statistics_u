@@ -17,11 +17,30 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 @package    block_course_statistics
 @copyright  2023 onwards WIDE Services {@link https://www.wideservices.gr}
 @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+@template block_event_management/measurespertool/activitiesmain
+@description This template displays activity-related statistics for courses, focusing on the time spent and engagement with each activity.
+It expects the following context data:
+- access: Boolean indicating if the user has permission to access this page.
+- activitiesdata: Array containing statistics for each activity in the course, with each element including:
+  - coursetitle: The title of the course.
+  - activity: The name of the activity.
+  - cminstance: The course module instance ID for linking to activity details.
+  - activitytotaltime: Formatted total time spent on the activity.
+  - numactivitytotaltime: Numeric total time for sorting.
+  - activitytotalsessions: The total number of sessions spent on the activity.
+  - activityavgtime: Formatted average time spent per session on the activity.
+  - numactivityavgtime: Numeric average time for sorting.
+  - averageusedinsessions: Average number of sessions in which the activity was used.
+  - viewusers: URL for viewing detailed user data related to the activity.
+  - from: The start date for the search period.
+  - to: The end date for the search period.
+  - searchperiod: The period being filtered for the data.
+- bcmbcourses: URL for the breadcrumb link back to the courses overview.
+- current_lang: The current language code used for localization.
+- js: Boolean indicating if JavaScript should be included for DataTable functionality.
 }}
 
-{{!
-@template block_event_management/measurespertool/activitiesmain
-}}
 {{#access}}
     <div class="page-wrapper">
 

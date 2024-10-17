@@ -17,10 +17,28 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 @package    block_course_statistics
 @copyright  2023 onwards WIDE Services {@link https://www.wideservices.gr}
 @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-}}
 
-{{!
-@template block_course_statistics/generalmeasures/main
+template block_course_statistics/generalmeasures/main
+@description This template renders the main view for displaying general course measures.
+It expects the following context data:
+- access: Boolean indicating whether the user has access to view the content.
+- coursedata: Array containing course statistics data, with each element including:
+  - courseid: The ID of the course.
+  - coursetitle: The title of the course.
+  - totalsessions: The total number of sessions.
+  - avgtimesession: Formatted average time per session.
+  - numavgtimesession: Numeric value of the average session time for sorting.
+  - totaltime: Formatted total time spent in the course.
+  - numtotaltime: Numeric value of the total time for sorting.
+  - numberofactions: The number of actions performed in the course.
+  - avgnumberofactions: The average number of actions per session.
+  - viewusers: URL for viewing user details related to the course.
+  - from: The start date for the search period.
+  - to: The end date for the search period.
+  - searchperiod: The specific period being filtered.
+- coursepage: URL to navigate back to the course page.
+- current_lang: The current language code used for localization.
+- js: Boolean indicating if JavaScript should be included.
 }}
 {{#access}}
     <div class="page-wrapper">

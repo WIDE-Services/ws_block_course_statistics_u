@@ -17,11 +17,29 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 @package    block_course_statistics
 @copyright  2023 onwards WIDE Services {@link https://www.wideservices.gr}
 @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+@template block_event_management/measurespertool/main
+@description This template displays general statistics for course activities, focusing on time spent, number of sessions, and average time per session.
+It expects the following context data:
+- access: Boolean indicating if the user has permission to access this page.
+- generaldata: Array containing statistics for each course, with each element including:
+  - coursetitle: The name of the course.
+  - courseid: The ID of the course.
+  - activities: The list or count of activities in the course.
+  - activitiestotaltime: Formatted total time spent on activities.
+  - numactivitiestotaltime: Numeric total time used for sorting.
+  - activitiessessions: The number of sessions associated with activities.
+  - activitiesavgtime: Formatted average time spent per session on activities.
+  - numactivitiesavgtime: Numeric average time used for sorting.
+  - viewmodules: URL for viewing detailed data related to course modules.
+  - from: The start date for the data filtering period.
+  - to: The end date for the data filtering period.
+  - searchperiod: The specific time period being analyzed.
+- coursepage: URL for the breadcrumb link back to the courses overview page.
+- current_lang: The current language code for localization.
+- js: Boolean indicating if JavaScript should be included for DataTable functionality.
 }}
 
-{{!
-@template block_event_management/measurespertool/main
-}}
 {{#access}}
     <div class="page-wrapper">
 

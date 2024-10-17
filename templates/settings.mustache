@@ -17,11 +17,19 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 @package    block_course_statistics
 @copyright  2023 onwards WIDE Services {@link https://www.wideservices.gr}
 @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+@template block_event_management/settings
+@description This template displays a settings table for managing course statistics measurement status.
+It expects the following context data:
+- courses: Array containing data for each course displayed in the settings table, with each element including:
+  - coursename: The name of the course.
+  - courseid: The unique ID of the course.
+  - enrolled_user_count: The number of users enrolled in the course.
+  - measure: Boolean indicating the current measurement status (true if measuring, false if paused).
+- current_lang: The current language code used for localization.
+- js: Boolean indicating if JavaScript should be included for DataTable functionality.
 }}
 
-{{!
-@template block_event_management/settings
-}}
 <div class="page-wrapper">
 
     <!-- PAGE CONTENT-->

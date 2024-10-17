@@ -17,11 +17,31 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 @package    block_course_statistics
 @copyright  2023 onwards WIDE Services {@link https://www.wideservices.gr}
 @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+@template block_event_management/forumsmain
+@description This template displays forum statistics for courses.
+It expects the following context data:
+- access: Boolean indicating if the user has permission to access this page.
+- forumsdata: Array containing statistics data for forums, each element includes:
+  - course: The title of the course.
+  - forums: The name of the forum.
+  - topics: The topic within the forum.
+  - posts: The total number of posts in the forum.
+  - postanswers: The number of answers to posts in the forum.
+  - initialized: Indicates whether a topic was initialized by the user.
+  - postreads: The number of times posts were read.
+  - courseid: The ID of the course.
+  - forumid: The ID of the forum.
+  - topicid: The ID of the topic.
+  - viewtopic: URL for viewing the detailed topic page.
+  - from: The start date for the search period.
+  - to: The end date for the search period.
+  - searchperiod: The specific period being filtered.
+- bcmbcourses: URL for the breadcrumb link back to the courses overview.
+- current_lang: The current language code used for localization.
+- js: Boolean indicating if JavaScript should be included.
 }}
 
-{{!
-@template block_event_management/forumsmain
-}}
 {{#access}}
     <div class="page-wrapper">
 

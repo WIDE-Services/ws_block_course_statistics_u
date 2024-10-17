@@ -17,11 +17,27 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 @package    block_course_statistics
 @copyright  2023 onwards WIDE Services {@link https://www.wideservices.gr}
 @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+@template block_course_statistics/usersmain
+@description This template renders a detailed view of user-specific statistics in courses.
+It expects the following context data:
+- access: Boolean indicating if the user has permission to access this page.
+- usersdata: Array containing user statistics data, each element includes:
+  - lastname: The last name of the user.
+  - firstname: The first name of the user.
+  - coursetitle: The title of the course associated with the user.
+  - totalsessions: The total number of sessions the user participated in.
+  - avgtimesession: Formatted average time per session.
+  - numavgtimesession: Numeric average time per session, used for sorting.
+  - totaltimeformated: Formatted total time spent in the course.
+  - numtotaltime: Numeric total time for sorting.
+  - numberofactions: The number of actions performed by the user in the course.
+  - avgnumberofactions: The average number of actions per session.
+- bcmbcourses: URL for the breadcrumb link back to the courses overview.
+- current_lang: The current language code used for localization.
+- js: Boolean indicating if JavaScript should be included.
 }}
 
-{{!
-@template block_course_statistics/usersmain
-}}
 {{#access}}
     <div class="page-wrapper">
 
