@@ -15,17 +15,67 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * External Services Course statistics
+ * Events external API
  *
  * @package    block_course_statistics
- * @copyright 2022 onwards WIDE Services  {@link https://www.wideservices.gr}
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @category   external
+ * @copyright   2023 onwards WIDE Services  {@link https://www.wideservices.gr}
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace block_course_statistics\external;
+
+use context_module;
+use context_system;
+use dml_exception;
+use Exception;
+use external_api;
+use external_function_parameters;
+use external_multiple_structure;
+use external_single_structure;
+use external_value;
+use external_warnings;
+use moodle_exception;
+use stdClass;
+
+defined('MOODLE_INTERNAL') || die;
+
+global $CFG;
+
+require_once("$CFG->libdir/externallib.php");
+
 /**
- * class External
+ * External function
+ *
+ * @package    block_course_statistics
+ * @category   external
+ * @copyright   2023 onwards WIDE Services  {@link https://www.wideservices.gr}
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class block_course_statistics_external extends external_api {
+class pause_measure extends external_api {
+
+    /**
+     * Constructor for the object.
+     */
+    public function __construct() {
+        // Your constructor logic here.
+    }
+
+    /**
+     * Parameters
+     *
+     * @return external_function_parameters
+     */
+    public static function pause_measure_parameters() {
+        return new external_function_parameters(
+                [
+                        'courseid' => new external_value(PARAM_INT,
+                                'The courseid from block_course_statistics_meas table', VALUE_REQUIRED),
+                        'status' => new external_value(PARAM_INT,
+                                'The status from block_course_statistics_meas table', VALUE_REQUIRED),
+                ]
+        );
+    }
 
     /**
      * The function itself
@@ -81,29 +131,11 @@ class block_course_statistics_external extends external_api {
     }
 
     /**
-     * Parameters
-     *
-     * @return external_function_parameters
-     */
-    public static function pause_measure_parameters() {
-        return new external_function_parameters(
-                [
-                        'courseid' => new external_value(PARAM_INT,
-                                'The courseid from block_course_statistics_meas table', VALUE_REQUIRED),
-                        'status' => new external_value(PARAM_INT,
-                                'The status from block_course_statistics_meas table', VALUE_REQUIRED),
-                ]
-        );
-    }
-
-    /**
      * Return
      * @return external_value
      */
     public static function pause_measure_returns() {
         return new external_value(PARAM_BOOL, 'Status paused for a course measurement');
     }
-
-
 }
 

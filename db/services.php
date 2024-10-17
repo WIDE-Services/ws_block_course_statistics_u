@@ -26,12 +26,11 @@ defined('MOODLE_INTERNAL') || die();
 
 $functions = [
         'block_course_statistics_pause_measure' => [
-                'classname' => 'block_course_statistics_external',
+                'classname' => 'block_course_statistics\external\pause_measure',
                 'methodname' => 'pause_measure',
-                'classpath' => 'blocks/course_statistics/classes/external.php',
-                'description' => 'Pause measurement for a course.',
+                'description' => 'Start or Stop a measure for a course',
                 'type' => 'write',
                 'ajax' => true,
-
+                'services' => [MOODLE_OFFICIAL_MOBILE_SERVICE],
         ],
 ];
