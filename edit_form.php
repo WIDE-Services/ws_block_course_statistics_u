@@ -36,7 +36,7 @@ class block_course_statistics_edit_form extends block_edit_form {
 
         $mform->addElement('header', 'configheader', get_string('blocksettings', 'block'));
 
-        $pluginsettings = new moodle_url('/blocks/course_statistics/local/settings/course_selection.php');
+        $pluginsettings = new moodle_url('/blocks/course_statistics/settings/course_selection.php');
         $mform->addElement('html', '<h3 style="width: 100%;" class="main"><a href="' . $pluginsettings . '">' .
                 get_string('config_course_selection', 'block_course_statistics') . '</a></h3><hr>');
     }
