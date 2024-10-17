@@ -24,8 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2020041068;
+$plugin->version   = 2020041070;
 $plugin->requires  = 2015111600;
 $plugin->component = 'block_course_statistics';
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = 'Moodle 3.x+';
+$plugin->release   = 'Moodle 3.0 to 4.2';
