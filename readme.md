@@ -28,7 +28,7 @@ The `block_course_statistics` plugin for Moodle provides comprehensive statistic
 
 ## Locating the Plugin
 
-1. Navigate to `Site Administration` > `Manage Courses and Categories`.
+1. Navigate to `Site Administration` > `Manage Courses and Categories` > `Select a Course`.
 2. The plugin will be displayed in the right panel as a block.
 
 ## Visibility and Access
