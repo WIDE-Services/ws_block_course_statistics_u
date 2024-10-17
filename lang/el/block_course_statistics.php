@@ -126,3 +126,22 @@ $string['filter'] = 'Φίλτρο';
 $string['copy'] = 'Αντιγραφή';
 $string['export'] = 'Εξαγωγή';
 
+// Privacy.
+$string['privacy:metadata:block_course_statistics_cses'] = 'Πίνακας για στατιστικά συνεδριών μαθημάτων';
+$string['privacy:metadata:block_course_statistics_cses:courseid'] = 'Το ID του μαθήματος';
+$string['privacy:metadata:block_course_statistics_cses:userid'] = 'Το ID του χρήστη';
+$string['privacy:metadata:block_course_statistics_cses:startsession'] = 'Έναρξη χρόνου συνεδρίας μαθήματος';
+$string['privacy:metadata:block_course_statistics_cses:endsession'] = 'Λήξη χρόνου συνεδρίας μαθήματος';
+$string['privacy:metadata:block_course_statistics_cses:sessiontime'] = 'Συνολικός χρόνος συνεδρίας';
+$string['privacy:metadata:block_course_statistics_cses:actions'] = 'Ενέργειες συνεδρίας';
+
+$string['privacy:metadata:block_course_statistics_ases'] = 'Πίνακας για στατιστικά συνεδριών δραστηριοτήτων';
+$string['privacy:metadata:block_course_statistics_ases:courseid'] = 'Το ID του μαθήματος';
+$string['privacy:metadata:block_course_statistics_ases:userid'] = 'Το ID του χρήστη';
+$string['privacy:metadata:block_course_statistics_ases:activity'] = 'Η δραστηριότητα στο μάθημα';
+$string['privacy:metadata:block_course_statistics_ases:cminstance'] = 'Η παρουσία του στοιχείου του μαθήματος';
+$string['privacy:metadata:block_course_statistics_ases:activitytitle'] = 'Ο τίτλος της δραστηριότητας';
+$string['privacy:metadata:block_course_statistics_ases:activitytime'] = 'Ο χρόνος της δραστηριότητας';
+$string['privacy:metadata:block_course_statistics_ases:activitysessions'] = 'Συνολικές συνεδρίες δραστηριότητας';
+
+

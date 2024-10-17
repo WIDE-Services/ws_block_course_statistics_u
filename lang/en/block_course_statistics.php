@@ -128,3 +128,20 @@ $string['filter'] = 'Filter';
 $string['copy'] = 'Copy';
 $string['export'] = 'Export';
 
+// Privacy.
+$string['privacy:metadata:block_course_statistics_cses'] = 'Table for course sessions statistics';
+$string['privacy:metadata:block_course_statistics_cses:courseid'] = 'The Course id';
+$string['privacy:metadata:block_course_statistics_cses:userid'] = 'The user id';
+$string['privacy:metadata:block_course_statistics_cses:startsession'] = 'Start of course session time';
+$string['privacy:metadata:block_course_statistics_cses:endsession'] = 'End of course session time';
+$string['privacy:metadata:block_course_statistics_cses:sessiontime'] = 'Total session time';
+$string['privacy:metadata:block_course_statistics_cses:actions'] = 'Session Action';
+
+$string['privacy:metadata:block_course_statistics_ases'] = 'Table for activity sessions statisitcs.';
+$string['privacy:metadata:block_course_statistics_ases:courseid'] = 'The Course id';
+$string['privacy:metadata:block_course_statistics_ases:userid'] = 'The user id';
+$string['privacy:metadata:block_course_statistics_ases:activity'] = 'The Activity in the course';
+$string['privacy:metadata:block_course_statistics_ases:cminstance'] = 'The course module instance';
+$string['privacy:metadata:block_course_statistics_ases:activitytitle'] = 'The Activity title';
+$string['privacy:metadata:block_course_statistics_ases:activitytime'] = 'The Activity time';
+$string['privacy:metadata:block_course_statistics_ases:activitysessions'] = 'Total Activity Sessions';

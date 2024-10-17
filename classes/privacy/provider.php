@@ -161,13 +161,7 @@ class provider implements
 
         $DB->delete_records('block_course_statistics_cses', ['userid' => $userid]);
         $DB->delete_records('block_course_statistics_ases', ['userid' => $userid]);
-        $allfiles = $DB->get_records_sql('files', ['component' => 'block_course_statistics', 'userid' => $userid]);
-        foreach ($allfiles as $file) {
-            $newrecord = new stdClass();
-            $newrecord->id = $file->id;
-            $newrecord->context = 0;
-            $DB->update_record('files', $newrecord);
-        }
+
     }
 
     /**
@@ -181,13 +175,6 @@ class provider implements
 
         $DB->delete_records('block_course_statistics_cses');
         $DB->delete_records('block_course_statistics_ases');
-        $allfiles = $DB->get_records_sql('files', ['component' => 'block_course_statistics']);
-        foreach ($allfiles as $file) {
-            $newrecord = new stdClass();
-            $newrecord->id = $file->id;
-            $newrecord->context = 0;
-            $DB->update_record('files', $newrecord);
-        }
 
     }
 
@@ -204,13 +191,6 @@ class provider implements
 
         $DB->delete_records('block_course_statistics_cses', ['userid' => $userid]);
         $DB->delete_records('block_course_statistics_ases', ['userid' => $userid]);
-        $allfiles = $DB->get_records_sql('files', ['component' => 'block_course_statistics', 'userid' => $userid]);
-        foreach ($allfiles as $file) {
-            $newrecord = new stdClass();
-            $newrecord->id = $file->id;
-            $newrecord->context = 0;
-            $DB->update_record('files', $newrecord);
-        }
 
     }
 }
