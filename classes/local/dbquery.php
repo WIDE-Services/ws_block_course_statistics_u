@@ -584,27 +584,36 @@ class dbquery {
         $between = "";
 
         // First find if next session exists!
-        $sql = "SELECT Distinct log.id , log.userid , log.timecreated
-            FROM {logstore_standard_log} log
-            JOIN {enrol} enrol ON log.courseid = enrol.courseid
-            JOIN {user_enrolments} ue ON enrol.id = ue.enrolid
-            WHERE log.action = 'viewed'
-            AND log.component = 'core'
-            AND log.target = 'course'
-            AND log.contextlevel = :courselevel
-            AND log.userid = :userid
-            AND log.contextinstanceid = :courseid
-            AND log.timecreated > :exittime
-            ORDER BY log.timecreated ASC  LIMIT 1";
 
+        // Define the SQL query with placeholders for parameters.
+        $sql = "SELECT DISTINCT log.id, log.userid, log.timecreated
+        FROM {logstore_standard_log} log
+        JOIN {enrol} enrol ON log.courseid = enrol.courseid
+        JOIN {user_enrolments} ue ON enrol.id = ue.enrolid
+        WHERE log.action = :action
+          AND log.component = :component
+          AND log.target = :target
+          AND log.contextlevel = :courselevel
+          AND log.userid = :userid
+          AND log.contextinstanceid = :courseid
+          AND log.timecreated > :exittime
+        ORDER BY log.timecreated ASC
+        LIMIT 1";
+
+        // Prepare the parameters array.
         $params = [
+                'action' => 'viewed',
+                'component' => 'core',
+                'target' => 'course',
                 'courselevel' => CONTEXT_COURSE,
-                'courseid' => $courseid,
                 'userid' => $userid,
+                'courseid' => $courseid,
                 'exittime' => $exittime,
         ];
 
+        // Execute the query with the parameters.
         $nextsession = $DB->get_record_sql($sql, $params);
+
 
         // If exists then the next action out of the course must be between those sessions.
 
