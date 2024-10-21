@@ -93,6 +93,8 @@ class pause_measure extends external_api {
 
         // Context validation.
         $context = context_system::instance();
+        self::validate_context($context);
+
         require_capability('block/course_statistics:admin', $context);
 
         // If not exists insert else update.
