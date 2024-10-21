@@ -15,7 +15,13 @@
 */
 /* Hide span in data table for correct sorting */
 .hidden-span {
-    display: none;
+    display: none !important;
+}
+
+@media print {
+    .hidden-span {
+        display: none !important;
+    }
 }
 
 /* Breadcrumb */

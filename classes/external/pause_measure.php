@@ -23,7 +23,7 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace block_course_statistics\local\external;
+namespace block_course_statistics\external;
 
 use context_module;
 use context_system;

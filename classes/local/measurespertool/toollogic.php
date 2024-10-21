@@ -495,7 +495,8 @@ class toollogic implements logic_interface {
                                 utils::format_activitytime($activitytime / $activitysessions);
                         $data[$res->userid]['numavgtimesession'] = $activitytime / $activitysessions;
                         $data[$res->userid]['avgusesession'] =
-                                number_format(($activitysessions / $info->sessions) * 100  , 1).'%';
+                                ($activitysessions!= 0 && $info->sessions !=0 ) ?
+                                        number_format(($activitysessions / $info->sessions) * 100  , 1).'%' : 0;
 
                     }
 
