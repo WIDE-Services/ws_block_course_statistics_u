@@ -525,22 +525,33 @@ class dbquery {
         $totalactivitiestime = 0;
         $totalactivitiessessions = 0;
 
-        // Dont fetch the session times that are over the idle time.
-        $sql = "SELECT csd.* , cas.cminstance , cas.courseid ,
-                        cas.activity , cas.activitytitle ,
-                        cas.activitytime , cas.activitysessions
-                    FROM {block_course_statistics_sdt} csd
-                    JOIN {block_course_statistics_ases} cas ON cas.id = csd.asid
-                    WHERE cas.userid = {$userid}
-                    AND cas.courseid = {$courseid}
-                    AND csd.sessiontime < {$sessiontimeout}";
+        // Define the SQL query with placeholders for parameters.
+        $sql = "SELECT csd.*, cas.cminstance, cas.courseid,
+               cas.activity, cas.activitytitle,
+               cas.activitytime, cas.activitysessions
+        FROM {block_course_statistics_sdt} csd
+        JOIN {block_course_statistics_ases} cas ON cas.id = csd.asid
+        WHERE cas.userid = :userid
+          AND cas.courseid = :courseid
+          AND csd.sessiontime < :sessiontimeout";
 
+        // Prepare the parameters array.
+        $params = [
+                'userid' => $userid,
+                'courseid' => $courseid,
+                'sessiontimeout' => $sessiontimeout
+        ];
+
+        // Add additional conditions for the search period if it's provided.
         if ($searchperiod) {
-            $sql .= " AND csd.startsession >= {$from} AND csd.endsession <= {$to}";
-
+            $sql .= " AND csd.startsession >= :from AND csd.endsession <= :to";
+            $params['from'] = $from;
+            $params['to'] = $to;
         }
 
-        $results = $DB->get_records_sql($sql);
+        // Execute the query with parameters.
+        $results = $DB->get_records_sql($sql, $params);
+
 
         foreach ($results as $res) {
 
