@@ -758,7 +758,9 @@ class dbquery {
         global $DB;
 
         // Validate the module name.
-        $validModules = ['forum', 'book', 'quiz', 'assign', 'page', 'resource', 'url'];
+        $validModules = ['forum', 'book', 'quiz', 'assign', 'page', 'resource', 'url', 'scorm', 'bigbluebuttonbn',
+                'mdl_forum', 'mdl_book', 'mdl_quiz', 'mdl_assign', 'mdl_page', 'mdl_resource', 'mdl_url', 'mdl_scorm',
+                'mdl_bigbluebuttonbn'];
 
         // Default to false if the module is not valid.
         if (!in_array($modulename, $validModules)) {
