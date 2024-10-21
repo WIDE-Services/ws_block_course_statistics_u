@@ -448,7 +448,7 @@ class dbquery {
 
         // Execute the query with parameters.
 
-        $activitysessions =$DB->get_records_sql($allsql, $params);
+        $activitysessions = $DB->get_records_sql($allsql, $params);
 
         $statistics->averageusedinsessions = ($totalactivitysessions != 0 && count($activitysessions) != 0) ?
                 $totalactivitysessions / count($activitysessions) * 100 : 0;
