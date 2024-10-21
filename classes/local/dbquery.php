@@ -736,37 +736,74 @@ class dbquery {
 
     /**
      * Activity title
-     * @param string $dbtable
+     * @param string $modulename
      * @param int $user
      * @param int $course
      * @param int $contextinstanceid
      * @return false|mixed
      * @throws \dml_exception
      */
-    public function db_activity_title($dbtable , $user , $course , $contextinstanceid) {
-
+    public function db_activity_title($modulename, $user, $course, $contextinstanceid) {
         global $DB;
 
-        $sqltitle = "SELECT DISTINCT srm.name AS activitytitle
-               FROM {logstore_standard_log} AS sdl
-               JOIN {user} u ON u.id = sdl.userid
-               JOIN {course} c ON c.id = sdl.courseid
-               JOIN {course_modules} cm ON cm.id = sdl.contextinstanceid
-               JOIN {modules} m ON m.id = cm.module
-               JOIN {$dbtable} srm ON srm.id = cm.instance
-              WHERE u.id = :userid
-                AND c.id = :courseid
-                AND cm.id = :contextinstanceid";
+        // Validate the module name.
+        $validModules = ['forum', 'book', 'quiz', 'assign', 'page', 'resource', 'url'];
 
+        // Default to false if the module is not valid.
+        if (!in_array($modulename, $validModules)) {
+            mtrace("Invalid module name: $modulename");
+            return false;
+        }
+
+        // Start building the base SQL query.
+        $sqltitle = "SELECT DISTINCT srm.name AS activitytitle
+                 FROM {logstore_standard_log} AS sdl
+                 JOIN {course_modules} cm ON cm.id = sdl.contextinstanceid";
+
+        // Add the specific join based on the module type.
+        switch ($modulename) {
+            case 'forum':
+                $sqltitle .= " JOIN {forum} srm ON srm.id = cm.instance";
+                break;
+            case 'book':
+                $sqltitle .= " JOIN {book} srm ON srm.id = cm.instance";
+                break;
+            case 'quiz':
+                $sqltitle .= " JOIN {quiz} srm ON srm.id = cm.instance";
+                break;
+            case 'assign':
+                $sqltitle .= " JOIN {assign} srm ON srm.id = cm.instance";
+                break;
+            case 'page':
+                $sqltitle .= " JOIN {page} srm ON srm.id = cm.instance";
+                break;
+            case 'resource':
+                $sqltitle .= " JOIN {resource} srm ON srm.id = cm.instance";
+                break;
+            case 'url':
+                $sqltitle .= " JOIN {url} srm ON srm.id = cm.instance";
+                break;
+            default:
+                mtrace("Unhandled module type: $modulename");
+                return false;
+        }
+
+        // Append the rest of the query conditions.
+        $sqltitle .= " WHERE sdl.userid = :userid
+                   AND sdl.courseid = :courseid
+                   AND cm.id = :contextinstanceid";
+
+        // Define the parameters for the query.
         $params = [
                 'userid' => $user,
                 'courseid' => $course,
                 'contextinstanceid' => $contextinstanceid,
         ];
 
+        // Execute the query and return the result.
         return $DB->get_record_sql($sqltitle, $params);
-
     }
+
 
     /**
      * Quiz time and title
