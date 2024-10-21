@@ -424,20 +424,31 @@ class dbquery {
         // Calculate all activitysessions in this course for a period time if is set.
         // Dont fetch the session times that are over the idle time.
 
-        $allsql = "SELECT csd.* , cas.cminstance , cas.courseid ,
-                        cas.activity , cas.activitytitle ,
-                        cas.activitytime , cas.activitysessions
-                    FROM {block_course_statistics_sdt} csd
-                    JOIN {block_course_statistics_ases} cas ON cas.id = csd.asid
-                    WHERE cas.courseid = {$courseid}
-                    AND csd.sessiontime < {$sessiontimeout}";
+        // Start building the base SQL query with placeholders.
+        $allsql = "SELECT csd.*, cas.cminstance, cas.courseid,
+                   cas.activity, cas.activitytitle,
+                   cas.activitytime, cas.activitysessions
+            FROM {block_course_statistics_sdt} csd
+            JOIN {block_course_statistics_ases} cas ON cas.id = csd.asid
+            WHERE cas.courseid = :courseid
+              AND csd.sessiontime < :sessiontimeout";
 
+        // Prepare the parameters array.
+        $params = [
+                'courseid' => $courseid,
+                'sessiontimeout' => $sessiontimeout,
+        ];
+
+        // Add additional conditions and parameters if the search period is defined.
         if ($searchperiod) {
-            $allsql .= " AND csd.startsession >= {$from} AND csd.endsession <= {$to}";
-
+            $allsql .= " AND csd.startsession >= :from AND csd.endsession <= :to";
+            $params['from'] = $from;
+            $params['to'] = $to;
         }
 
-        $activitysessions = $DB->get_records_sql($allsql);
+        // Execute the query with parameters.
+
+        $activitysessions =$DB->get_records_sql($allsql, $params);
 
         $statistics->averageusedinsessions = ($totalactivitysessions != 0 && count($activitysessions) != 0) ?
                 $totalactivitysessions / count($activitysessions) * 100 : 0;
