@@ -588,28 +588,23 @@ class dbquery {
      * @return false|mixed
      * @throws \dml_exception
      */
-    public function db_user_exit_session($userid , $courseid , $exittime) {
-
+    public function db_user_exit_session($userid, $courseid, $exittime) {
         global $DB;
-
-        $between = "";
-
-        // First find if next session exists!
 
         // Define the SQL query with placeholders for parameters.
         $sql = "SELECT DISTINCT log.id, log.userid, log.timecreated
-        FROM {logstore_standard_log} log
-        JOIN {enrol} enrol ON log.courseid = enrol.courseid
-        JOIN {user_enrolments} ue ON enrol.id = ue.enrolid
-        WHERE log.action = :action
-          AND log.component = :component
-          AND log.target = :target
-          AND log.contextlevel = :courselevel
-          AND log.userid = :userid
-          AND log.contextinstanceid = :courseid
-          AND log.timecreated > :exittime
-        ORDER BY log.timecreated ASC
-        LIMIT 1";
+            FROM {logstore_standard_log} log
+            JOIN {enrol} enrol ON log.courseid = enrol.courseid
+            JOIN {user_enrolments} ue ON enrol.id = ue.enrolid
+            WHERE log.action = :action
+              AND log.component = :component
+              AND log.target = :target
+              AND log.contextlevel = :courselevel
+              AND log.userid = :userid
+              AND log.contextinstanceid = :courseid
+              AND log.timecreated > :exittime
+            ORDER BY log.timecreated ASC
+            LIMIT 1";
 
         // Prepare the parameters array.
         $params = [
@@ -625,19 +620,22 @@ class dbquery {
         // Execute the query with the parameters.
         $nextsession = $DB->get_record_sql($sql, $params);
 
-
-        // If exists then the next action out of the course must be between those sessions.
-
+        // If exists, define the time range for the next action.
+        $between = "";
         if (!empty($nextsession)) {
-            $between = " AND timecreated < {$nextsession->timecreated} ";
+            $between = " AND timecreated < :nextsessiontimecreated ";
+            $params['nextsessiontimecreated'] = $nextsession->timecreated;
         }
 
-        $sql = "SELECT id,timecreated FROM {logstore_standard_log}
-                                            WHERE userid = {$userid}
-                                            AND timecreated > {$exittime}" .$between."
-                                            ORDER BY timecreated ASC LIMIT 1";
+        $sql = "SELECT id, timecreated 
+            FROM {logstore_standard_log}
+            WHERE userid = :userid
+              AND timecreated > :exittime" . $between . "
+            ORDER BY timecreated ASC 
+            LIMIT 1";
 
-        return $DB->get_record_sql($sql);
+        // Execute the updated query with parameters.
+        return $DB->get_record_sql($sql, $params);
     }
 
     /**
